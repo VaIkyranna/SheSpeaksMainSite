@@ -1,0 +1,158 @@
+/* From Uiverse.io by alexroumi */
+.custom-button {
+    padding: 15px 25px !important;
+    border: unset !important;
+    border-radius: 15px !important;
+    color: #212121 !important;
+    z-index: 1;
+    background: #e8e8e8 !important;
+    position: relative;
+    font-weight: 1000 !important;
+    font-size: 17px !important;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27) !important;
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27) !important;
+    transition: all 250ms !important;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    min-width: fit-content;
+    white-space: nowrap;
+}
+
+.custom-button::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 0 !important;
+    border-radius: 15px !important;
+    background-color: #212121 !important;
+    z-index: -1 !important;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27) !important;
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27) !important;
+    transition: all 250ms !important;
+}
+
+.custom-button:hover {
+    color: #e8e8e8 !important;
+}
+
+.custom-button:hover::before {
+    width: 100% !important;
+}
+
+.custom-button svg {
+    transition: all 250ms !important;
+    z-index: 2;
+    position: relative;
+}
+
+/* Smaller version of custom button for news articles */
+.custom-button-small {
+    padding: 10px 16px !important;
+    border: unset !important;
+    border-radius: 12px !important;
+    color: #212121 !important;
+    z-index: 1;
+    background: #e8e8e8 !important;
+    position: relative;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    -webkit-box-shadow: 3px 6px 15px -2px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 3px 6px 15px -2px rgba(0, 0, 0, 0.25) !important;
+    transition: all 250ms !important;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    min-width: fit-content;
+    white-space: nowrap;
+}
+
+.custom-button-small::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 0 !important;
+    border-radius: 12px !important;
+    background-color: #212121 !important;
+    z-index: -1 !important;
+    -webkit-box-shadow: 3px 6px 15px -2px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 3px 6px 15px -2px rgba(0, 0, 0, 0.25) !important;
+    transition: all 250ms !important;
+}
+
+.custom-button-small:hover {
+    color: #e8e8e8 !important;
+}
+
+.custom-button-small:hover::before {
+    width: 100% !important;
+}
+
+.custom-button-small svg {
+    transition: all 250ms !important;
+    z-index: 2;
+    position: relative;
+}
+
+/* News article specific button */
+.news-read-more-btn {
+    padding: 8px 12px !important;
+    border: unset !important;
+    border-radius: 8px !important;
+    color: #212121 !important;
+    z-index: 1;
+    background: #e8e8e8 !important;
+    position: relative;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    -webkit-box-shadow: 2px 4px 12px -2px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 2px 4px 12px -2px rgba(0, 0, 0, 0.2) !important;
+    transition: all 250ms !important;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    min-width: fit-content;
+    white-space: nowrap;
+}
+
+.news-read-more-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 0 !important;
+    border-radius: 8px !important;
+    background-color: #212121 !important;
+    z-index: -1 !important;
+    -webkit-box-shadow: 2px 4px 12px -2px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 2px 4px 12px -2px rgba(0, 0, 0, 0.2) !important;
+    transition: all 250ms !important;
+}
+
+.news-read-more-btn:hover {
+    color: #e8e8e8 !important;
+}
+
+.news-read-more-btn:hover::before {
+    width: 100% !important;
+}
+
+.news-read-more-btn svg {
+    transition: all 250ms !important;
+    z-index: 2;
+    position: relative;
+}
