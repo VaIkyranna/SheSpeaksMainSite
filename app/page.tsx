@@ -4,6 +4,7 @@ import { useEffect } from "react"
 
 import { AppleHero } from "@/components/apple-hero"
 import { NewsSection } from "@/components/news-section"
+import { HistorySection } from "@/components/history-section"
 import { ResourcesSection } from "@/components/resources-section"
 import { EventsSection } from "@/components/events-section"
 import { Footer } from "@/components/footer"
@@ -38,6 +39,12 @@ export default function Home() {
       <section id="news" className="apple-section bg-gray-50">
         <ErrorBoundary>
           <NewsSection />
+        </ErrorBoundary>
+      </section>
+
+      <section id="history" className="apple-section bg-white">
+        <ErrorBoundary>
+          <HistorySection />
         </ErrorBoundary>
       </section>
 
