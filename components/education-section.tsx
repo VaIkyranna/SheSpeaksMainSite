@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, History, Users, BookMarked, Search, Youtube, Film, ArrowRight } from "lucide-react"
+import { BookOpen, History, Users, BookMarked, Search, Youtube, Film, ArrowRight, ChevronDown } from "lucide-react"
 import { useRef, useState, useEffect } from 'react'
 
 type Resource = {
@@ -249,31 +249,74 @@ export function EducationSection() {
     setMouseX(e.clientX)
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
+
   const glossaryTerms: Term[] = [
+    // Core Identity Terms
     {
-      term: "Asexual",
-      definition: "Someone who experiences little or no sexual attraction to others.",
-      category: "Identity"
+      term: "LGBTQ+",
+      definition: "Acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, with the '+' representing other identities.",
+      category: "Core Terms"
     },
     {
       term: "Cisgender",
       definition: "A person whose gender identity aligns with the sex they were assigned at birth.",
-      category: "Identity"
+      category: "Core Terms"
+    },
+    {
+      term: "Transgender",
+      definition: "A person whose gender identity differs from their sex assigned at birth.",
+      category: "Core Terms"
     },
     {
       term: "Non-binary",
-      definition: "An umbrella term for gender identities that don't fit within the traditional binary of male and female.",
-      category: "Identity"
+      definition: "An umbrella term for gender identities outside the male/female binary.",
+      category: "Core Terms"
     },
     {
       term: "Queer",
-      definition: "An umbrella term for sexual and gender minorities who are not heterosexual or cisgender.",
-      category: "Identity"
+      definition: "An umbrella term for sexual and gender minorities.",
+      category: "Core Terms"
+    },
+    
+    // Orientation Terms
+    {
+      term: "Gay/Lesbian",
+      definition: "Attracted to the same gender.",
+      category: "Orientation"
     },
     {
-      term: "Intersectionality",
-      definition: "The interconnected nature of social categorizations such as race, class, and gender.",
-      category: "Concepts"
+      term: "Bisexual",
+      definition: "Attracted to multiple genders.",
+      category: "Orientation"
+    },
+    {
+      term: "Pansexual",
+      definition: "Attracted to people regardless of gender.",
+      category: "Orientation"
+    },
+    {
+      term: "Asexual",
+      definition: "Experiences little or no sexual attraction.",
+      category: "Orientation"
+    },
+    
+    // Community Terms
+    {
+      term: "Ally",
+      definition: "Someone who supports LGBTQ+ people.",
+      category: "Community"
+    },
+    {
+      term: "Coming Out",
+      definition: "The process of sharing one's identity with others.",
+      category: "Community"
+    },
+    {
+      term: "Pride",
+      definition: "Celebration of LGBTQ+ identities and rights.",
+      category: "Community"
     }
   ]
 
@@ -532,27 +575,53 @@ export function EducationSection() {
             </div>
           </TabsContent>
 
-          <TabsContent value="glossary">
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {glossaryTerms.map((term, index) => (
-                  <div key={index} className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-                    <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{term.term}</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+          <TabsContent value="glossary" className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search terms..."
+                className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              {glossaryTerms
+                .filter(term => 
+                  term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  term.definition.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((term, index) => (
+                  <div 
+                    key={index}
+                    className="group relative p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-help"
+                    title={term.definition}
+                  >
+                    <div className="flex items-start">
+                      <span className="font-medium text-purple-700 dark:text-purple-400 text-sm">
+                        {term.term}
+                      </span>
+                      <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+                        {term.category}
+                      </span>
+                    </div>
+                    <div className="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg">
                       {term.definition}
-                    </p>
-                    <span className="inline-block bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs px-2 py-1 rounded-full">
-                      {term.category}
-                    </span>
+                    </div>
                   </div>
                 ))}
-              </div>
-              <div className="mt-8 text-center">
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                  View Full Glossary
-                </button>
-              </div>
             </div>
+            
+            {searchTerm && (
+              <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                {glossaryTerms.filter(term => 
+                  term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  term.definition.toLowerCase().includes(searchTerm.toLowerCase())
+                ).length} results
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
