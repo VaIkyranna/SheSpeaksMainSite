@@ -66,7 +66,7 @@ export function AppleHero() {
   }, [])
 
   return (
-    <section className="relative h-[220px] flex flex-col items-center overflow-hidden">
+    <section className="relative min-h-[320px] md:min-h-[220px] flex flex-col items-center overflow-hidden">
       {/* Dynamic Pride Backgrounds */}
       {isLoaded && backgroundImage && (
         <div 
@@ -87,8 +87,34 @@ export function AppleHero() {
         <div className="absolute bottom-10 right-10 w-12 h-12 bg-pink-500/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
 
-      {/* Tabs Navigation */}
-      <div className="absolute top-6 right-6 z-20">
+      {/* Tabs Navigation - Mobile (Hamburger) */}
+      <div className="md:hidden absolute top-4 right-4 z-30">
+        <div className="relative group">
+          <button className="text-white p-2 focus:outline-none">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+          <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-black/60 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/10">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                className={`block w-full text-left px-4 py-2.5 text-sm ${
+                  index === activeIndex 
+                    ? 'bg-white/10 text-white font-medium' 
+                    : 'text-white/90 hover:bg-white/15'
+                }`}
+                onClick={() => setActiveIndex(index)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs Navigation - Desktop */}
+      <div className="hidden md:block absolute top-6 right-6 z-20">
         <div className="relative">
           {/* Hover Highlight */}
           <div
@@ -130,7 +156,8 @@ export function AppleHero() {
                 }`}
                 style={{ 
                   fontFamily: 'SFUIDisplay-Light',
-                  paddingBottom: '0.35rem' // Slightly less padding at the bottom to bring underline closer
+                  paddingBottom: '0.35rem',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
