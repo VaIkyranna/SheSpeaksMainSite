@@ -787,7 +787,7 @@ export function NewsSection() {
             className="btn-animate px-8 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-50 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300"
             onClick={() => window.open("https://www.thepinknews.com/", "_blank")}
           >
-            View All News
+            More News
           </Button>
         </div>
       </div>

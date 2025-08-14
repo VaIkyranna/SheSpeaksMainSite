@@ -108,9 +108,19 @@ export function AppleHero() {
       style={{
         background: gradients[currentGradientIndex],
         backgroundSize: '200% 200%',
-        transition: 'background 1.5s ease-in-out'
+        transition: 'background 1.5s ease-in-out',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
+      {/* Glassmorphism Overlay */}
+      <div 
+        className="absolute inset-0 backdrop-blur-sm bg-white/5 dark:bg-black/5"
+        style={{
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.6) 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.6) 100%)'
+        }}
+      />
       {/* Dynamic Pride Backgrounds */}
       {isLoaded && backgroundImage && (
         <div 
@@ -252,6 +262,15 @@ export function AppleHero() {
           </p>
         </div>
       </div>
+      
+      {/* Subtle noise texture */}
+      <div 
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%\' height=\'100%\' filter=\'url(%23noise)\' /%3E%3C/svg%3E")',
+          mixBlendMode: 'overlay'
+        }}
+      />
     </section>
   )
 }

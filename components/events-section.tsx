@@ -152,7 +152,7 @@ export function EventsSection() {
 
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">Local events near you</h3>
+
             <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Check out these great places to find LGBTQ+ events, meetups, and community gatherings near you.
             </p>
