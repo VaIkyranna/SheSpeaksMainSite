@@ -250,29 +250,100 @@ export function EducationSection() {
   }
 
   const glossaryTerms: Term[] = [
+    // General Terms
     {
-      term: "Asexual",
-      definition: "Someone who experiences little or no sexual attraction to others.",
-      category: "Identity"
+      term: "LGBTQIA+",
+      definition: "An acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, Intersex, Asexual/Aromantic/Agender, with the '+' representing other sexual orientations and gender identities.",
+      category: "General"
     },
     {
+      term: "Ally",
+      definition: "A person who supports and advocates for LGBTQ+ people, even though they may not identify as LGBTQ+ themselves.",
+      category: "General"
+    },
+    
+    // Gender Identity
+    {
       term: "Cisgender",
-      definition: "A person whose gender identity aligns with the sex they were assigned at birth.",
-      category: "Identity"
+      definition: "A term for people whose gender identity matches the sex they were assigned at birth.",
+      category: "Gender Identity"
     },
     {
       term: "Non-binary",
-      definition: "An umbrella term for gender identities that don't fit within the traditional binary of male and female.",
-      category: "Identity"
+      definition: "An umbrella term for gender identities that don't fit within the traditional binary of male and female. May include genderqueer, genderfluid, and other identities.",
+      category: "Gender Identity"
+    },
+    {
+      term: "Genderfluid",
+      definition: "A gender identity characterized by changes in gender expression and/or identity over time.",
+      category: "Gender Identity"
+    },
+    {
+      term: "Two-Spirit",
+      definition: "A term used by some Indigenous North Americans to describe Native people who fulfill a traditional third-gender role in their cultures.",
+      category: "Gender Identity"
+    },
+    
+    // Sexual Orientation
+    {
+      term: "Asexual",
+      definition: "A sexual orientation characterized by a lack of sexual attraction to others. Asexuality exists on a spectrum.",
+      category: "Sexual Orientation"
+    },
+    {
+      term: "Pansexual",
+      definition: "A sexual orientation characterized by the potential for attraction to people of any gender, with gender not being a determining factor.",
+      category: "Sexual Orientation"
+    },
+    {
+      term: "Demisexual",
+      definition: "A sexual orientation where a person only experiences sexual attraction after forming a strong emotional connection.",
+      category: "Sexual Orientation"
+    },
+    
+    // Transgender Terms
+    {
+      term: "Transgender",
+      definition: "An umbrella term for people whose gender identity differs from the sex they were assigned at birth.",
+      category: "Transgender"
+    },
+    {
+      term: "Gender Dysphoria",
+      definition: "The distress a person may experience when their gender identity differs from their sex assigned at birth.",
+      category: "Transgender"
+    },
+    {
+      term: "Gender Affirming Care",
+      definition: "Medical, psychological, and social support that affirms an individual's gender identity.",
+      category: "Transgender"
+    },
+    
+    // Intersex
+    {
+      term: "Intersex",
+      definition: "A general term used for a variety of conditions in which a person is born with reproductive or sexual anatomy that doesn't fit typical definitions of male or female.",
+      category: "Intersex"
+    },
+    
+    // Important Concepts
+    {
+      term: "Coming Out",
+      definition: "The process of voluntarily sharing one's sexual orientation or gender identity with others.",
+      category: "Concepts"
+    },
+    {
+      term: "Deadnaming",
+      definition: "Using the birth or former name of a transgender or non-binary person without their consent.",
+      category: "Concepts"
+    },
+    {
+      term: "Misgendering",
+      definition: "Referring to someone using language that doesn't align with their gender identity.",
+      category: "Concepts"
     },
     {
       term: "Queer",
-      definition: "An umbrella term for sexual and gender minorities who are not heterosexual or cisgender.",
-      category: "Identity"
-    },
-    {
-      term: "Intersectionality",
-      definition: "The interconnected nature of social categorizations such as race, class, and gender.",
+      definition: "An umbrella term for sexual and gender minorities who are not heterosexual or cisgender. Reclaimed by some LGBTQ+ people as a term of empowerment.",
       category: "Concepts"
     }
   ]
