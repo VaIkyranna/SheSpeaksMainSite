@@ -72,14 +72,13 @@ export function EducationSection() {
       year: 2010
     },
     {
-      title: "Paris is Burning",
-      description: "Landmark documentary about New York's drag scene in the 1980s.",
+      title: "Will & Harper",
+      description: "When Will Ferrell's good friend Harper comes out as a trans woman, they take a road trip to bond and reintroduce Harper to the country as her true self.",
       type: 'video',
-      embedId: '9SqvD1-0odY',
-      embedParams: '?si=NzV-jyfRc0FWorFf',
-      thumbnail: 'http://i3.ytimg.com/vi/9SqvD1-0odY/hqdefault.jpg',
-      year: 1990,
-      source: "https://www.youtube.com/watch?v=9SqvD1-0odY"
+      embedId: 'PRZ1ELeGepo',
+      thumbnail: 'http://i3.ytimg.com/vi/PRZ1ELeGepo/hqdefault.jpg',
+      year: 2024,
+      source: "https://www.youtube.com/watch?v=PRZ1ELeGepo"
     },
     {
       title: "The Death and Life of Marsha P. Johnson",
@@ -92,8 +91,10 @@ export function EducationSection() {
       title: "Disclosure",
       description: "A look at Hollywood's depiction of transgender people and its impact on society.",
       type: 'video',
-      embedId: 'ysbX6JUlaEc',
-      year: 2020
+      embedId: 'nSgvWixY-ZQ',
+      thumbnail: 'http://i3.ytimg.com/vi/nSgvWixY-ZQ/hqdefault.jpg',
+      year: 2020,
+      source: "https://www.youtube.com/watch?v=nSgvWixY-ZQ"
     }
   ]
 
