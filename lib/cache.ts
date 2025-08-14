@@ -3,7 +3,16 @@ interface CacheItem<T> {
   timestamp: number;
 }
 
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+// Function to check if a date is from a different day
+const isNewDay = (timestamp: number): boolean => {
+  const date = new Date(timestamp)
+  const now = new Date()
+  return (
+    date.getFullYear() !== now.getFullYear() ||
+    date.getMonth() !== now.getMonth() ||
+    date.getDate() !== now.getDate()
+  )
+}
 
 class CacheManager {
   private static instance: CacheManager;
@@ -26,8 +35,8 @@ class CacheManager {
     const item = this.cache.get(key) as CacheItem<T> | undefined;
     if (!item) return null;
 
-    // Check if cache is still valid
-    if (Date.now() - item.timestamp > CACHE_DURATION) {
+    // Check if it's a new day
+    if (isNewDay(item.timestamp)) {
       this.cache.delete(key);
       return null;
     }
@@ -53,7 +62,7 @@ class CacheManager {
   private cleanup(): void {
     const now = Date.now();
     for (const [key, item] of this.cache.entries()) {
-      if (now - item.timestamp > CACHE_DURATION) {
+      if (isNewDay(item.timestamp)) {
         this.cache.delete(key);
       }
     }

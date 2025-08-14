@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`} suppressHydrationWarning>
-      <body className="bg-white text-gray-900 transition-colors duration-200 dark:bg-gray-900 dark:text-gray-100">
+      <body className="bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
         <ThemeProvider>
           {children}
           <FloatingThemeToggle />

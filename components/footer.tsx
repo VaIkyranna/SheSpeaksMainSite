@@ -8,7 +8,7 @@ export function Footer() {
   }
 
   return (
-    <footer style={{ backgroundColor: "#b582b4" }} className="text-white">
+    <footer className="bg-purple-400 dark:bg-gray-800 text-white dark:text-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}

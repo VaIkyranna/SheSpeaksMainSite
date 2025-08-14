@@ -248,17 +248,17 @@ export function ResourcesSection() {
   ]
 
   return (
-    <section id="resources" className="pt-4 pb-16 bg-accent">
+    <section id="resources" className="pt-4 pb-16 bg-accent dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full mb-4">
-            <Heart className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-semibold text-purple-700">Resources & Support</span>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/50 dark:to-pink-900/50 px-4 py-2 rounded-full mb-4">
+            <Heart className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Resources & Support</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Find Resources & Community
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-600 dark:text-gray-200 max-w-2xl mx-auto leading-relaxed">
             Access comprehensive resources and connect with supportive communities tailored for your journey.
           </p>
         </div>
@@ -270,9 +270,9 @@ export function ResourcesSection() {
                 <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full">
                   <MapPin className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800">Local Resources{userCountry !== "Global" ? ` in ${userCountry}` : ""}</h3>
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">Local Resources{userCountry !== "Global" ? ` in ${userCountry}` : ""}</h3>
               </div>
-              <p className="text-gray-600">Discover LGBTQ+ organizations and support groups in your area</p>
+              <p className="text-gray-600 dark:text-gray-200">Discover LGBTQ+ organizations and support groups in your area</p>
             </div>
 
             {loading ? (
@@ -293,23 +293,23 @@ export function ResourcesSection() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {localResources.map((resource, index) => (
-                  <Card key={index} className="group relative bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+                  <Card key={index} className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between mb-2">
-                        <CardTitle className="text-lg font-bold text-gray-800 group-hover:text-purple-700 transition-colors">
+                        <CardTitle className="text-lg font-bold text-gray-800 dark:text-gray-100 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">
                           {resource.name}
                         </CardTitle>
                       </div>
-                      <div className="inline-block text-xs font-semibold px-3 py-1 bg-gradient-to-r from-blue-50 to-purple-50 text-purple-700 rounded-full border border-purple-200">
+                      <div className="inline-block text-xs font-semibold text-purple-700 dark:text-purple-300">
                         {resource.type}
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                      <p className="text-sm text-gray-600 dark:text-gray-200 leading-relaxed line-clamp-3">
                         {resource.description}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-300">
                         <MapPin className="w-3 h-3" />
                         {resource.location}
                       </div>
@@ -332,8 +332,8 @@ export function ResourcesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {resources.map((resource, index) => (
-            <Card key={index} className="group relative bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden hover:-translate-y-1">
-              <div className="relative h-40 w-full overflow-hidden">
+            <Card key={index} className="group relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden hover:-translate-y-1 flex flex-col h-full p-0">
+              <div className="relative h-40 w-full overflow-hidden rounded-t-xl">
                 <Image
                   src={resource.image || "/placeholder.svg"}
                   alt={resource.title}
@@ -349,19 +349,21 @@ export function ResourcesSection() {
                 </div>
               </div>
 
-              <CardHeader className="pb-2 pt-4">
-                <CardTitle className="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition-colors">
+              <CardHeader className="pb-1 pt-3 px-4">
+                <CardTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">
                   {resource.title}
                 </CardTitle>
               </CardHeader>
               
-              <CardContent className="pb-4">
-                <p className="text-sm text-gray-600 leading-relaxed mb-4">
+              <CardContent className="px-4 pb-4 pt-1 flex flex-col flex-1">
+                <p className="text-sm text-gray-600 dark:text-gray-200 leading-relaxed mb-2 flex-1">
                   {resource.description}
                 </p>
                 
                 <button className="custom-button w-full justify-center text-sm">
-                  Explore Resources
+                  {resource.title === "Community Groups" ? "Explore Groups" : 
+                   resource.title === "Local Services" ? "Explore Services" : 
+                   "Explore Resources"}
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

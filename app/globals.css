@@ -164,11 +164,14 @@
   }
 
   body {
-    @apply text-foreground;
-    /* Clean white background like Apple */
-    background: #ffffff;
+    @apply text-foreground bg-white dark:bg-gray-900;
     min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark {
+    color-scheme: dark;
   }
 }
 
@@ -217,10 +220,11 @@
   /* Apple card style */
   .apple-card {
     @apply bg-white rounded-2xl shadow-sm border border-gray-100 transition-all duration-300;
+    @apply dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/20;
   }
 
   .apple-card:hover {
-    @apply shadow-lg;
+    @apply shadow-lg dark:shadow-gray-900/40;
     transform: translateY(-2px);
   }
 
@@ -236,7 +240,7 @@
 
   /* Added specific spacing for content sections */
   .apple-content-section {
-    @apply py-12 md:py-16 px-4;
+    @apply py-12 md:py-16 px-4 bg-white dark:bg-gray-900;
   }
 
   /* Apple typography */
@@ -252,6 +256,10 @@
     font-weight: 400;
     line-height: 1.3;
     color: #6b7280;
+  }
+
+  .dark .apple-subheadline {
+    color: #9ca3af;
   }
 
   /* Fade in animation */
@@ -301,6 +309,11 @@
   transition: all 0.3s ease-out !important;
 }
 
+.dark .custom-button {
+  --primary-color: #a855f7;
+  --hovered-color: #c084fc;
+}
+
 .custom-button::after {
   position: absolute !important;
   content: "" !important;
@@ -344,4 +357,25 @@
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+/*
+ Loading shimmer animation */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .loading-shimmer {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }

@@ -33,26 +33,24 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white dark:bg-gray-900">
       <AppleHero />
 
-      <section id="news" className="apple-section bg-gray-50">
+      <section id="news" className="apple-section bg-gray-50 dark:bg-gray-800">
         <ErrorBoundary>
           <NewsSection />
         </ErrorBoundary>
       </section>
 
-      <section id="history" className="apple-section bg-white">
-        <ErrorBoundary>
-          <HistorySection />
-        </ErrorBoundary>
-      </section>
+      <ErrorBoundary>
+        <HistorySection />
+      </ErrorBoundary>
 
-      <section id="resources" className="apple-section bg-white">
+      <section id="resources" className="apple-section bg-white dark:bg-gray-900">
         <ResourcesSection />
       </section>
 
-      <section id="events" className="apple-section bg-gray-50">
+      <section id="events" className="apple-section bg-gray-50 dark:bg-gray-800">
         <EventsSection />
       </section>
 

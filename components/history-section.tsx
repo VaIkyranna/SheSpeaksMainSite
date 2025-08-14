@@ -15,6 +15,7 @@ interface HistoricalEvent {
     title: string
     link: string
   }>
+  image?: string
 }
 
 interface WikipediaResponse {
@@ -28,28 +29,6 @@ export function HistorySection() {
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
-  // LGBTQ+ related keywords for filtering events
-  const lgbtqKeywords = [
-    'gay', 'lesbian', 'homosexual', 'transgender', 'bisexual', 'queer', 'lgbt', 'lgbtq',
-    'same-sex', 'pride', 'stonewall', 'harvey milk', 'marriage equality', 'don\'t ask don\'t tell',
-    'section 28', 'aids', 'hiv', 'act up', 'glaad', 'human rights campaign', 'pflag',
-    'drag', 'ballroom', 'voguing', 'trans', 'gender identity', 'sexual orientation',
-    'homophobia', 'transphobia', 'discrimination', 'civil rights', 'equality',
-    'oscar wilde', 'alan turing', 'marsha p. johnson', 'sylvia rivera', 'bayard rustin',
-    'james baldwin', 'audre lorde', 'virginia woolf', 'gertrude stein', 'radclyffe hall',
-    'mattachine society', 'daughters of bilitis', 'gay liberation', 'pink triangle',
-    'rainbow flag', 'coming out', 'closet', 'outing', 'conversion therapy',
-    'gender dysphoria', 'hormone therapy', 'sex reassignment', 'deadnaming',
-    'chosen family', 'found family', 'ballroom culture', 'house system',
-    'leather community', 'bear community', 'twink', 'butch', 'femme',
-    'genderqueer', 'non-binary', 'pansexual', 'asexual', 'demisexual',
-    'intersex', 'two-spirit', 'third gender', 'gender fluid', 'agender'
-  ]
-
-  const isLGBTQRelated = (event: HistoricalEvent): boolean => {
-    const searchText = `${event.text} ${event.html}`.toLowerCase()
-    return lgbtqKeywords.some(keyword => searchText.includes(keyword.toLowerCase()))
-  }
 
   const fetchHistoricalEvents = async () => {
     try {
@@ -60,8 +39,9 @@ export function HistorySection() {
       const today = new Date()
       const month = String(today.getMonth() + 1).padStart(2, '0')
       const day = String(today.getDate()).padStart(2, '0')
-      const cacheKey = `history-${month}-${day}`
-      
+      const todayStr = today.toISOString().split('T')[0]
+      const cacheKey = `history-${todayStr}`
+
       const cachedEvents = cache.get<HistoricalEvent[]>(cacheKey)
       if (cachedEvents && cachedEvents.length > 0) {
         setEvents(cachedEvents)
@@ -69,54 +49,34 @@ export function HistorySection() {
         return
       }
 
-      // Fetch from Wikipedia API
-      const response = await fetch(
-        `https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/${month}/${day}`,
-        {
-          headers: {
-            'User-Agent': 'SheSpeaks-LGBTQ-Website/1.0 (https://shespeaks.example.com)',
-          },
-        }
-      )
+      // Fetch from our local API endpoint
+      const apiUrl = `/api/wikipedia?month=${month}&day=${day}`
+      const response = await fetch(apiUrl)
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`Failed to fetch events (${response.status})`)
       }
 
-      const data: WikipediaResponse = await response.json()
-      
-      // Combine events from different categories
-      const allEvents = [
-        ...(data.selected || []),
-        ...(data.events || [])
-      ]
+      const data = await response.json()
 
-      // Filter for LGBTQ+ related events
-      const lgbtqEvents = allEvents
-        .filter(isLGBTQRelated)
-        .sort((a, b) => b.year - a.year) // Sort by year, most recent first
-        .slice(0, 5) // Limit to 5 events
-
-      // If no LGBTQ+ events found, add some fallback historical events
-      if (lgbtqEvents.length === 0) {
-        const fallbackEvents: HistoricalEvent[] = [
-          {
-            year: 1969,
-            text: "The Stonewall riots began in New York City, marking a pivotal moment in the LGBTQ+ rights movement.",
-            html: "The <a href='https://en.wikipedia.org/wiki/Stonewall_riots'>Stonewall riots</a> began in New York City, marking a pivotal moment in the LGBTQ+ rights movement.",
-            no_year_html: "The Stonewall riots began in New York City, marking a pivotal moment in the LGBTQ+ rights movement.",
-            links: [{ title: "Stonewall riots", link: "https://en.wikipedia.org/wiki/Stonewall_riots" }]
-          }
-        ]
-        setEvents(fallbackEvents)
-      } else {
-        setEvents(lgbtqEvents)
-        // Cache the results for 24 hours
-        cache.set(cacheKey, lgbtqEvents)
+      if (data.error) {
+        throw new Error(data.error)
       }
+
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid response format from API')
+      }
+
+      // The API now ensures we get exactly 3 events
+      const sortedEvents = data.slice(0, 3)
+
+      setEvents(sortedEvents)
+      cache.set(cacheKey, sortedEvents)
+
     } catch (err) {
       console.error('Error fetching historical events:', err)
-      setError('Failed to load historical events. Please try again.')
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+      setError(`Failed to load historical events: ${errorMessage}`)
     } finally {
       setLoading(false)
     }
@@ -124,6 +84,23 @@ export function HistorySection() {
 
   useEffect(() => {
     fetchHistoricalEvents()
+
+    // Set up an interval to check for date changes every hour
+    const interval = setInterval(() => {
+      const now = new Date()
+      const currentDateStr = now.toISOString().split('T')[0]
+
+      // Check if we have cached data for today
+      const cacheKey = `history-${currentDateStr}`
+      const cachedEvents = cache.get<HistoricalEvent[]>(cacheKey)
+
+      // If no cached data for today, fetch new events
+      if (!cachedEvents) {
+        fetchHistoricalEvents()
+      }
+    }, 3600000) // Check every hour
+
+    return () => clearInterval(interval)
   }, [retryCount])
 
   const handleRetry = () => {
@@ -132,24 +109,40 @@ export function HistorySection() {
 
   const formatDate = () => {
     const today = new Date()
-    return today.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric' 
+    return today.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric'
     })
   }
 
   const extractWikipediaLink = (event: HistoricalEvent): string | null => {
-    if (event.links && event.links.length > 0) {
-      return event.links[0].link
+    try {
+      // First try to get link from the links array
+      if (event?.links?.length > 0) {
+        return event.links[0].link;
+      }
+
+      // Then try to extract link from HTML if it exists
+      if (event?.html) {
+        const linkMatch = event.html.match(/href=['"]([^'"]*wikipedia[^'"]*)['"]/i);
+        if (linkMatch) {
+          return linkMatch[1].startsWith('http') ? linkMatch[1] : `https://en.wikipedia.org${linkMatch[1]}`;
+        }
+      }
+
+      // Finally, try to find any link in the text
+      if (event?.text) {
+        const linkMatch = event.text.match(/https?:\/\/[^\s]+/i);
+        if (linkMatch) {
+          return linkMatch[0];
+        }
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error extracting Wikipedia link:', error);
+      return null;
     }
-    
-    // Try to extract link from HTML
-    const linkMatch = event.html.match(/href=['"]([^'"]*wikipedia[^'"]*)['"]/i)
-    if (linkMatch) {
-      return linkMatch[1].startsWith('http') ? linkMatch[1] : `https://en.wikipedia.org${linkMatch[1]}`
-    }
-    
-    return null
   }
 
   const stripHtml = (html: string): string => {
@@ -158,25 +151,31 @@ export function HistorySection() {
 
   if (loading) {
     return (
-      <section id="history" className="pt-4 pb-16 bg-gray-50">
+      <section id="history" className="apple-content-section bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 px-4 py-2 rounded-full mb-4 border border-pink-200">
-              <Clock className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">This Day in History</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">LGBTQ+ History</span>
+            <h2 className="apple-headline mb-4">
+              <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
               <br />
-              <span className="text-gray-800">for {formatDate()}</span>
+              <span className="text-gray-800 dark:text-gray-200">This Week</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Discovering important moments in LGBTQ+ history that happened on this day...
+            <p className="apple-subheadline max-w-2xl mx-auto">
+              Discovering important moments in LGBTQ+ history that happened this week...
             </p>
           </div>
-          
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="apple-card overflow-hidden">
+                <div className="loading-shimmer h-48 w-full rounded-t-2xl"></div>
+                <div className="p-6">
+                  <div className="loading-shimmer h-4 w-16 rounded mb-3"></div>
+                  <div className="loading-shimmer h-6 w-full rounded mb-2"></div>
+                  <div className="loading-shimmer h-4 w-3/4 rounded mb-4"></div>
+                  <div className="loading-shimmer h-10 w-24 rounded"></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -185,25 +184,21 @@ export function HistorySection() {
 
   if (error) {
     return (
-      <section id="history" className="pt-4 pb-16 bg-gray-50">
+      <section id="history" className="apple-content-section bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 px-4 py-2 rounded-full mb-4 border border-pink-200">
-              <Clock className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">This Day in History</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">LGBTQ+ History</span>
+            <h2 className="apple-headline mb-4">
+              <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
               <br />
-              <span className="text-gray-800">for {formatDate()}</span>
+              <span className="text-gray-800 dark:text-gray-200">This Week</span>
             </h2>
           </div>
-          
+
           <div className="text-center">
-            <p className="text-gray-600 mb-4">{error}</p>
-            <Button 
-              onClick={handleRetry} 
-              className="bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+            <Button
+              onClick={handleRetry}
+              className="bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600 apple-transition"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again
@@ -215,110 +210,111 @@ export function HistorySection() {
   }
 
   return (
-    <section id="history" className="pt-4 pb-16 bg-gray-50">
+    <section id="history" className="apple-content-section bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 px-4 py-2 rounded-full mb-4 border border-pink-200">
-            <Clock className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">This Day in History</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">LGBTQ+ History</span>
+          <h2 className="apple-headline mb-4">
+            <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
             <br />
-            <span className="text-gray-800">for {formatDate()}</span>
+            <span className="text-gray-800 dark:text-gray-200">This Week</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Important moments in LGBTQ+ history that happened on this day throughout the years.
+          <p className="apple-subheadline max-w-2xl mx-auto">
+            Important moments in LGBTQ+ history that happened this week throughout the years.
           </p>
         </div>
 
         {events.length === 0 ? (
-          <div className="text-center">
-            <p className="text-gray-600 mb-4">No LGBTQ+ historical events found for today.</p>
-            <Button 
-              onClick={handleRetry} 
-              variant="outline"
-              className="border-pink-300 text-pink-600 hover:bg-pink-50"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Check Again
-            </Button>
+          <div className="text-center fade-in">
+            <div className="apple-card p-12 max-w-lg mx-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-6 border border-pink-200 dark:border-pink-800">
+                <Clock className="w-8 h-8 text-pink-600 dark:text-pink-400" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">No Events Found This Week</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                No LGBTQ+ historical events found for this week, but every day is an opportunity to make history and create positive change.
+              </p>
+              <Button
+                onClick={handleRetry}
+                className="bg-pink-500 text-white hover:bg-pink-600 apple-transition"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Try Again
+              </Button>
+            </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className={`grid gap-6 ${events.length === 1 ? 'grid-cols-1 max-w-xl mx-auto' : events.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
             {events.map((event, index) => {
               const wikipediaLink = extractWikipediaLink(event)
               const cleanText = stripHtml(event.text)
-              
+
               return (
                 <Card
                   key={`${event.year}-${index}`}
-                  className="group relative bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
+                  className="apple-card group overflow-hidden fade-in bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 flex flex-col h-full"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-3 py-1 rounded-full border border-purple-200">
-                        <Calendar className="w-3 h-3 text-purple-600" />
-                        <span className="text-sm font-semibold text-purple-700">{event.year}</span>
-                      </div>
-                      {wikipediaLink && (
-                        <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-pink-600 transition-colors" />
-                      )}
+                  {event.image && (
+                    <div className="relative w-full h-48 overflow-hidden">
+                      <img
+                        src={event.image}
+                        alt={cleanText.split('.')[0]}
+                        className="object-cover w-full h-full group-hover:scale-105 apple-transition"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
                     </div>
-                    <CardTitle className="text-lg font-bold text-gray-800 group-hover:text-purple-700 transition-colors leading-tight">
-                      Historical Event
-                    </CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <CardDescription className="text-sm text-gray-600 leading-relaxed line-clamp-4">
-                      {cleanText}
-                    </CardDescription>
+                  )}
 
-                    <div className="flex items-center justify-between mt-auto">
-                      {wikipediaLink ? (
-                        <button
-                          className="custom-button text-xs"
-                          style={{
-                            padding: '8px 16px',
-                            fontSize: '12px',
-                            borderRadius: '10px',
-                            gap: '4px',
-                            fontFamily: 'SFUIDisplay-Semibold'
-                          }}
-                          onClick={() => window.open(wikipediaLink, "_blank", "noopener,noreferrer")}
-                        >
-                          Learn More
-                          <ExternalLink className="w-3 h-3" />
-                        </button>
-                      ) : (
-                        <div className="text-xs text-gray-500">
-                          Historical record
+                  <div className="flex flex-col flex-grow">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="inline-flex items-center gap-2 bg-pink-100 dark:bg-pink-900/30 px-3 py-1.5 rounded-full border border-pink-200 dark:border-pink-800">
+                          <Calendar className="w-3 h-3 text-pink-600 dark:text-pink-400" />
+                          <span className="text-sm font-semibold text-pink-700 dark:text-pink-300">{event.year}</span>
                         </div>
-                      )}
-                      
-                      <div className="text-xs text-gray-500 font-medium">
-                        {formatDate()}
+                        {wikipediaLink && (
+                          <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-pink-600 dark:group-hover:text-pink-400 apple-transition" />
+                        )}
                       </div>
-                    </div>
-                  </CardContent>
+                      <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-200 group-hover:text-pink-700 dark:group-hover:text-pink-400 apple-transition leading-tight">
+                        {cleanText.split('.')[0].split(',')[0]}
+                      </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="flex flex-col flex-grow">
+                      <CardDescription className="text-gray-600 dark:text-gray-400 leading-relaxed flex-grow mb-4">
+                        {cleanText.length > 120 ? `${cleanText.substring(0, 120)}...` : cleanText}
+                      </CardDescription>
+
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
+                        {wikipediaLink ? (
+                          <button
+                            className="custom-button"
+                            onClick={() => window.open(wikipediaLink, "_blank", "noopener,noreferrer")}
+                          >
+                            Learn More
+                            <ExternalLink className="w-4 h-4" />
+                          </button>
+                        ) : (
+                          <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                            Historical record
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                          {formatDate()}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </div>
                 </Card>
               )
             })}
           </div>
         )}
 
-        <div className="text-center mt-8">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRetry}
-            className="border-pink-300 text-pink-600 hover:bg-pink-50"
-          >
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh Events
-          </Button>
-        </div>
+
       </div>
     </section>
   )
