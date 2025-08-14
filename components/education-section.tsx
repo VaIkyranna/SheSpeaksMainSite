@@ -559,7 +559,7 @@ export function EducationSection() {
                   rel="noopener noreferrer"
                   className="block h-full group"
                 >
-                  <div className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-card text-card-foreground rounded-lg">
+                  <div className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-white dark:bg-gray-800/50 backdrop-blur-sm dark:backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 rounded-lg">
                     <div className="relative aspect-video overflow-hidden rounded-t-lg" style={{ border: 'none', boxShadow: 'none' }}>
                       <img 
                         src={guide.imageUrl} 
@@ -581,7 +581,7 @@ export function EducationSection() {
                         }}
                       />
                     </div>
-                    <div className="px-4 pt-3 pb-1.5 flex flex-col">
+                    <div className="px-4 pt-3 pb-1.5 flex flex-col bg-white/80 dark:bg-transparent rounded-b-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <BookMarked className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400 flex-shrink-0" />
