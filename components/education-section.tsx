@@ -766,14 +766,16 @@ export function EducationSection() {
           <TabsContent value="glossary" className="space-y-4">
             <div className="space-y-4 flex flex-col items-center">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white text-center">Unsure what it all means? Let's talk terms.</h3>
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-md relative">
                 <input
                   type="text"
-                  placeholder="Search terms..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-5 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-5 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white peer"
                 />
+                <span className={`absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-all duration-300 ease-in-out ${searchTerm ? 'opacity-0 -translate-y-3 scale-90' : 'opacity-100'}`}>
+                  Search terms...
+                </span>
               </div>
             </div>
             
