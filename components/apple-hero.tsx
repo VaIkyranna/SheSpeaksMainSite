@@ -7,9 +7,11 @@ export function AppleHero() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [hoverStyle, setHoverStyle] = useState({})
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
   const tabRefs = useRef<Array<HTMLDivElement | null>>([])
+  const menuRef = useRef<HTMLDivElement>(null)
   const tabs = ["Home", "News", "Resources", "Events", "Community", "About"]
 
   useEffect(() => {
@@ -63,10 +65,24 @@ export function AppleHero() {
         })
       }
     })
-  }, [])
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <section className="relative min-h-[320px] md:min-h-[220px] flex flex-col items-center overflow-hidden">
+    <section className="relative min-h-[120px] md:min-h-[140px] flex flex-col items-center overflow-visible z-10">
       {/* Dynamic Pride Backgrounds */}
       {isLoaded && backgroundImage && (
         <div 
@@ -88,28 +104,36 @@ export function AppleHero() {
       </div>
 
       {/* Tabs Navigation - Mobile (Hamburger) */}
-      <div className="md:hidden absolute top-4 right-4 z-30">
-        <div className="relative group">
-          <button className="text-white p-2 focus:outline-none">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+      <div className="md:hidden fixed top-2 right-2 z-[9999]" ref={menuRef}>
+        <div className="relative">
+          <button 
+            className="text-white p-1 focus:outline-none bg-black/30 rounded-md"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
-          <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-black/60 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/10">
-            {tabs.map((tab, index) => (
-              <button
-                key={index}
-                className={`block w-full text-left px-4 py-2.5 text-sm ${
-                  index === activeIndex 
-                    ? 'bg-white/10 text-white font-medium' 
-                    : 'text-white/90 hover:bg-white/15'
-                }`}
-                onClick={() => setActiveIndex(index)}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
+          {isMenuOpen && (
+            <div className="absolute right-0 mt-1 w-40 bg-black/95 backdrop-blur-md rounded-md shadow-xl py-1 z-[10000] border border-white/10">
+              {tabs.map((tab, index) => (
+                <button
+                  key={index}
+                  className={`block w-full text-left px-3 py-1.5 text-sm ${
+                    index === activeIndex 
+                      ? 'text-white font-medium' 
+                      : 'text-white/80 hover:bg-white/10'
+                  }`}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -173,15 +197,15 @@ export function AppleHero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 text-center pt-3">
         <div className="max-w-4xl mx-auto">
           {/* Main Heading in White */}
-          <h1 className="text-3xl md:text-5xl lg:text-6xl mb-3 animate-fade-in-up leading-none text-white tracking-tight" style={{ animationDelay: "0.1s", fontFamily: "SFUIDisplay-Semibold" }}>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-1" style={{ fontFamily: "SFUIDisplay-Semibold" }}>
             SheSpeaks
           </h1>
 
           {/* Inspiring Description */}
-          <p className="text-base md:text-lg text-white/90 mb-4 leading-relaxed max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: "0.2s", fontFamily: "SFUIDisplay-Light" }}>
+          <p className="text-sm md:text-base text-white/90 max-w-xl mx-auto mt-2" style={{ fontFamily: "SFUIDisplay-Light" }}>
             The latest LGBTQ+ news and resources — all in one place
           </p>
         </div>
