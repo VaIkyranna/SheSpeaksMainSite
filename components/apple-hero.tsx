@@ -1,10 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 export function AppleHero() {
   const [backgroundImage, setBackgroundImage] = useState("")
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [hoverStyle, setHoverStyle] = useState({})
+  const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([])
+  const tabs = ["Home", "News", "Resources", "Events", "Community", "About"]
 
   useEffect(() => {
     // Create dynamic LGBT-themed backgrounds using CSS
@@ -22,8 +28,45 @@ export function AppleHero() {
     setIsLoaded(true)
   }, [])
 
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      const hoveredElement = tabRefs.current[hoveredIndex]
+      if (hoveredElement) {
+        const { offsetLeft, offsetWidth } = hoveredElement
+        setHoverStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`,
+        })
+      }
+    }
+  }, [hoveredIndex])
+
+  useEffect(() => {
+    const activeElement = tabRefs.current[activeIndex]
+    if (activeElement) {
+      const { offsetLeft, offsetWidth } = activeElement
+      setActiveStyle({
+        left: `${offsetLeft}px`,
+        width: `${offsetWidth}px`,
+      })
+    }
+  }, [activeIndex])
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const overviewElement = tabRefs.current[0]
+      if (overviewElement) {
+        const { offsetLeft, offsetWidth } = overviewElement
+        setActiveStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`,
+        })
+      }
+    })
+  }, [])
+
   return (
-    <section className="relative h-[180px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-[220px] flex flex-col items-center overflow-hidden">
       {/* Dynamic Pride Backgrounds */}
       {isLoaded && backgroundImage && (
         <div 
@@ -44,22 +87,78 @@ export function AppleHero() {
         <div className="absolute bottom-10 right-10 w-12 h-12 bg-pink-500/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
 
+      {/* Tabs Navigation */}
+      <div className="absolute top-6 right-6 z-20">
+        <div className="relative">
+          {/* Hover Highlight */}
+          <div
+            className="absolute h-8 transition-all duration-200 ease-out bg-white/10 rounded-md -z-10"
+            style={{
+              ...hoverStyle,
+              opacity: hoveredIndex !== null ? 1 : 0,
+              transform: hoveredIndex !== null ? 'scale(1.02)' : 'scale(1)',
+              transitionProperty: 'all',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              transitionDuration: '200ms',
+            }}
+          />
+
+          {/* Active Indicator */}
+          <div
+            className="absolute bottom-0 h-[1.5px] bg-white/90 transition-all duration-300 ease-out"
+            style={{
+              ...activeStyle,
+              opacity: activeIndex !== null ? 1 : 0,
+              transitionProperty: 'all',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              transitionDuration: '300ms',
+            }}
+          />
+
+          {/* Tabs */}
+          <div className="relative flex items-center space-x-1">
+            {tabs.map((tab, index) => (
+              <div
+                key={index}
+                ref={(el: HTMLDivElement | null) => {
+                  tabRefs.current[index] = el
+                }}
+                className={`px-3 py-1.5 cursor-pointer transition-all duration-200 h-8 text-sm ${
+                  index === activeIndex 
+                    ? 'text-white font-medium' 
+                    : 'text-white/70 hover:text-white/90'
+                }`}
+                style={{ 
+                  fontFamily: 'SFUIDisplay-Light',
+                  paddingBottom: '0.35rem' // Slightly less padding at the bottom to bring underline closer
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => setActiveIndex(index)}
+              >
+                <span className="relative">
+                  {tab}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8">
         <div className="max-w-4xl mx-auto">
           {/* Main Heading in White */}
           <h1 className="text-3xl md:text-5xl lg:text-6xl mb-3 animate-fade-in-up leading-none text-white tracking-tight" style={{ animationDelay: "0.1s", fontFamily: "SFUIDisplay-Semibold" }}>
-        SheSpeaks
+            SheSpeaks
           </h1>
 
           {/* Inspiring Description */}
           <p className="text-base md:text-lg text-white/90 mb-4 leading-relaxed max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: "0.2s", fontFamily: "SFUIDisplay-Light" }}>
-          The latest LGBTQ+ news and resources — all in one place
+            The latest LGBTQ+ news and resources — all in one place
           </p>
         </div>
       </div>
-
-
     </section>
   )
 }
