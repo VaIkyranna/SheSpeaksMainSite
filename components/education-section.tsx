@@ -575,53 +575,85 @@ export function EducationSection() {
             </div>
           </TabsContent>
 
-          <TabsContent value="glossary" className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search terms..."
-                className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-              {glossaryTerms
-                .filter(term => 
-                  term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  term.definition.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((term, index) => (
-                  <div 
-                    key={index}
-                    className="group relative p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-help"
-                    title={term.definition}
-                  >
-                    <div className="flex items-start">
-                      <span className="font-medium text-purple-700 dark:text-purple-400 text-sm">
-                        {term.term}
-                      </span>
-                      <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
-                        {term.category}
-                      </span>
-                    </div>
-                    <div className="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg">
-                      {term.definition}
+          <TabsContent value="glossary" className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="relative mb-6">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search LGBTQ+ terms..."
+                  className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              
+              {searchTerm ? (
+                // Search results view
+                <div>
+                  <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                    {glossaryTerms.filter(term => 
+                      term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      term.definition.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).length} results for &quot;{searchTerm}&quot;
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {glossaryTerms
+                      .filter(term => 
+                        term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        term.definition.toLowerCase().includes(searchTerm.toLowerCase())
+                      )
+                      .map((term, index) => (
+                        <div key={index} className="border-l-2 border-purple-500 pl-4 py-1">
+                          <div className="font-medium text-purple-700 dark:text-purple-400">
+                            {term.term}
+                            <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                              {term.category}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                            {term.definition}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : (
+                // Default view with example terms
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">EXAMPLES</h3>
+                    <div className="space-y-3">
+                      {glossaryTerms.slice(0, 3).map((term, index) => (
+                        <div 
+                          key={index}
+                          className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                          onClick={() => setSearchTerm(term.term)}
+                        >
+                          <div className="font-medium text-purple-700 dark:text-purple-400">
+                            {term.term}
+                            <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                              {term.category}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                            {term.definition}
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                  
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">HOW TO USE</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Search for any LGBTQ+ term to see its definition. Try "non-binary", "ally", or "coming out".
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-            
-            {searchTerm && (
-              <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-                {glossaryTerms.filter(term => 
-                  term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  term.definition.toLowerCase().includes(searchTerm.toLowerCase())
-                ).length} results
-              </div>
-            )}
           </TabsContent>
         </Tabs>
       </div>
