@@ -7,6 +7,7 @@ import { NewsSection } from "@/components/news-section"
 import { HistorySection } from "@/components/history-section"
 import { ResourcesSection } from "@/components/resources-section"
 import { EventsSection } from "@/components/events-section"
+import { EducationSection } from "@/components/education-section"
 import { Footer } from "@/components/footer"
 import ErrorBoundary from "@/components/error-boundary"
 
@@ -50,6 +51,10 @@ export default function Home() {
 
       <section id="resources" className="apple-section bg-white dark:bg-gray-900">
         <ResourcesSection />
+      </section>
+
+      <section id="education" className="bg-white dark:bg-gray-900">
+        <EducationSection />
       </section>
 
       <section id="events" className="apple-section bg-gray-50 dark:bg-gray-800">
