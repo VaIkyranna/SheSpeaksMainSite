@@ -42,24 +42,54 @@ export function EducationSection() {
     }
   ]
 
-  const allyshipGuides: Resource[] = [
+  const allyshipGuides: (Resource & { imageUrl: string })[] = [
     {
-      title: "How to Be an Ally",
-      description: "A comprehensive guide to being an effective LGBTQ+ ally in various settings.",
+      title: "The Guide to Allyship",
+      description: "An open source starter guide to help you become a more thoughtful and effective ally to the LGBTQ+ community.",
       type: 'guide',
-      url: '/guides/allyship'
+      url: 'https://guidetoallyship.com/',
+      author: 'Guide to Allyship',
+      imageUrl: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     },
     {
-      title: "Supporting Transgender and Non-Binary People",
-      description: "Practical advice for supporting trans and non-binary individuals.",
+      title: "Supporting Trans & Non-Binary People",
+      description: "Practical guidance on being an ally to transgender and non-binary individuals in various aspects of life.",
       type: 'guide',
-      url: '/guides/supporting-trans'
+      url: 'https://transequality.org/issues/resources/supporting-the-transgender-people-in-your-life',
+      author: 'National Center for Transgender Equality',
+      imageUrl: 'https://images.unsplash.com/photo-1502225014120-09944b5468b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     },
     {
-      title: "Workplace Inclusion Guide",
-      description: "Creating inclusive workplaces for LGBTQ+ employees.",
+      title: "Workplace Inclusion",
+      description: "Comprehensive resources for creating LGBTQ+-inclusive workplaces and supporting LGBTQ+ employees.",
       type: 'guide',
-      url: '/guides/workplace-inclusion'
+      url: 'https://www.hrc.org/resources/workplace-resources',
+      author: 'Human Rights Campaign',
+      imageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+    },
+    {
+      title: "Supporting LGBTQ+ Youth",
+      description: "Essential guide for parents, teachers, and mentors on creating safe spaces for LGBTQ+ young people.",
+      type: 'guide',
+      url: 'https://www.thetrevorproject.org/resources/guide/a-guide-to-being-an-ally-to-transgender-and-nonbinary-youth/',
+      author: 'The Trevor Project',
+      imageUrl: 'https://images.unsplash.com/photo 1503454537195-1dcabb73ffb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+    },
+    {
+      title: "Allyship & You",
+      description: "A beginner's guide to understanding LGBTQ+ identities and being an effective ally.",
+      type: 'guide',
+      url: 'https://www.glaad.org/resources/ally/2',
+      author: 'GLAAD',
+      imageUrl: 'https://images.unsplash.com/photo-1505373876331-9ada2d3efdc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+    },
+    {
+      title: "Healthcare Inclusion",
+      description: "Resources for healthcare providers to deliver culturally competent care to LGBTQ+ patients.",
+      type: 'guide',
+      url: 'https://www.lgbtqiahealtheducation.org/',
+      author: 'National LGBTQIA+ Health Education Center',
+      imageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     }
   ]
 
@@ -502,27 +532,72 @@ export function EducationSection() {
           </TabsContent>
 
           <TabsContent value="allyship">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mb-8 text-center">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">Become a Better Ally</h3>
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Explore these comprehensive guides to learn how to support and advocate for the LGBTQ+ community in meaningful ways.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
               {allyshipGuides.map((guide, index) => (
-                <Card key={index} className="h-full flex flex-col hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      <BookMarked className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Guide</span>
+                <a 
+                  key={index} 
+                  href={guide.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block h-full group"
+                >
+                  <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
+                    <div className="relative h-40 bg-gray-100 dark:bg-gray-800">
+                      <img 
+                        src={guide.imageUrl} 
+                        alt={guide.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%239C92AC"><rect width="100" height="100" rx="4" fill="%23F3F4F6"/><text x="50%" y="50%" font-family="Arial" font-size="10" text-anchor="middle" dominant-baseline="middle" fill="%236B7280">No Image</text></svg>';
+                        }}
+                      />
                     </div>
-                    <CardTitle className="text-xl">{guide.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">{guide.description}</p>
-                    <a 
-                      href={guide.url} 
-                      className="text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300 font-medium inline-flex items-center"
-                    >
-                      Read more →
-                    </a>
-                  </CardContent>
-                </Card>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <BookMarked className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Guide</span>
+                        </div>
+                        <span className="text-xs px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full">
+                          {guide.author}
+                        </span>
+                      </div>
+                      <CardTitle className="text-lg mt-3 text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors line-clamp-2">
+                        {guide.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{guide.description}</p>
+                      <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-700">
+                        <span className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 font-medium group-hover:underline">
+                          Read full guide
+                          <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </a>
               ))}
+            </div>
+            <div className="mt-10 text-center">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Looking for more resources?</p>
+              <a 
+                href="https://www.glaad.org/resources" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+              >
+                Explore More Guides
+                <ArrowRight className="ml-2 -mr-1 w-4 h-4" />
+              </a>
             </div>
           </TabsContent>
 
