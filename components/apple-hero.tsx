@@ -104,7 +104,7 @@ export function AppleHero() {
 
   return (
     <section 
-      className="relative min-h-[120px] md:min-h-[140px] flex flex-col items-center overflow-visible z-10"
+      className="relative min-h-[100px] md:min-h-[120px] flex flex-col items-center overflow-visible z-10"
       style={{
         background: gradients[currentGradientIndex],
         backgroundSize: '200% 200%',
@@ -225,22 +225,24 @@ export function AppleHero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 text-center pt-3">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 text-center pt-1">
         <div className="max-w-4xl mx-auto">
           {/* Main Heading in White */}
           <h1 
-            className="text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-1 relative z-10" 
+            className="text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-0.5 relative z-10" 
             style={{ 
               fontFamily: "SFUIDisplay-Semibold",
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+              textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+              position: 'relative',
+              top: '2px'
             }}
           >
-            SheSpeaks
+            <span style={{ position: 'relative', top: '4px' }}>SheSpeaks</span>
           </h1>
 
           {/* Inspiring Description */}
           <p 
-            className="text-sm md:text-base text-white/90 max-w-xl mx-auto mt-2 drop-shadow-sm" 
+            className="text-sm md:text-base text-white/90 max-w-xl mx-auto mt-3 drop-shadow-sm" 
             style={{ 
               fontFamily: "SFUIDisplay-Light",
               textShadow: '0 1px 2px rgba(0,0,0,0.4)'
