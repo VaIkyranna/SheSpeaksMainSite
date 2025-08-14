@@ -251,10 +251,7 @@ export function ResourcesSection() {
     <section id="resources" className="pt-4 pb-16 bg-accent dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/50 dark:to-pink-900/50 px-4 py-2 rounded-full mb-4">
-            <Heart className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Resources & Support</span>
-          </div>
+
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Find Resources & Community
           </h2>
