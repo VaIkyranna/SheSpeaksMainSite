@@ -117,10 +117,7 @@ export function EventsSection() {
       <section id="events" className="pt-2 pb-16 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 dark:from-gray-700 dark:via-gray-700 dark:to-gray-700 px-4 py-2 rounded-full mb-4 border border-pink-200 dark:border-gray-600">
-              <span className="text-xl">🏳️‍🌈</span>
-
-            </div>
+            <div className="mb-4"></div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">Celebrate, connect,</span>
               <br />
