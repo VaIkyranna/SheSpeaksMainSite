@@ -4,15 +4,27 @@ import { useEffect, useState, useRef } from "react"
 
 export function AppleHero() {
   const [backgroundImage, setBackgroundImage] = useState("")
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [hoverStyle, setHoverStyle] = useState({})
-  const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
-  const tabRefs = useRef<Array<HTMLDivElement | null>>([])
-  const menuRef = useRef<HTMLDivElement>(null)
-  const tabs = ["Home", "News", "Resources", "Events", "Community", "About"]
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoverStyle, setHoverStyle] = useState({});
+  const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" });
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const tabs = ["Home", "News", "Resources", "Events", "Community", "About"];
+  
+  // Enhanced gradients with better contrast and animation support
+  const gradients = [
+    'linear-gradient(135deg, #FF0018 0%, #FF8A00 20%, #FFEE00 40%, #008121 60%, #004DFF 80%, #760088 100%)', // pride
+    'linear-gradient(135deg, #55CDFC 0%, #F7A8B8 40%, #FFFFFF 50%, #F7A8B8 60%, #55CDFC 100%)', // trans
+    'linear-gradient(135deg, #D60270 0%, #9B4F96 50%, #0038A8 100%)', // bi
+    'linear-gradient(135deg, #FF1B8D 0%, #FFDA00 50%, #1BB3FF 100%)', // pan
+    'linear-gradient(135deg, #FFF430 0%, #FFFFFF 25%, #9C59D1 50%, #2D2D2D 75%, #FFF430 100%)', // nonbinary
+    'linear-gradient(135deg, #D52D00 0%, #EF7627 20%, #FF9A56 30%, #FFFFFF 50%, #D162A4 70%, #B55690 80%, #A30262 100%)' // lesbian
+  ];
+  
+  const [currentGradientIndex, setCurrentGradientIndex] = useState(0);
 
   useEffect(() => {
     // Create dynamic LGBT-themed backgrounds using CSS
@@ -67,6 +79,15 @@ export function AppleHero() {
     })
   }, []);
 
+  // Rotate through gradients smoothly
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentGradientIndex(prevIndex => (prevIndex + 1) % gradients.length);
+    }, 5000); // Change gradient every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,7 +103,14 @@ export function AppleHero() {
   }, []);
 
   return (
-    <section className="relative min-h-[120px] md:min-h-[140px] flex flex-col items-center overflow-visible z-10">
+    <section 
+      className="relative min-h-[120px] md:min-h-[140px] flex flex-col items-center overflow-visible z-10"
+      style={{
+        background: gradients[currentGradientIndex],
+        backgroundSize: '200% 200%',
+        transition: 'background 1.5s ease-in-out'
+      }}
+    >
       {/* Dynamic Pride Backgrounds */}
       {isLoaded && backgroundImage && (
         <div 
@@ -200,12 +228,24 @@ export function AppleHero() {
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 text-center pt-3">
         <div className="max-w-4xl mx-auto">
           {/* Main Heading in White */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-1" style={{ fontFamily: "SFUIDisplay-Semibold" }}>
+          <h1 
+            className="text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-1 relative z-10" 
+            style={{ 
+              fontFamily: "SFUIDisplay-Semibold",
+              textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+            }}
+          >
             SheSpeaks
           </h1>
 
           {/* Inspiring Description */}
-          <p className="text-sm md:text-base text-white/90 max-w-xl mx-auto mt-2" style={{ fontFamily: "SFUIDisplay-Light" }}>
+          <p 
+            className="text-sm md:text-base text-white/90 max-w-xl mx-auto mt-2 drop-shadow-sm" 
+            style={{ 
+              fontFamily: "SFUIDisplay-Light",
+              textShadow: '0 1px 2px rgba(0,0,0,0.4)'
+            }}
+          >
             The latest LGBTQ+ news and resources — all in one place
           </p>
         </div>
