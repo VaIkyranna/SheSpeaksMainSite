@@ -53,10 +53,10 @@ export function EducationSection() {
     },
     {
       title: "Supporting Trans & Non-Binary People",
-      description: "Essential guidance on how to be an effective ally to trans and non-binary individuals in all aspects of life.",
+      description: "Understanding what it means to be non-binary and how to support trans and non-binary individuals.",
       type: 'guide',
-      url: "https://www.stonewall.org.uk/help-advice/trans-and-non-binary-advice",
-      author: "Stonewall",
+      url: "https://lgbt.foundation/help/what-it-means-to-be-non-binary/?gad_campaignid=22473964018",
+      author: "LGBT Foundation",
       imageUrl: "https://images.unsplash.com/photo-1669801243647-f84c62901b45?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
