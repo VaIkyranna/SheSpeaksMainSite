@@ -8,20 +8,15 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-purple-400 dark:bg-gray-800 text-white dark:text-gray-100">
+    <footer className="bg-[#7f58a1] text-white dark:text-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-bold mb-4">SheSpeaks</h3>
             <p className="text-white/90 mb-6 leading-relaxed">
-              A vibrant community platform where transgender and LGBTQ+ individuals can stay informed, share
-              experiences, and celebrate their authentic selves.
+              A vibrant community platform where transgender and LGBTQ+ individuals can stay informed.
             </p>
-            <div className="flex items-center gap-2 text-white/90">
-              <Heart className="w-5 h-5 text-rose-200" />
-              <span>Made with love for our community</span>
-            </div>
           </div>
 
           {/* Links Sections */}
@@ -51,7 +46,7 @@ export function Footer() {
           </div>
 
           <div className="text-center text-white/70 text-sm">
-            <p>&copy; 2024 SheSpeaks. All rights reserved. | Built with love and respect for our community.</p>
+            <p>&copy; 2025 SheSpeaks. All rights reserved.</p>
           </div>
         </div>
       </div>
