@@ -323,7 +323,7 @@ export function EducationSection() {
         </div>
 
         <Tabs defaultValue="history" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 mb-8 bg-transparent dark:bg-transparent">
             <TabsTrigger value="history" className="flex items-center gap-2">
               <History className="w-4 h-4" />
               <span>History</span>
@@ -420,8 +420,8 @@ export function EducationSection() {
                     </div>
                   ))}
                 </div>
-                <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent dark:from-gray-900 pointer-events-none"></div>
-                <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent dark:from-gray-900 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent dark:from-transparent pointer-events-none"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent dark:from-transparent pointer-events-none"></div>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
                 Scroll horizontally to view more videos
@@ -496,8 +496,8 @@ export function EducationSection() {
                     ))}
                   </div>
                 </div>
-                <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent dark:from-gray-900 pointer-events-none"></div>
-                <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent dark:from-gray-900 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent dark:from-transparent pointer-events-none"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent dark:from-transparent pointer-events-none"></div>
                 <div className="text-center mt-4">
                   <div className="inline-flex items-center space-x-2 px-4 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-full">
                     <span className="text-xs text-gray-500 dark:text-gray-400">Swipe to explore</span>
