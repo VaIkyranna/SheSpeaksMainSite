@@ -45,51 +45,51 @@ export function EducationSection() {
   const allyshipGuides: (Resource & { imageUrl: string })[] = [
     {
       title: "The Guide to Allyship",
-      description: "An open source starter guide to help you become a more thoughtful and effective ally to the LGBTQ+ community.",
+      description: "A comprehensive guide to becoming a better ally to the LGBTQ+ community.",
       type: 'guide',
-      url: 'https://guidetoallyship.com/',
-      author: 'Guide to Allyship',
-      imageUrl: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      url: 'https://www.akt.org.uk/resources/a-guide-to-lgbtq-allyship-2/?gad_campaignid=22627939428',
+      author: 'AKT',
+      imageUrl: 'https://images.pexels.com/photos/9587945/pexels-photo-9587945.jpeg'
     },
     {
       title: "Supporting Trans & Non-Binary People",
-      description: "Practical guidance on being an ally to transgender and non-binary individuals in various aspects of life.",
+      description: "Essential guidance on how to be an effective ally to trans and non-binary individuals in all aspects of life.",
       type: 'guide',
-      url: 'https://transequality.org/issues/resources/supporting-the-transgender-people-in-your-life',
-      author: 'National Center for Transgender Equality',
-      imageUrl: 'https://images.unsplash.com/photo-1502225014120-09944b5468b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      url: "https://www.stonewall.org.uk/help-advice/trans-and-non-binary-advice",
+      author: "Stonewall",
+      imageUrl: "https://images.unsplash.com/photo-1669801243647-f84c62901b45?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       title: "Workplace Inclusion",
-      description: "Comprehensive resources for creating LGBTQ+-inclusive workplaces and supporting LGBTQ+ employees.",
+      description: "Resources for creating an LGBTQ+ inclusive workplace environment.",
       type: 'guide',
-      url: 'https://www.hrc.org/resources/workplace-resources',
-      author: 'Human Rights Campaign',
-      imageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      url: 'https://www.stonewall.org.uk/inclusive-workplaces/resources-creating-lgbtq-inclusive-workplace',
+      author: 'Stonewall',
+      imageUrl: 'https://images.pexels.com/photos/10503437/pexels-photo-10503437.jpeg'
     },
     {
       title: "Supporting LGBTQ+ Youth",
-      description: "Essential guide for parents, teachers, and mentors on creating safe spaces for LGBTQ+ young people.",
+      description: "A guide to being an ally to transgender and non-binary youth.",
       type: 'guide',
       url: 'https://www.thetrevorproject.org/resources/guide/a-guide-to-being-an-ally-to-transgender-and-nonbinary-youth/',
       author: 'The Trevor Project',
-      imageUrl: 'https://images.unsplash.com/photo 1503454537195-1dcabb73ffb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      imageUrl: 'https://images.pexels.com/photos/5705887/pexels-photo-5705887.jpeg'
     },
     {
       title: "Allyship & You",
-      description: "A beginner's guide to understanding LGBTQ+ identities and being an effective ally.",
+      description: "A guide from HRC on being an effective ally to the LGBTQ+ community.",
       type: 'guide',
-      url: 'https://www.glaad.org/resources/ally/2',
-      author: 'GLAAD',
-      imageUrl: 'https://images.unsplash.com/photo-1505373876331-9ada2d3efdc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      url: 'https://www.hrc.org/resources/being-an-lgbtq-ally',
+      author: 'Human Rights Campaign',
+      imageUrl: 'https://images.pexels.com/photos/12289186/pexels-photo-12289186.jpeg'
     },
     {
-      title: "Healthcare Inclusion",
-      description: "Resources for healthcare providers to deliver culturally competent care to LGBTQ+ patients.",
+      title: "Healthcare Inclusion Guide",
+      author: "LGBT Foundation",
+      description: "A comprehensive resource for healthcare professionals to provide inclusive and affirming care to LGBTQ+ patients.",
       type: 'guide',
-      url: 'https://www.lgbtqiahealtheducation.org/',
-      author: 'National LGBTQIA+ Health Education Center',
-      imageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      url: "https://lgbt.foundation/healthcare",
+      imageUrl: "https://images.pexels.com/photos/4046930/pexels-photo-4046930.jpeg"
     }
   ]
 
@@ -532,13 +532,25 @@ export function EducationSection() {
           </TabsContent>
 
           <TabsContent value="allyship">
+            <style jsx global>{`
+              [data-state=active][data-value=allyship] {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
+              }
+              [data-state=active][data-value=allyship] > div:first-child {
+                display: none !important;
+              }
+              .dark [data-slot="card"] {
+                border-top: none !important;
+              }
+            `}</style>
             <div className="mb-8 text-center">
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">Become a Better Ally</h3>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 Explore these comprehensive guides to learn how to support and advocate for the LGBTQ+ community in meaningful ways.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
               {allyshipGuides.map((guide, index) => (
                 <a 
                   key={index} 
@@ -547,43 +559,52 @@ export function EducationSection() {
                   rel="noopener noreferrer"
                   className="block h-full group"
                 >
-                  <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
-                    <div className="relative h-40 bg-gray-100 dark:bg-gray-800">
+                  <div className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-card text-card-foreground rounded-lg">
+                    <div className="relative aspect-video overflow-hidden rounded-t-lg" style={{ border: 'none', boxShadow: 'none' }}>
                       <img 
                         src={guide.imageUrl} 
                         alt={guide.title}
                         className="w-full h-full object-cover"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          border: 'none',
+                          outline: 'none'
+                        }}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.onerror = null;
-                          target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%239C92AC"><rect width="100" height="100" rx="4" fill="%23F3F4F6"/><text x="50%" y="50%" font-family="Arial" font-size="10" text-anchor="middle" dominant-baseline="middle" fill="%236B7280">No Image</text></svg>';
+                          target.style.display = 'none';
                         }}
                       />
                     </div>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
+                    <div className="px-4 pt-3 pb-1.5 flex flex-col">
+                      <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <BookMarked className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                          <BookMarked className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400 flex-shrink-0" />
                           <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Guide</span>
                         </div>
-                        <span className="text-xs px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full">
+                        <span className="text-xs px-2 py-0.5 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full whitespace-nowrap">
                           {guide.author}
                         </span>
                       </div>
-                      <CardTitle className="text-lg mt-3 text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors line-clamp-2">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1.5 line-clamp-2 leading-tight">
                         {guide.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{guide.description}</p>
-                      <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-700">
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-1 line-clamp-3">
+                        {guide.description}
+                      </p>
+                      <div className="pt-1">
                         <span className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 font-medium group-hover:underline">
                           Read full guide
-                          <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                          <ArrowRight className="ml-1 w-3.5 h-3.5 transition-transform group-hover:translate-x-1 flex-shrink-0" />
                         </span>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </a>
               ))}
             </div>
