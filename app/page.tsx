@@ -36,15 +36,17 @@ export default function Home() {
     <main className="min-h-screen bg-white dark:bg-gray-900">
       <AppleHero />
 
-      <section id="news" className="apple-section bg-gray-50 dark:bg-gray-800">
+      <section id="news" className="bg-gray-50 dark:bg-gray-800">
         <ErrorBoundary>
           <NewsSection />
         </ErrorBoundary>
       </section>
 
-      <ErrorBoundary>
-        <HistorySection />
-      </ErrorBoundary>
+      <section className="bg-gray-50 dark:bg-gray-800">
+        <ErrorBoundary>
+          <HistorySection />
+        </ErrorBoundary>
+      </section>
 
       <section id="resources" className="apple-section bg-white dark:bg-gray-900">
         <ResourcesSection />
