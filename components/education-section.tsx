@@ -544,9 +544,9 @@ export function EducationSection() {
                 border-top: none !important;
               }
             `}</style>
-            <div className="mb-8 text-center">
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">Become a Better Ally</h3>
-              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <div className="mb-10 text-center">
+              <h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">Become a Better Ally</h3>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 Explore these comprehensive guides to learn how to support and advocate for the LGBTQ+ community in meaningful ways.
               </p>
             </div>
@@ -584,10 +584,10 @@ export function EducationSection() {
                     <div className="px-4 pt-3 pb-1.5 flex flex-col bg-white/80 dark:bg-transparent rounded-b-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <BookMarked className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400 flex-shrink-0" />
-                          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Guide</span>
+                          <BookMarked className="w-4 h-4 text-pink-600 dark:text-pink-400 flex-shrink-0" />
+                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Guide</span>
                         </div>
-                        <span className="text-xs px-2 py-0.5 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full whitespace-nowrap">
+                        <span className="text-sm px-2.5 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full whitespace-nowrap">
                           {guide.author}
                         </span>
                       </div>
@@ -766,14 +766,13 @@ export function EducationSection() {
           <TabsContent value="glossary" className="space-y-4">
             <div className="space-y-4 flex flex-col items-center">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white text-center">Unsure what it all means? Let's talk terms.</h3>
-              <div className="relative w-full max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <div className="w-full max-w-md">
                 <input
                   type="text"
-                  placeholder="Search LGBTQ+ terms..."
-                  className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  placeholder="Search terms..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-5 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
@@ -806,28 +805,7 @@ export function EducationSection() {
                     ))}
                 </div>
               </div>
-            ) : (
-              // Default view with example terms
-              <div className="space-y-2 flex flex-col items-center">
-                <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">EXAMPLES</div>
-                <div className="w-full max-w-md space-y-2">
-                  {glossaryTerms.slice(0, 3).map((term, index) => (
-                    <div 
-                      key={index}
-                      className="p-2 -mx-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group text-center"
-                      onClick={() => setSearchTerm(term.term)}
-                    >
-                      <div className="font-medium text-purple-700 dark:text-purple-400 text-sm">
-                        {term.term}
-                      </div>
-                      <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
-                        {term.definition}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            ) : null}
           </TabsContent>
         </Tabs>
       </div>
