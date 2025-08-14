@@ -253,64 +253,162 @@ export function EducationSection() {
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
 
   const glossaryTerms: Term[] = [
+    // Sexual Orientations
     {
-      term: "LGBTQ+",
-      definition: "Acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, with the '+' representing other identities."
+      term: "Lesbian",
+      definition: "A woman who is emotionally, romantically or sexually attracted to other women."
     },
+    {
+      term: "Gay",
+      definition: "A person who is emotionally, romantically or sexually attracted to people of the same gender. Commonly used to describe men attracted to men."
+    },
+    {
+      term: "Bisexual",
+      definition: "A person emotionally, romantically or sexually attracted to more than one gender, not necessarily at the same time or to the same degree."
+    },
+    {
+      term: "Pansexual",
+      definition: "A person who is emotionally, romantically or sexually attracted to people regardless of their gender or gender identity."
+    },
+    {
+      term: "Asexual",
+      definition: "A person who experiences little or no sexual attraction to others. Asexuality exists on a spectrum."
+    },
+    {
+      term: "Demisexual",
+      definition: "A person who only experiences sexual attraction after forming a strong emotional connection with someone."
+    },
+    {
+      term: "Queer",
+      definition: "An umbrella term for sexual and gender minorities who are not heterosexual or cisgender. Reclaimed by some LGBTQ+ people."
+    },
+    {
+      term: "Questioning",
+      definition: "The process of exploring one's own sexual orientation, gender identity, or gender expression."
+    },
+
+    // Gender Identities
     {
       term: "Cisgender",
       definition: "A person whose gender identity aligns with the sex they were assigned at birth."
     },
     {
       term: "Transgender",
-      definition: "A person whose gender identity differs from their sex assigned at birth."
+      definition: "A person whose gender identity differs from their sex assigned at birth. Often shortened to trans."
     },
     {
       term: "Non-binary",
-      definition: "An umbrella term for gender identities outside the male/female binary."
+      definition: "An umbrella term for gender identities that don't fit within the traditional categories of male or female."
     },
     {
-      term: "Queer",
-      definition: "An umbrella term for sexual and gender minorities."
-    },
-    
-    // Orientation Terms
-    {
-      term: "Gay/Lesbian",
-      definition: "Attracted to the same gender.",
-      category: "Orientation"
+      term: "Genderqueer",
+      definition: "A gender identity that doesn't fit within traditional male/female categories or that is a combination of genders."
     },
     {
-      term: "Bisexual",
-      definition: "Attracted to multiple genders.",
-      category: "Orientation"
+      term: "Genderfluid",
+      definition: "A person whose gender identity shifts or changes over time."
     },
     {
-      term: "Pansexual",
-      definition: "Attracted to people regardless of gender.",
-      category: "Orientation"
+      term: "Agender",
+      definition: "A person who does not identify with any gender or identifies as gender-neutral."
     },
     {
-      term: "Asexual",
-      definition: "Experiences little or no sexual attraction.",
-      category: "Orientation"
+      term: "Bigender",
+      definition: "A person who identifies as two genders, either simultaneously or varying between the two."
     },
-    
-    // Community Terms
+    {
+      term: "Two-Spirit",
+      definition: "A term used by some Indigenous North Americans to describe a person who embodies both masculine and feminine qualities."
+    },
+
+    // Community & Concepts
     {
       term: "Ally",
-      definition: "Someone who supports LGBTQ+ people.",
-      category: "Community"
+      definition: "A person who supports and advocates for LGBTQ+ people and their rights, typically someone who is not LGBTQ+ themselves."
     },
     {
       term: "Coming Out",
-      definition: "The process of sharing one's identity with others.",
-      category: "Community"
+      definition: "The process of being open about one's sexual orientation or gender identity to others."
     },
     {
       term: "Pride",
-      definition: "Celebration of LGBTQ+ identities and rights.",
-      category: "Community"
+      definition: "A celebration of LGBTQ+ identities, culture, and history, often marked by events like Pride Month in June."
+    },
+    {
+      term: "LGBTQ+",
+      definition: "An acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, with the '+' representing other identities."
+    },
+    {
+      term: "Intersectionality",
+      definition: "The interconnected nature of social categorizations such as race, class, and gender as they apply to a given individual or group."
+    },
+    {
+      term: "Heteronormativity",
+      definition: "The assumption that heterosexuality is the default or normal sexual orientation."
+    },
+    {
+      term: "Cisnormativity",
+      definition: "The assumption that being cisgender is the norm, leading to the marginalization of trans and non-binary people."
+    },
+    {
+      term: "Deadnaming",
+      definition: "Using the birth or former name of a transgender or non-binary person without their consent."
+    },
+    {
+      term: "Misgender",
+      definition: "Referring to someone using a word, especially a pronoun or form of address, that does not correctly reflect their gender identity."
+    },
+    {
+      term: "Outing",
+      definition: "Disclosing someone's sexual orientation or gender identity without their permission."
+    },
+    {
+      term: "Passing",
+      definition: "When a transgender person is perceived as the gender they identify as, rather than their sex assigned at birth."
+    },
+    {
+      term: "Preferred Pronouns",
+      definition: "The set of pronouns that an individual wants others to use to reflect their gender identity (e.g., he/him, she/her, they/them)."
+    },
+    {
+      term: "Transitioning",
+      definition: "The process a person may go through to live as the gender they identify as, which may include social, legal, and/or medical changes."
+    },
+    {
+      term: "Chosen Family",
+      definition: "A group of people who support and care for each other as family, often important in LGBTQ+ communities."
+    },
+    {
+      term: "Gender Dysphoria",
+      definition: "The distress a person may feel when their gender identity doesn't align with their sex assigned at birth."
+    },
+    {
+      term: "Gender Euphoria",
+      definition: "The joy or comfort a person feels when their gender is recognized and respected."
+    },
+    {
+      term: "Gender Expression",
+      definition: "How a person presents their gender through clothing, behavior, and personal appearance."
+    },
+    {
+      term: "Sexual Orientation",
+      definition: "A person's emotional, romantic, or sexual attraction to other people."
+    },
+    {
+      term: "Gender Identity",
+      definition: "A person's internal sense of their own gender, which may or may not correspond with their sex assigned at birth."
+    },
+    {
+      term: "Heteroflexible",
+      definition: "A person who is primarily heterosexual but not exclusively so."
+    },
+    {
+      term: "Homoflexible",
+      definition: "A person who is primarily homosexual but not exclusively so."
+    },
+    {
+      term: "Polyamory",
+      definition: "The practice of engaging in multiple romantic and/or sexual relationships with the consent of all people involved."
     }
   ]
 
@@ -351,11 +449,11 @@ export function EducationSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 -mt-3">
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Archive & Library
+            Info Hub
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-200">
-            Learn and discover with hand-picked collection of LGBTQ+ resources, made just for you.
+            Learn and discover with hand-picked collection of LGBTQ+ resources, made just for you
           </p>
         </div>
 
@@ -570,15 +668,18 @@ export function EducationSection() {
           </TabsContent>
 
           <TabsContent value="glossary" className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-300" />
-              <input
-                type="text"
-                placeholder="Search LGBTQ+ terms..."
-                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+            <div className="space-y-4 flex flex-col items-center">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white text-center">Unsure what it all means? Let's talk terms.</h3>
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-300" />
+                <input
+                  type="text"
+                  placeholder="Search LGBTQ+ terms..."
+                  className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
             
             {searchTerm ? (
@@ -611,25 +712,24 @@ export function EducationSection() {
               </div>
             ) : (
               // Default view with example terms
-              <div className="space-y-2">
+              <div className="space-y-2 flex flex-col items-center">
                 <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">EXAMPLES</div>
-                {glossaryTerms.slice(0, 3).map((term, index) => (
-                  <div 
-                    key={index}
-                    className="p-2 -mx-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
-                    onClick={() => setSearchTerm(term.term)}
-                  >
-                    <div className="font-medium text-purple-700 dark:text-purple-400 text-sm">
-                      {term.term}
-                      <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
-                        {term.category}
-                      </span>
+                <div className="w-full max-w-md space-y-2">
+                  {glossaryTerms.slice(0, 3).map((term, index) => (
+                    <div 
+                      key={index}
+                      className="p-2 -mx-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group text-center"
+                      onClick={() => setSearchTerm(term.term)}
+                    >
+                      <div className="font-medium text-purple-700 dark:text-purple-400 text-sm">
+                        {term.term}
+                      </div>
+                      <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
+                        {term.definition}
+                      </p>
                     </div>
-                    <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
-                      {term.definition}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </TabsContent>
