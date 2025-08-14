@@ -17,7 +17,7 @@ type Resource = {
 type Term = {
   term: string;
   definition: string;
-  category: string;
+  category?: string;
 }
 
 export function EducationSection() {
@@ -253,31 +253,25 @@ export function EducationSection() {
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
 
   const glossaryTerms: Term[] = [
-    // Core Identity Terms
     {
       term: "LGBTQ+",
-      definition: "Acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, with the '+' representing other identities.",
-      category: "Core Terms"
+      definition: "Acronym for Lesbian, Gay, Bisexual, Transgender, Queer/Questioning, with the '+' representing other identities."
     },
     {
       term: "Cisgender",
-      definition: "A person whose gender identity aligns with the sex they were assigned at birth.",
-      category: "Core Terms"
+      definition: "A person whose gender identity aligns with the sex they were assigned at birth."
     },
     {
       term: "Transgender",
-      definition: "A person whose gender identity differs from their sex assigned at birth.",
-      category: "Core Terms"
+      definition: "A person whose gender identity differs from their sex assigned at birth."
     },
     {
       term: "Non-binary",
-      definition: "An umbrella term for gender identities outside the male/female binary.",
-      category: "Core Terms"
+      definition: "An umbrella term for gender identities outside the male/female binary."
     },
     {
       term: "Queer",
-      definition: "An umbrella term for sexual and gender minorities.",
-      category: "Core Terms"
+      definition: "An umbrella term for sexual and gender minorities."
     },
     
     // Orientation Terms
@@ -355,13 +349,13 @@ export function EducationSection() {
     <section id="education" className="py-16 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 -mt-3">
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Educational Resources
+              Archive & Library
             </span>
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Expand your knowledge with our curated collection of LGBTQ+ educational materials.
+          <p className="text-gray-600 dark:text-gray-200">
+            Learn and discover with hand-picked collection of LGBTQ+ resources, made just for you.
           </p>
         </div>
 
@@ -577,11 +571,11 @@ export function EducationSection() {
 
           <TabsContent value="glossary" className="space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-300" />
               <input
                 type="text"
                 placeholder="Search LGBTQ+ terms..."
-                className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -607,9 +601,6 @@ export function EducationSection() {
                       <div key={index} className="group relative p-2 -mx-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <div className="font-medium text-purple-700 dark:text-purple-400 text-sm">
                           {term.term}
-                          <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
-                            {term.category}
-                          </span>
                         </div>
                         <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-300">
                           {term.definition}
