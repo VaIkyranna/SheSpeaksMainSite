@@ -48,20 +48,10 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
   useEffect(() => {
     const processImage = async (article: NewsArticle, index: number) => {
       try {
-        // If no image URL, try to extract from article URL
+        // If no image URL, use a fallback
         if (!article.urlToImage) {
-          // Try to get image from OpenGraph if available
-          try {
-            const response = await fetch(`/api/extract-image?url=${encodeURIComponent(article.url)}`);
-            const data = await response.json();
-            if (data.imageUrl) {
-              article.urlToImage = data.imageUrl;
-            } else {
-              throw new Error('No image found in OpenGraph data');
-            }
-          } catch (error) {
-            throw new Error('No image URL provided and could not extract from article');
-          }
+          // Use a default placeholder image for articles without images
+          article.urlToImage = `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center&auto=format&q=80`;
         }
 
         // Handle YouTube URLs
@@ -140,8 +130,8 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
           window.open(currentArticle.url, "_blank", "noopener,noreferrer");
         }
       }}
-      style={{ 
-        border: '0px solid transparent !important', 
+      style={{
+        border: '0px solid transparent !important',
         outline: '0px solid transparent !important',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25) !important',
         borderImage: 'none !important',
@@ -155,15 +145,15 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
-          style={{ 
-            border: 'none !important', 
+          style={{
+            border: 'none !important',
             outline: 'none !important',
             boxShadow: 'none !important',
             borderImage: 'none !important'
           }}
         >
-          <div className="w-full h-full relative" style={{ 
-            border: 'none !important', 
+          <div className="w-full h-full relative" style={{
+            border: 'none !important',
             outline: 'none !important',
             boxShadow: 'none !important',
             borderImage: 'none !important'
@@ -364,14 +354,28 @@ export function NewsSection() {
   const categorizeArticle = (title: string, description: string, content: string): string => {
     const text = `${title} ${description} ${content}`.toLowerCase()
 
+    // First check for violent/negative content that should NEVER be entertainment
+    const violentTerms = /\b(killed|shooting|shot|murder|murdered|death|died|attack|attacked|violence|violent|assault|assaulted|stabbed|stabbing|bomb|bombing|terror|terrorist|hate crime|beaten|beating|injured|injury|wounded|blood|funeral|memorial|tragedy|tragic|victim|victims|suspect|arrested|police|investigation|crime|criminal|charges|charged|guilty|verdict|trial|prison|jail|sentenced|conviction|abuse|abused|harassment|harassed|threat|threatened|dangerous|emergency|crisis|disaster|accident|crash|collision|fire|explosion|evacuation|rescue|ambulance|hospital emergency|intensive care|critical condition)\b/
+
+    // Check if content contains violent terms - if so, exclude from entertainment
+    if (violentTerms.test(text)) {
+      // This is likely news/politics, not entertainment
+      const politicalTerms = /\b(court|ruling|legislation|bill|law|legal|policy|government|political|politics|congress|senate|parliament|election|vote|voting|campaign|candidate|president|minister|judge|supreme court|ban|banned|protect|protection|discrimination|equality|marriage equality|same-sex marriage|adoption|civil rights|human rights|transgender rights|gay rights|lesbian rights|bisexual rights|lgbtq rights|anti-lgbtq|anti-gay|anti-trans|conversion therapy ban|bathroom bill|don't say gay|religious freedom|first amendment|constitutional|federal|state law|local law|ordinance|referendum|ballot|lawsuit|legal challenge)\b/
+
+      if (politicalTerms.test(text)) {
+        return "Rights & Politics"
+      }
+      return "LGBTQ+ News" // Default for violent content
+    }
+
     // First check for specific political/legal terms that should NOT be entertainment
     const politicalTerms = /\b(court|ruling|legislation|bill|law|legal|policy|government|political|politics|congress|senate|parliament|election|vote|voting|campaign|candidate|president|minister|judge|supreme court|ban|banned|protect|protection|discrimination|equality|marriage equality|same-sex marriage|adoption|civil rights|human rights|transgender rights|gay rights|lesbian rights|bisexual rights|lgbtq rights|anti-lgbtq|anti-gay|anti-trans|conversion therapy ban|bathroom bill|don't say gay|religious freedom|first amendment|constitutional|federal|state law|local law|ordinance|referendum|ballot|lawsuit|legal challenge)\b/
 
     // Check for health/medical terms that should NOT be entertainment
     const healthTerms = /\b(health|healthcare|medical|medicine|doctor|hospital|treatment|therapy|mental health|wellness|surgery|clinic|patient|disease|condition|diagnosis|prescription|vaccine|hormone|transition|gender affirming care|hrt|hormone replacement|top surgery|bottom surgery|gender dysphoria|sexual health|prep|hiv|aids|std|sti|transgender health|trans health|gender clinic|endocrinologist|mastectomy|testosterone|estrogen|puberty blockers|medical transition|surgical transition|conversion therapy|reparative therapy|affirmative therapy|lgbtq therapy|crisis|suicide|depression|anxiety|self harm|mental health support)\b/
 
-    // Entertainment terms - but exclude if it's clearly political or health related
-    const entertainmentTerms = /\b(movie|film|tv show|television|series|netflix|hulu|disney|streaming|actor|actress|celebrity|music|album|song|artist|concert|performance|award|oscar|emmy|grammy|entertainment|hollywood|broadway|theater|theatre|drag queen|drag king|drag race|festival|culture|queer cinema|lgbtq film|gay movie|lesbian film|queer show|lgbtq show|rupaul|drag race|queer eye|pose|euphoria|heartstopper|love simon|moonlight|carol|brokeback mountain|paris is burning|orange is the new black|transparent|sense8|schitt's creek|it's a sin|frank ocean|lil nas x|troye sivan|lady gaga|elton john|david bowie|freddie mercury)\b/
+    // Entertainment terms - more specific to avoid false positives
+    const entertainmentTerms = /\b(netflix|hulu|disney\+|disney plus|amazon prime|streaming service|tv series|television series|tv show premiere|season finale|new episode|binge watch|actor stars|actress stars|celebrity couple|red carpet|award show|oscar winner|emmy winner|grammy winner|music video|new album|concert tour|broadway show|theater production|drag queen|drag king|rupaul|drag race|queer eye|pose tv|euphoria hbo|heartstopper netflix|love simon|moonlight film|carol movie|brokeback mountain|paris is burning|orange is the new black|transparent amazon|sense8|schitt's creek|it's a sin|frank ocean|lil nas x|troye sivan|lady gaga|elton john|david bowie|freddie mercury|queer cinema|lgbtq film|gay movie|lesbian film|queer show|lgbtq show|entertainment news|hollywood news|celebrity news|pop culture|film festival|movie premiere|box office|soundtrack|casting|filming|production|director|producer|screenwriter)\b/
 
     // Politics - prioritize this category for legal/political content
     if (politicalTerms.test(text) && !entertainmentTerms.test(text)) {
