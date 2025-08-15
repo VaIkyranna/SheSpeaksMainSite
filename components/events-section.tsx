@@ -36,7 +36,7 @@ export function EventsSection() {
         setLoading(true)
         const locationData = await detectUserLocation()
         setLocation(locationData)
-        
+
         // Fetch upcoming events after getting location
         await fetchUpcomingEvents(locationData)
       } catch (error) {
@@ -100,7 +100,7 @@ export function EventsSection() {
   const fetchUpcomingEvents = async (locationData: LocationData) => {
     try {
       setEventsLoading(true)
-      
+
       // Since most free event APIs are limited or unreliable, let's just show the platform links
       // and remove the events section entirely to avoid confusion
       setUpcomingEvents([])
@@ -154,110 +154,110 @@ export function EventsSection() {
           <div className="text-center mb-8">
 
             <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        
+
             </p>
           </div>
-          
+
           <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div
-                  className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
-                  onClick={() => {
-                    const searchLocation =
-                      location?.city !== "Unknown"
-                        ? `${location?.city} ${location?.country}`
-                        : location?.country || "your area"
-                    window.open(`https://www.eventbrite.com/d/${encodeURIComponent(searchLocation)}/lgbtq/`, "_blank")
-                  }}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-r from-red-100 via-orange-100 to-yellow-100 dark:from-red-900/30 dark:via-orange-900/30 dark:to-yellow-900/30 rounded-lg border border-red-200 dark:border-red-700">
-                        <span className="text-lg">🏳️‍🌈</span>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Eventbrite</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Search for Pride events and LGBTQ+ meetups</div>
-                      </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                onClick={() => {
+                  const searchLocation =
+                    location?.city !== "Unknown"
+                      ? `${location?.city} ${location?.country}`
+                      : location?.country || "your area"
+                  window.open(`https://www.eventbrite.com/d/${encodeURIComponent(searchLocation)}/lgbtq/`, "_blank")
+                }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-r from-red-100 via-orange-100 to-yellow-100 dark:from-red-900/30 dark:via-orange-900/30 dark:to-yellow-900/30 rounded-lg border border-red-200 dark:border-red-700">
+                      <span className="text-lg">🏳️‍🌈</span>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-pink-600 transition-colors" />
-                  </div>
-                </div>
-
-                <div
-                  className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
-                  onClick={() => {
-                    const searchLocation = location?.city !== "Unknown" ? location?.city : location?.country || ""
-                    window.open(
-                      `https://www.meetup.com/find/?keywords=lgbtq&location=${encodeURIComponent(searchLocation)}`,
-                      "_blank",
-                    )
-                  }}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-r from-purple-100 via-pink-100 to-red-100 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-red-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
-                        <span className="text-lg">🏳️‍⚧️</span>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Meetup</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Join transgender & LGBTQ+ support groups</div>
-                      </div>
+                    <div>
+                      <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Eventbrite</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Search for Pride events and LGBTQ+ meetups</div>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
                   </div>
-                </div>
-
-                <div
-                  className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
-                  onClick={() => {
-                    window.open("https://www.facebook.com/events/search/?q=lgbtq", "_blank")
-                  }}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
-                        <span className="text-lg">❤️</span>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Facebook Events</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Discover Pride & community events near you</div>
-                      </div>
-                    </div>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                  </div>
-                </div>
-
-                <div
-                  className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
-                  onClick={() => {
-                    const countryCode =
-                      location?.country === "United Kingdom"
-                        ? "uk"
-                        : location?.country === "United States"
-                          ? "us"
-                          : location?.country === "Canada"
-                            ? "ca"
-                            : location?.country === "Australia"
-                              ? "au"
-                              : "global"
-                    window.open(`https://www.google.com/search?q=lgbtq+events+near+me+${countryCode}`, "_blank")
-                  }}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-r from-yellow-100 via-green-100 to-blue-100 dark:from-yellow-900/30 dark:via-green-900/30 dark:to-blue-900/30 rounded-lg border border-yellow-200 dark:border-yellow-700">
-                        <span className="text-lg">🌈</span>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">Local Search</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Find Pride events through local LGBTQ+ organizations</div>
-                      </div>
-                    </div>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors" />
-                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-pink-600 transition-colors" />
                 </div>
               </div>
+
+              <div
+                className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                onClick={() => {
+                  const searchLocation = (location?.city !== "Unknown" ? location?.city : location?.country) || ""
+                  window.open(
+                    `https://www.meetup.com/find/?keywords=lgbtq&location=${encodeURIComponent(searchLocation)}`,
+                    "_blank",
+                  )
+                }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-r from-purple-100 via-pink-100 to-red-100 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-red-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
+                      <span className="text-lg">🏳️‍⚧️</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Meetup</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Join transgender & LGBTQ+ support groups</div>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
+                </div>
+              </div>
+
+              <div
+                className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                onClick={() => {
+                  window.open("https://www.facebook.com/events/search/?q=lgbtq", "_blank")
+                }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
+                      <span className="text-lg">❤️</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Facebook Events</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Discover Pride & community events near you</div>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+                </div>
+              </div>
+
+              <div
+                className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                onClick={() => {
+                  const countryCode =
+                    location?.country === "United Kingdom"
+                      ? "uk"
+                      : location?.country === "United States"
+                        ? "us"
+                        : location?.country === "Canada"
+                          ? "ca"
+                          : location?.country === "Australia"
+                            ? "au"
+                            : "global"
+                  window.open(`https://www.google.com/search?q=lgbtq+events+near+me+${countryCode}`, "_blank")
+                }}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-r from-yellow-100 via-green-100 to-blue-100 dark:from-yellow-900/30 dark:via-green-900/30 dark:to-blue-900/30 rounded-lg border border-yellow-200 dark:border-yellow-700">
+                      <span className="text-lg">🌈</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">Local Search</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Find Pride events through local LGBTQ+ organizations</div>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

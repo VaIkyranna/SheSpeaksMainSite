@@ -136,7 +136,7 @@ export function HistorySection() {
   const extractWikipediaLink = (event: HistoricalEvent): string | null => {
     try {
       // First try to get link from the links array
-      if (event?.links?.length > 0) {
+      if (event?.links && event.links.length > 0) {
         return event.links[0].link;
       }
 
