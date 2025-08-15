@@ -29,52 +29,88 @@ export function HistorySection() {
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
+  // Static LGBTQ+ historical events by month from curated data
+  const monthlyEvents: { [key: number]: HistoricalEvent[] } = {
+    1: [ // January
+      { year: 1895, text: "First trial of Oscar Wilde for 'gross indecency' begins in London.", html: "First trial of Oscar Wilde for 'gross indecency' begins in London.", no_year_html: "First trial of Oscar Wilde for 'gross indecency' begins in London." },
+      { year: 1972, text: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy.", html: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy.", no_year_html: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy." },
+      { year: 1978, text: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S.", html: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S.", no_year_html: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S." }
+    ],
+    2: [ // February
+      { year: 1869, text: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny.", html: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny.", no_year_html: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny." },
+      { year: 1988, text: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality.", html: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality.", no_year_html: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality." },
+      { year: 2004, text: "San Francisco issues first legal same-sex marriage licenses.", html: "San Francisco issues first legal same-sex marriage licenses.", no_year_html: "San Francisco issues first legal same-sex marriage licenses." }
+    ],
+    3: [ // March
+      { year: 1785, text: "Jeremy Bentham writes defense of same-sex relationships.", html: "Jeremy Bentham writes defense of same-sex relationships.", no_year_html: "Jeremy Bentham writes defense of same-sex relationships." },
+      { year: 1982, text: "Wisconsin bans discrimination based on sexual orientation.", html: "Wisconsin bans discrimination based on sexual orientation.", no_year_html: "Wisconsin bans discrimination based on sexual orientation." },
+      { year: 2014, text: "Same-sex marriage becomes legal in England and Wales.", html: "Same-sex marriage becomes legal in England and Wales.", no_year_html: "Same-sex marriage becomes legal in England and Wales." }
+    ],
+    4: [ // April
+      { year: 1895, text: "Oscar Wilde arrested for gross indecency.", html: "Oscar Wilde arrested for gross indecency.", no_year_html: "Oscar Wilde arrested for gross indecency." },
+      { year: 1997, text: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode.", html: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode.", no_year_html: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode." },
+      { year: 2001, text: "Netherlands becomes first country to legalize same-sex marriage.", html: "Netherlands becomes first country to legalize same-sex marriage.", no_year_html: "Netherlands becomes first country to legalize same-sex marriage." }
+    ],
+    5: [ // May
+      { year: 1895, text: "Oscar Wilde convicted of gross indecency.", html: "Oscar Wilde convicted of gross indecency.", no_year_html: "Oscar Wilde convicted of gross indecency." },
+      { year: 1990, text: "World Health Organization declassifies homosexuality as mental disorder.", html: "World Health Organization declassifies homosexuality as mental disorder.", no_year_html: "World Health Organization declassifies homosexuality as mental disorder." },
+      { year: 2019, text: "Taiwan legalizes same-sex marriage, first in Asia.", html: "Taiwan legalizes same-sex marriage, first in Asia.", no_year_html: "Taiwan legalizes same-sex marriage, first in Asia." }
+    ],
+    6: [ // June
+      { year: 1969, text: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement.", html: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement.", no_year_html: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement." },
+      { year: 1970, text: "First Pride marches held in New York, Los Angeles, and Chicago.", html: "First Pride marches held in New York, Los Angeles, and Chicago.", no_year_html: "First Pride marches held in New York, Los Angeles, and Chicago." },
+      { year: 2015, text: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges.", html: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges.", no_year_html: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges." }
+    ],
+    7: [ // July
+      { year: 1965, text: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights.", html: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights.", no_year_html: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights." },
+      { year: 2005, text: "Spain legalizes same-sex marriage.", html: "Spain legalizes same-sex marriage.", no_year_html: "Spain legalizes same-sex marriage." },
+      { year: 2010, text: "Argentina legalizes same-sex marriage, first in Latin America.", html: "Argentina legalizes same-sex marriage, first in Latin America.", no_year_html: "Argentina legalizes same-sex marriage, first in Latin America." }
+    ],
+    8: [ // August
+      { year: 1961, text: "Illinois becomes first U.S. state to decriminalize homosexuality.", html: "Illinois becomes first U.S. state to decriminalize homosexuality.", no_year_html: "Illinois becomes first U.S. state to decriminalize homosexuality." },
+      { year: 1963, text: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington.", html: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington.", no_year_html: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington." },
+      { year: 2013, text: "New Zealand legalizes same-sex marriage.", html: "New Zealand legalizes same-sex marriage.", no_year_html: "New Zealand legalizes same-sex marriage." }
+    ],
+    9: [ // September
+      { year: 1987, text: "First display of AIDS Memorial Quilt in Washington, D.C.", html: "First display of AIDS Memorial Quilt in Washington, D.C.", no_year_html: "First display of AIDS Memorial Quilt in Washington, D.C." },
+      { year: 2011, text: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military.", html: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military.", no_year_html: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military." },
+      { year: 2018, text: "India's Supreme Court decriminalizes homosexuality.", html: "India's Supreme Court decriminalizes homosexuality.", no_year_html: "India's Supreme Court decriminalizes homosexuality." }
+    ],
+    10: [ // October
+      { year: 1969, text: "Canada decriminalizes homosexuality.", html: "Canada decriminalizes homosexuality.", no_year_html: "Canada decriminalizes homosexuality." },
+      { year: 1988, text: "First National Coming Out Day established.", html: "First National Coming Out Day established.", no_year_html: "First National Coming Out Day established." },
+      { year: 1993, text: "U.S. Congress passes 'Don't Ask, Don't Tell' policy.", html: "U.S. Congress passes 'Don't Ask, Don't Tell' policy.", no_year_html: "U.S. Congress passes 'Don't Ask, Don't Tell' policy." }
+    ],
+    11: [ // November
+      { year: 1973, text: "American Psychiatric Association confirms homosexuality is not a mental disorder.", html: "American Psychiatric Association confirms homosexuality is not a mental disorder.", no_year_html: "American Psychiatric Association confirms homosexuality is not a mental disorder." },
+      { year: 1978, text: "Harvey Milk assassinated in San Francisco.", html: "Harvey Milk assassinated in San Francisco.", no_year_html: "Harvey Milk assassinated in San Francisco." },
+      { year: 1999, text: "First Transgender Day of Remembrance held.", html: "First Transgender Day of Remembrance held.", no_year_html: "First Transgender Day of Remembrance held." }
+    ],
+    12: [ // December
+      { year: 1924, text: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S.", html: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S.", no_year_html: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S." },
+      { year: 1988, text: "First World AIDS Day observed.", html: "First World AIDS Day observed.", no_year_html: "First World AIDS Day observed." },
+      { year: 2022, text: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights.", html: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights.", no_year_html: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights." }
+    ]
+  }
 
   const fetchHistoricalEvents = async () => {
     try {
       setLoading(true)
       setError(null)
 
-      // Check cache first
       const today = new Date()
-      const month = String(today.getMonth() + 1).padStart(2, '0')
-      const day = String(today.getDate()).padStart(2, '0')
-      const todayStr = today.toISOString().split('T')[0]
-      const cacheKey = `history-${todayStr}`
+      const currentMonth = today.getMonth() + 1 // 1-12
 
-      const cachedEvents = cache.get<HistoricalEvent[]>(cacheKey)
-      if (cachedEvents && cachedEvents.length > 0) {
-        setEvents(cachedEvents)
-        setLoading(false)
-        return
-      }
+      // Get events for current month from our static data
+      const monthEvents = monthlyEvents[currentMonth] || []
 
-      // Fetch from our local API endpoint
-      const apiUrl = `/api/wikipedia?month=${month}&day=${day}`
-      const response = await fetch(apiUrl)
+      // Take up to 3 events for display
+      const selectedEvents = monthEvents.slice(0, 3)
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch events (${response.status})`)
-      }
-
-      const data = await response.json()
-
-      if (data.error) {
-        throw new Error(data.error)
-      }
-
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid response format from API')
-      }
-
-      // The API now ensures we get exactly 3 events
-      const sortedEvents = data.slice(0, 3)
-
-      setEvents(sortedEvents)
-      cache.set(cacheKey, sortedEvents)
+      setEvents(selectedEvents)
 
     } catch (err) {
-      console.error('Error fetching historical events:', err)
+      console.error('Error loading historical events:', err)
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
       setError(`Failed to load historical events: ${errorMessage}`)
     } finally {
@@ -84,23 +120,6 @@ export function HistorySection() {
 
   useEffect(() => {
     fetchHistoricalEvents()
-
-    // Set up an interval to check for date changes every hour
-    const interval = setInterval(() => {
-      const now = new Date()
-      const currentDateStr = now.toISOString().split('T')[0]
-
-      // Check if we have cached data for today
-      const cacheKey = `history-${currentDateStr}`
-      const cachedEvents = cache.get<HistoricalEvent[]>(cacheKey)
-
-      // If no cached data for today, fetch new events
-      if (!cachedEvents) {
-        fetchHistoricalEvents()
-      }
-    }, 3600000) // Check every hour
-
-    return () => clearInterval(interval)
   }, [retryCount])
 
   const handleRetry = () => {
@@ -110,8 +129,7 @@ export function HistorySection() {
   const formatDate = () => {
     const today = new Date()
     return today.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric'
+      month: 'long'
     })
   }
 
@@ -157,10 +175,10 @@ export function HistorySection() {
             <h2 className="apple-headline mb-4">
               <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
               <br />
-              <span className="text-gray-800 dark:text-gray-200">This Week</span>
+              <span className="text-gray-800 dark:text-gray-200">This Month</span>
             </h2>
             <p className="apple-subheadline max-w-2xl mx-auto">
-              Discovering important moments in LGBTQ+ history that happened this week...
+              Discovering important moments in LGBTQ+ history that happened this month...
             </p>
           </div>
 
@@ -190,7 +208,7 @@ export function HistorySection() {
             <h2 className="apple-headline mb-4">
               <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
               <br />
-              <span className="text-gray-800 dark:text-gray-200">This Week</span>
+              <span className="text-gray-800 dark:text-gray-200">This Month</span>
             </h2>
           </div>
 
@@ -216,10 +234,10 @@ export function HistorySection() {
           <h2 className="apple-headline mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
             <br />
-            <span className="text-gray-800 dark:text-gray-200">This Week</span>
+            <span className="text-gray-800 dark:text-gray-200">This Month</span>
           </h2>
           <p className="apple-subheadline max-w-2xl mx-auto">
-            Important moments in LGBTQ+ history that happened this week throughout the years.
+            Important moments in LGBTQ+ history that happened this month throughout the years.
           </p>
         </div>
 
@@ -229,9 +247,9 @@ export function HistorySection() {
               <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-6 border border-pink-200 dark:border-pink-800">
                 <Clock className="w-8 h-8 text-pink-600 dark:text-pink-400" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">No Events Found This Week</h3>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">No Events Found This Month</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                No LGBTQ+ historical events found for this week, but every day is an opportunity to make history and create positive change.
+                No LGBTQ+ historical events found for this month, but every day is an opportunity to make history and create positive change.
               </p>
               <Button
                 onClick={handleRetry}

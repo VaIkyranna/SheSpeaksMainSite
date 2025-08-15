@@ -15,6 +15,7 @@ interface NewsArticle {
   publishedAt: string
   source: {
     name: string
+    site: string
   }
   content: string
   category?: string
@@ -132,29 +133,37 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
 
   return (
     <div
-      className="mb-8 relative h-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer"
+      className="mb-8 relative h-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer border-0 outline-none"
       onClick={(e) => {
         const currentArticle = articles[currentIndex];
         if (currentArticle?.url) {
           window.open(currentArticle.url, "_blank", "noopener,noreferrer");
         }
       }}
+      style={{ border: 'none', outline: 'none' }}
     >
       {articles.map((article, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+          className={`absolute inset-0 transition-opacity duration-1000 border-0 outline-none ${index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
+          style={{ border: 'none', outline: 'none' }}
         >
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative border-0 outline-none" style={{ border: 'none', outline: 'none' }}>
             <img
               src={article.urlToImage}
               alt={article.title}
-              className="w-full h-full object-cover object-center border-0 outline-none"
+              className="w-full h-full object-cover object-center"
               loading="lazy"
               decoding="async"
               onError={handleImageError}
-              style={{ border: 'none', outline: 'none' }}
+              style={{
+                border: 'none !important',
+                outline: 'none !important',
+                boxShadow: 'none !important',
+                borderRadius: '0 !important',
+                borderImage: 'none !important'
+              }}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -198,13 +207,25 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
   )
 }
 
+// Category definitions
+const CATEGORIES = [
+  { id: 'all', label: 'All' },
+  { id: 'Rights & Politics', label: 'Politics' },
+  { id: 'Entertainment', label: 'Entertainment' },
+  { id: 'Health', label: 'Health' },
+  { id: 'Local News', label: 'Local' },
+] as const
+
 export function NewsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([])
+  const [allNewsArticles, setAllNewsArticles] = useState<NewsArticle[]>([])
   const [carouselArticles, setCarouselArticles] = useState<NewsArticle[]>([])
   const [error, setError] = useState<string | null>(null)
   const [userLocation, setUserLocation] = useState<LocationInfo | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [isAutoRefreshing, setIsAutoRefreshing] = useState(true)
 
   // Shared image error handler
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -325,54 +346,77 @@ export function NewsSection() {
   const categorizeArticle = (title: string, description: string, content: string): string => {
     const text = `${title} ${description} ${content}`.toLowerCase()
 
-    // Entertainment & Culture - Check this first to catch entertainment articles
-    if (text.match(/\b(movie|film|tv|television|show|series|netflix|hulu|disney|streaming|actor|actress|celebrity|music|album|song|artist|concert|performance|award|oscar|emmy|grammy|entertainment|hollywood|broadway|theater|theatre|drag|festival|culture|representation|character|role)\b/)) {
-      return "Entertainment"
-    }
+    // First check for specific political/legal terms that should NOT be entertainment
+    const politicalTerms = /\b(court|ruling|legislation|bill|law|legal|policy|government|political|politics|congress|senate|parliament|election|vote|voting|campaign|candidate|president|minister|judge|supreme court|ban|banned|protect|protection|discrimination|equality|marriage equality|same-sex marriage|adoption|civil rights|human rights|transgender rights|gay rights|lesbian rights|bisexual rights|lgbtq rights|anti-lgbtq|anti-gay|anti-trans|conversion therapy ban|bathroom bill|don't say gay|religious freedom|first amendment|constitutional|federal|state law|local law|ordinance|referendum|ballot|lawsuit|legal challenge)\b/
 
-    // LGBTQ+ Rights & Politics - Check after entertainment to avoid miscategorization
-    if (text.match(/\b(rights|law|legal|court|ruling|legislation|bill|policy|government|political|politics|congress|senate|parliament|election|vote|voting|campaign|candidate|president|minister|judge|supreme court|ban|banned|protect|protection|discrimination|equality|marriage|adoption)\b/) &&
-      !text.match(/\b(movie|film|tv|actor|actress|celebrity|entertainment|hollywood)\b/)) {
+    // Check for health/medical terms that should NOT be entertainment
+    const healthTerms = /\b(health|healthcare|medical|medicine|doctor|hospital|treatment|therapy|mental health|wellness|surgery|clinic|patient|disease|condition|diagnosis|prescription|vaccine|hormone|transition|gender affirming care|hrt|hormone replacement|top surgery|bottom surgery|gender dysphoria|sexual health|prep|hiv|aids|std|sti|transgender health|trans health|gender clinic|endocrinologist|mastectomy|testosterone|estrogen|puberty blockers|medical transition|surgical transition|conversion therapy|reparative therapy|affirmative therapy|lgbtq therapy|crisis|suicide|depression|anxiety|self harm|mental health support)\b/
+
+    // Entertainment terms - but exclude if it's clearly political or health related
+    const entertainmentTerms = /\b(movie|film|tv show|television|series|netflix|hulu|disney|streaming|actor|actress|celebrity|music|album|song|artist|concert|performance|award|oscar|emmy|grammy|entertainment|hollywood|broadway|theater|theatre|drag queen|drag king|drag race|festival|culture|queer cinema|lgbtq film|gay movie|lesbian film|queer show|lgbtq show|rupaul|drag race|queer eye|pose|euphoria|heartstopper|love simon|moonlight|carol|brokeback mountain|paris is burning|orange is the new black|transparent|sense8|schitt's creek|it's a sin|frank ocean|lil nas x|troye sivan|lady gaga|elton john|david bowie|freddie mercury)\b/
+
+    // Politics - prioritize this category for legal/political content
+    if (politicalTerms.test(text) && !entertainmentTerms.test(text)) {
       return "Rights & Politics"
     }
 
-    // Health & Wellness - including trans healthcare
-    if (text.match(/\b(health|healthcare|medical|medicine|doctor|hospital|treatment|therapy|mental health|wellness|surgery|clinic|patient|disease|condition|diagnosis|prescription|vaccine|hormone|transition|gender|affirming|care)\b/)) {
+    // Health - prioritize this category for health/medical content  
+    if (healthTerms.test(text) && !entertainmentTerms.test(text)) {
       return "Health"
     }
 
-    // Sports - LGBTQ+ athletes and inclusion
-    if (text.match(/\b(sport|sports|athlete|championship|league|tournament|olympics|fifa|nfl|nba|mlb|nhl|soccer|football|basketball|baseball|tennis|golf|swimming)\b/) ||
-      (text.match(/\b(match|team|compete|competition)\b/) &&
-        text.match(/\b(athlete|player|coach|stadium|field|court|olympic)\b/))) {
-      // Double check it's not about dating/relationships
-      if (!text.match(/\b(date|dating|relationship|love|flirt|crush|romance)\b/)) {
-        return "Sports"
-      }
+    // Entertainment - only if it's clearly entertainment and not politics/health
+    if (entertainmentTerms.test(text) && !politicalTerms.test(text) && !healthTerms.test(text)) {
+      return "Entertainment"
     }
 
-    // Business & Workplace
-    if (text.match(/\b(business|company|corporate|ceo|startup|entrepreneur|investment|finance|financial|economy|economic|market|stock|trade|industry|workplace|job|career|employment|work|office|inclusive|diversity)\b/)) {
-      return "Business"
+    // Mixed content - check which is more prominent
+    if (politicalTerms.test(text) && entertainmentTerms.test(text)) {
+      // Count political vs entertainment terms
+      const politicalMatches = (text.match(politicalTerms) || []).length
+      const entertainmentMatches = (text.match(entertainmentTerms) || []).length
+      return politicalMatches >= entertainmentMatches ? "Rights & Politics" : "Entertainment"
     }
 
-    // Education & Youth
-    if (text.match(/\b(education|school|university|college|student|teacher|professor|academic|study|research|scholarship|graduation|campus|classroom|learning|youth|young|teen|teenager|child|children|kid|kids)\b/)) {
-      return "Education"
-    }
-
-    // Technology & Social Media
-    if (text.match(/\b(technology|tech|digital|app|software|internet|online|social media|facebook|twitter|instagram|tiktok|platform|ai|artificial intelligence|data|cyber|dating|app)\b/)) {
-      return "Technology"
-    }
-
-    // Community & Activism
-    if (text.match(/\b(community|social|activism|activist|protest|march|rally|movement|organization|charity|volunteer|support|advocacy|inclusion|diversity|pride|event|celebration|group|center|resource)\b/)) {
-      return "Community"
+    if (healthTerms.test(text) && entertainmentTerms.test(text)) {
+      // Count health vs entertainment terms
+      const healthMatches = (text.match(healthTerms) || []).length
+      const entertainmentMatches = (text.match(entertainmentTerms) || []).length
+      return healthMatches >= entertainmentMatches ? "Health" : "Entertainment"
     }
 
     // Default category for general LGBTQ+ news
     return "LGBTQ+ News"
+  }
+
+  const categorizeWithLocation = (title: string, description: string, content: string, userLocation: LocationInfo | null): string => {
+    const text = `${title} ${description} ${content}`.toLowerCase()
+
+    // Check for local news ONLY if we have user location and it matches specifically
+    if (userLocation) {
+      const locationKeywords = getLocationKeywords(userLocation.country, userLocation.code)
+
+      // STRICT local news detection - must contain specific location keywords
+      const hasSpecificLocationKeyword = locationKeywords.some(keyword =>
+        text.includes(keyword.toLowerCase())
+      )
+
+      // Only mark as local if it specifically mentions the user's country/region
+      if (hasSpecificLocationKeyword) {
+        // Double-check it's not about other countries
+        const otherCountries = ['united states', 'america', 'american', 'germany', 'german', 'france', 'french', 'canada', 'canadian', 'australia', 'australian']
+        const mentionsOtherCountries = otherCountries
+          .filter(country => country !== userLocation.country.toLowerCase())
+          .some(country => text.includes(country))
+
+        if (!mentionsOtherCountries) {
+          return "Local News"
+        }
+      }
+    }
+
+    // Fall back to regular categorization
+    return categorizeArticle(title, description, content)
   }
 
   const getLocationKeywords = (country: string, countryCode: string): string[] => {
@@ -403,10 +447,11 @@ export function NewsSection() {
         setError(null)
 
         // Check cache first
-        const cacheKey = 'lgbtq-news-feed';
+        const cacheKey = 'lgbtq-news-feed-v13';
         const cachedData = cache.get<{ news: NewsArticle[], carousel: NewsArticle[] }>(cacheKey);
 
         if (cachedData) {
+          setAllNewsArticles(cachedData.news);
           setNewsArticles(cachedData.news);
           setCarouselArticles(cachedData.carousel);
           setIsLoading(false);
@@ -419,14 +464,70 @@ export function NewsSection() {
         // Add cache-busting timestamp and more diverse sources including entertainment
         const timestamp = Date.now()
         const rssFeeds = [
-          `https://api.rss2json.com/v1/api.json?rss_url=https://www.advocate.com/rss.xml&_=${timestamp}`,
+          // Prioritize PinkNews - fetch multiple times for more content
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.pinknews.co.uk/feed/&_=${timestamp}`,
+
+          // Working RSS feed for PinkNews entertainment content
+          `https://api.rss2json.com/v1/api.json?rss_url=https://rss.app/feed/DcTYAmLyO3U0fOuw&_=${timestamp}`,
+
+          // Additional entertainment sources
+          `https://api.rss2json.com/v1/api.json?rss_url=https://gayety.com/category/entertainment/feed&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.lgbtqnation.com/arts-media/feed/&_=${timestamp}`,
+
+          // Enhanced Advocate feeds
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.advocate.com/rss.xml&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.advocate.com/customfeeds/js/feed/rss&_=${timestamp}`,
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.lgbtqnation.com/feed/&_=${timestamp}`,
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.them.us/feed/rss&_=${timestamp}`,
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.queerty.com/feed&_=${timestamp}`,
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.out.com/rss.xml&_=${timestamp}`,
           `https://api.rss2json.com/v1/api.json?rss_url=https://www.gaytimes.co.uk/feed/&_=${timestamp}`,
+
+          // Entertainment & Culture focused
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.pride.com/feed&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.instinctmagazine.com/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://hornet.com/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.metroweekly.com/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.towleroad.com/feed&_=${timestamp}`,
+
+          // Health & Wellness focused
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.hivplusmag.com/rss.xml&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.poz.com/rss.xml&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.thebody.com/rss/news.xml&_=${timestamp}`,
+
+          // International sources for diversity
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.starobserver.com.au/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://dailyxtra.com/feed&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.washingtonblade.com/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.losangelesblade.com/feed/&_=${timestamp}`,
+          `https://api.rss2json.com/v1/api.json?rss_url=https://www.chicagophoenix.com/feed/&_=${timestamp}`,
         ]
+
+        // Map RSS feed URLs to proper site names
+        const getSiteName = (feedUrl: string): string => {
+          if (feedUrl.includes('advocate.com')) return 'The Advocate'
+          if (feedUrl.includes('gayety.co') || feedUrl.includes('gayety.com')) return 'Gayety'
+          if (feedUrl.includes('pinknews.co.uk') || feedUrl.includes('thepinknews.com') || feedUrl.includes('DcTYAmLyO3U0fOuw')) return 'PinkNews'
+          if (feedUrl.includes('lgbtqnation.com')) return 'LGBTQ Nation'
+          if (feedUrl.includes('them.us')) return 'them.'
+          if (feedUrl.includes('queerty.com')) return 'Queerty'
+          if (feedUrl.includes('out.com')) return 'Out Magazine'
+          if (feedUrl.includes('gaytimes.co.uk')) return 'Gay Times'
+          if (feedUrl.includes('pride.com')) return 'Pride'
+          if (feedUrl.includes('instinctmagazine.com')) return 'Instinct Magazine'
+          if (feedUrl.includes('hornet.com')) return 'Hornet'
+          if (feedUrl.includes('metroweekly.com')) return 'Metro Weekly'
+          if (feedUrl.includes('towleroad.com')) return 'Towleroad'
+          if (feedUrl.includes('hivplusmag.com')) return 'HIV Plus Magazine'
+          if (feedUrl.includes('poz.com')) return 'POZ'
+          if (feedUrl.includes('thebody.com')) return 'TheBody'
+          if (feedUrl.includes('starobserver.com.au')) return 'Star Observer'
+          if (feedUrl.includes('dailyxtra.com')) return 'Daily Xtra'
+          if (feedUrl.includes('washingtonblade.com')) return 'Washington Blade'
+          if (feedUrl.includes('losangelesblade.com')) return 'Los Angeles Blade'
+          if (feedUrl.includes('chicagophoenix.com')) return 'Chicago Phoenix'
+          return 'LGBTQ+ News'
+        }
 
         const allArticles: NewsArticle[] = []
         const locationKeywords = getLocationKeywords(location.country, location.code)
@@ -461,7 +562,12 @@ export function NewsSection() {
                     // Since these are LGBTQ+ news sources, just return true for most articles
                     return true
                   })
-                  .slice(0, 12)
+                  .slice(0, (feedUrl.includes('pinknews.co.uk') || feedUrl.includes('thepinknews.com') || feedUrl.includes('DcTYAmLyO3U0fOuw')) ?
+                    (feedUrl.includes('entertainment') || feedUrl.includes('DcTYAmLyO3U0fOuw') ? 5 :
+                      feedUrl.includes('politics') || feedUrl.includes('news-politics') ? 5 :
+                        feedUrl.includes('health') ? 4 : 20) :
+                    (feedUrl.includes('gayety.co') || feedUrl.includes('gayety.com')) ? 6 :
+                      feedUrl.includes('arts-media') ? 6 : 20)
                   .map((item: any) => {
                     const title = item.title || ""
                     const description = item.description?.replace(/<[^>]*>/g, "").substring(0, 200) || "Read more about this important LGBTQ+ news story."
@@ -494,6 +600,11 @@ export function NewsSection() {
                       imageUrl = item.thumbnail;
                     }
 
+                    // If no image found, use pride flag as default
+                    if (!imageUrl) {
+                      imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/1200px-Gay_Pride_Flag.svg.png';
+                    }
+
                     // Clean up the URL if it contains query parameters we don't need
                     if (imageUrl) {
                       // Remove common tracking parameters
@@ -512,9 +623,12 @@ export function NewsSection() {
                       url: item.link || item.url,
                       urlToImage: imageUrl,
                       publishedAt: item.pubDate,
-                      source: { name: item.author || "LGBTQ+ News" },
+                      source: {
+                        name: item.author || "LGBTQ+ News",
+                        site: getSiteName(feedUrl)
+                      },
                       content,
-                      category: categorizeArticle(title, description, content),
+                      category: categorizeWithLocation(title, description, content, location),
                     }
                   })
                 allArticles.push(...articles)
@@ -530,67 +644,93 @@ export function NewsSection() {
           [article.title, article]
         )).values());
 
-        // Filter valid articles first
+        // Filter valid articles first - be less strict about images
         const validArticles = uniqueArticles
-          .filter(article => article.urlToImage && article.urlToImage !== "/placeholder.svg" && article.title && article.description)
+          .filter(article => article.title && article.description && article.url)
           .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+
+        console.log(`Total articles fetched: ${allArticles.length}`)
+        console.log(`Unique articles: ${uniqueArticles.length}`)
+        console.log(`Valid articles: ${validArticles.length}`)
+        console.log(`User location:`, location)
+
+        // Debug PinkNews articles
+        const pinkNewsArticles = validArticles.filter(a => a.source.site === 'PinkNews')
+        console.log(`PinkNews articles found: ${pinkNewsArticles.length}`)
+        if (pinkNewsArticles.length > 0) {
+          console.log('PinkNews articles by category:', pinkNewsArticles.reduce((acc, article) => {
+            acc[article.category || 'LGBTQ+ News'] = (acc[article.category || 'LGBTQ+ News'] || 0) + 1
+            return acc
+          }, {} as Record<string, number>))
+        }
+
+        // Debug local news detection
+        const localArticles = validArticles.filter(a => a.category === 'Local News')
+        console.log(`Local news articles found: ${localArticles.length}`)
+        if (localArticles.length > 0) {
+          console.log('Local articles:', localArticles.map(a => ({ title: a.title, category: a.category })))
+        }
 
         // Function to get a balanced selection of articles
         const getBalancedArticles = (articles: NewsArticle[], count: number) => {
-          const categories = [
-            "Rights & Politics",
-            "Entertainment",
-            "Health",
-            "Community",
-            "LGBTQ+ News",
-            "Sports",
-            "Business",
-            "Education",
-            "Technology"
-          ]
+          const targetCategories = ["Rights & Politics", "Entertainment", "Health", "Local News", "LGBTQ+ News"]
 
           let selectedArticles: NewsArticle[] = []
           let remainingArticles = [...articles]
 
-          // First, try to get at least one article from each main category
-          const primaryCategories = ["Rights & Politics", "Entertainment", "Health", "Community", "LGBTQ+ News"]
-          for (const category of primaryCategories) {
-            const articleOfCategory = remainingArticles.find(a => a.category === category)
-            if (articleOfCategory) {
-              selectedArticles.push(articleOfCategory)
-              remainingArticles = remainingArticles.filter(a => a !== articleOfCategory)
-            }
+          // Special allocation for Politics - ensure 10-15 articles
+          const politicsArticles = remainingArticles
+            .filter(a => a.category === "Rights & Politics")
+            .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+            .slice(0, Math.min(15, Math.max(10, Math.floor(count * 0.4)))) // 40% of total, min 10, max 15
+
+          selectedArticles.push(...politicsArticles)
+          remainingArticles = remainingArticles.filter(a => !politicsArticles.includes(a))
+
+          // Distribute remaining slots among other categories
+          const remainingCount = count - selectedArticles.length
+          const otherCategories = targetCategories.filter(cat => cat !== "Rights & Politics")
+          const articlesPerOtherCategory = Math.floor(remainingCount / otherCategories.length)
+
+          for (const category of otherCategories) {
+            const categoryArticles = remainingArticles
+              .filter(a => a.category === category)
+              .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+              .slice(0, articlesPerOtherCategory)
+
+            selectedArticles.push(...categoryArticles)
+            remainingArticles = remainingArticles.filter(a => !categoryArticles.includes(a))
           }
 
-          // Fill the rest with a mix of categories, prioritizing recent articles
+          // Fill remaining slots with any available articles, prioritizing our target categories
           while (selectedArticles.length < count && remainingArticles.length > 0) {
-            // Get the next article, preferring ones from categories we don't have much of
-            const categoryCount = new Map<string, number>()
-            selectedArticles.forEach(a => {
-              categoryCount.set(a.category || 'LGBTQ+ News', (categoryCount.get(a.category || 'LGBTQ+ News') || 0) + 1)
-            })
-
-            // Sort remaining articles by category representation and date
-            remainingArticles.sort((a, b) => {
-              const aCount = categoryCount.get(a.category || 'LGBTQ+ News') || 0
-              const bCount = categoryCount.get(b.category || 'LGBTQ+ News') || 0
-              if (aCount !== bCount) return aCount - bCount
-              return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-            })
-
-            selectedArticles.push(remainingArticles[0])
-            remainingArticles = remainingArticles.slice(1)
+            // Prefer articles from our target categories
+            const preferredArticle = remainingArticles.find(a => targetCategories.includes(a.category || 'LGBTQ+ News'))
+            if (preferredArticle) {
+              selectedArticles.push(preferredArticle)
+              remainingArticles = remainingArticles.filter(a => a !== preferredArticle)
+            } else {
+              // Take any remaining article
+              selectedArticles.push(remainingArticles[0])
+              remainingArticles = remainingArticles.slice(1)
+            }
           }
 
           return selectedArticles
         }
 
         // Get balanced selections for both news grid and carousel
-        const newsGridArticles = getBalancedArticles(validArticles, 9)
+        const newsGridArticles = getBalancedArticles(validArticles, 30)
+
+        console.log(`News grid articles selected: ${newsGridArticles.length}`)
+        console.log('Articles by category:', newsGridArticles.reduce((acc, article) => {
+          acc[article.category || 'LGBTQ+ News'] = (acc[article.category || 'LGBTQ+ News'] || 0) + 1
+          return acc
+        }, {} as Record<string, number>))
 
         // Get different articles for carousel, also balanced
         const remainingArticles = validArticles.filter(article => !newsGridArticles.includes(article))
-        const carouselArticlesList = getBalancedArticles(remainingArticles, 6)
+        const carouselArticlesList = getBalancedArticles(remainingArticles, 5)
 
         // Cache the results for 5 minutes
         cache.set(cacheKey, {
@@ -599,6 +739,7 @@ export function NewsSection() {
         });
 
         // Update state
+        setAllNewsArticles(newsGridArticles)
         setNewsArticles(newsGridArticles)
         setCarouselArticles(carouselArticlesList)
       } catch (err) {
@@ -636,6 +777,28 @@ export function NewsSection() {
     }
   }, [])
 
+  // Auto-refresh functionality
+  useEffect(() => {
+    if (!isAutoRefreshing) return
+
+    const refreshInterval = setInterval(() => {
+      // Clear cache to force fresh data
+      const cacheKey = 'lgbtq-news-feed-v4'
+      cache.delete(cacheKey)
+
+      // Trigger a refresh by updating the cache key
+      window.location.reload()
+    }, 5 * 60 * 1000) // Refresh every 5 minutes
+
+    return () => clearInterval(refreshInterval)
+  }, [isAutoRefreshing])
+
+  // WebSocket connection for real-time updates (foundation)
+  useEffect(() => {
+    // Removed tab visibility refresh - only auto-refresh on timer
+    // This prevents unwanted refreshes when switching browser tabs
+  }, [isAutoRefreshing])
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     const now = new Date()
@@ -655,6 +818,16 @@ export function NewsSection() {
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text
     return text.substring(0, maxLength).trim() + "..."
+  }
+
+  const filterArticlesByCategory = (category: string) => {
+    setSelectedCategory(category)
+    if (category === 'all') {
+      setNewsArticles(allNewsArticles)
+    } else {
+      const filtered = allNewsArticles.filter(article => article.category === category)
+      setNewsArticles(filtered)
+    }
   }
 
   if (isLoading) {
@@ -703,16 +876,27 @@ export function NewsSection() {
     <section ref={sectionRef} id="news" className="pt-0 pb-0 bg-transparent dark:bg-gray-900 mt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* News Carousel Banner */}
-        <NewsCarousel articles={carouselArticles} />
+        <NewsCarousel articles={carouselArticles.slice(0, 5)} />
 
-        {userLocation && (
-          <div className="text-center my-4 animate-on-scroll">
-            <div className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
-              <MapPin className="w-5 h-5 text-primary" />
-              LGBTQ+ News for {userLocation.country}
-            </div>
+        {/* Category Filter Strip */}
+        <div className="flex justify-center mb-8 animate-on-scroll">
+          <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+            {CATEGORIES.map((category, index) => (
+              <button
+                key={category.id}
+                onClick={() => filterArticlesByCategory(category.id)}
+                className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${index === 0 ? 'rounded-l-md' : index === CATEGORIES.length - 1 ? 'rounded-r-md' : ''
+                  } ${selectedCategory === category.id
+                    ? 'bg-purple-600 dark:bg-purple-500 text-white shadow-sm'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                style={{ fontFamily: 'SFUIDisplay-Medium' }}
+              >
+                {category.label}
+              </button>
+            ))}
           </div>
-        )}
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
           {newsArticles.map((article, index) => (
@@ -725,7 +909,16 @@ export function NewsSection() {
                   src={article.urlToImage}
                   alt={article.title}
                   className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
+                  style={{
+                    border: 'none !important',
+                    outline: 'none !important',
+                    boxShadow: 'none !important',
+                    borderRadius: '0 !important',
+                    borderImage: 'none !important'
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 {article.category && (
@@ -770,9 +963,12 @@ export function NewsSection() {
                     Read More
                   </button>
 
-                  <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400" style={{ fontFamily: 'SFUIDisplay-Medium' }}>
-                    <Calendar className="w-3 h-3" />
-                    {formatDate(article.publishedAt)}
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400" style={{ fontFamily: 'SFUIDisplay-Medium' }}>
+                    <span>{article.source.site}</span>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {formatDate(article.publishedAt)}
+                    </div>
                   </div>
                 </div>
               </div>
