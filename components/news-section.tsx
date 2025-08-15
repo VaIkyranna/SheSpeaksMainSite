@@ -133,23 +133,41 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
 
   return (
     <div
-      className="mb-8 relative h-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer border-0 outline-none"
+      className="mb-8 relative h-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer no-border-override"
       onClick={(e) => {
         const currentArticle = articles[currentIndex];
         if (currentArticle?.url) {
           window.open(currentArticle.url, "_blank", "noopener,noreferrer");
         }
       }}
-      style={{ border: 'none', outline: 'none' }}
+      style={{ 
+        border: '0px solid transparent !important', 
+        outline: '0px solid transparent !important',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25) !important',
+        borderImage: 'none !important',
+        borderWidth: '0 !important',
+        borderStyle: 'none !important',
+        borderColor: 'transparent !important'
+      }}
     >
       {articles.map((article, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 border-0 outline-none ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
-          style={{ border: 'none', outline: 'none' }}
+          style={{ 
+            border: 'none !important', 
+            outline: 'none !important',
+            boxShadow: 'none !important',
+            borderImage: 'none !important'
+          }}
         >
-          <div className="w-full h-full relative border-0 outline-none" style={{ border: 'none', outline: 'none' }}>
+          <div className="w-full h-full relative" style={{ 
+            border: 'none !important', 
+            outline: 'none !important',
+            boxShadow: 'none !important',
+            borderImage: 'none !important'
+          }}>
             <img
               src={article.urlToImage}
               alt={article.title}
@@ -874,6 +892,20 @@ export function NewsSection() {
 
   return (
     <section ref={sectionRef} id="news" className="pt-0 pb-0 bg-transparent dark:bg-gray-900 mt-0">
+      <style jsx>{`
+        .no-border-override,
+        .no-border-override *,
+        .no-border-override img,
+        .no-border-override div {
+          border: none !important;
+          outline: none !important;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+          border-image: none !important;
+          border-width: 0 !important;
+          border-style: none !important;
+          border-color: transparent !important;
+        }
+      `}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* News Carousel Banner */}
         <NewsCarousel articles={carouselArticles.slice(0, 5)} />
