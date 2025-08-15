@@ -262,12 +262,12 @@ export function EducationSection() {
     const containerCenter = containerRect.left + (containerRect.width / 2)
     
     // Calculate scroll position based on mouse distance from center
-    const scrollAmount = (mouseX - containerCenter) * 0.5 // Adjust multiplier for sensitivity
+    const scrollAmount = (mouseX - containerCenter) * 0.3 // Reduced sensitivity from 0.5 to 0.3
     
     // Smoothly animate the scroll
     const animate = () => {
       if (!isHovering) return
-      container.scrollLeft += scrollAmount * 0.1
+      container.scrollLeft += scrollAmount * 0.06 // Reduced animation speed from 0.1 to 0.06
       requestAnimationFrame(animate)
     }
     
@@ -487,23 +487,39 @@ export function EducationSection() {
           </p>
         </div>
 
-        <Tabs defaultValue="history" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 mb-8 bg-transparent dark:bg-transparent">
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <History className="w-4 h-4" />
-              <span>History</span>
+        <Tabs defaultValue="history" className="w-full" orientation="horizontal" style={{ willChange: 'auto' }}>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg" style={{ contain: 'layout style', willChange: 'auto' }}>
+            <TabsTrigger 
+              value="history" 
+              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
+              style={{ contain: 'layout', transform: 'translateZ(0)' }}
+            >
+              <History className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+              History
             </TabsTrigger>
-            <TabsTrigger value="allyship" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <span>Allyship Guides</span>
+            <TabsTrigger 
+              value="allyship" 
+              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
+              style={{ contain: 'layout', transform: 'translateZ(0)' }}
+            >
+              <Users className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+              Allyship Guides
             </TabsTrigger>
-            <TabsTrigger value="media" className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span>Media</span>
+            <TabsTrigger 
+              value="media" 
+              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
+              style={{ contain: 'layout', transform: 'translateZ(0)' }}
+            >
+              <BookOpen className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+              Media
             </TabsTrigger>
-            <TabsTrigger value="glossary" className="flex items-center gap-2">
-              <Search className="w-4 h-4" />
-              <span>Glossary</span>
+            <TabsTrigger 
+              value="glossary" 
+              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
+              style={{ contain: 'layout', transform: 'translateZ(0)' }}
+            >
+              <Search className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+              Glossary
             </TabsTrigger>
           </TabsList>
 
