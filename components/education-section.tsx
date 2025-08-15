@@ -248,10 +248,15 @@ export function EducationSection() {
   }
 
   const marqueeRef = useRef<HTMLDivElement>(null)
+  const documentariesRef = useRef<HTMLDivElement>(null)
   
-  // Track mouse position for smooth scrolling
+  // Track mouse position for smooth scrolling (books)
   const [mouseX, setMouseX] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
+  
+  // Track mouse position for documentaries scrolling
+  const [docMouseX, setDocMouseX] = useState(0)
+  const [isDocHovering, setIsDocHovering] = useState(false)
   
   // Update scroll based on mouse position
   useEffect(() => {
@@ -277,6 +282,32 @@ export function EducationSection() {
   
   const handleMouseMove = (e: React.MouseEvent) => {
     setMouseX(e.clientX)
+  }
+
+  // Update documentaries scroll based on mouse position
+  useEffect(() => {
+    if (!documentariesRef.current || !isDocHovering) return
+    
+    const container = documentariesRef.current
+    const containerRect = container.getBoundingClientRect()
+    const containerCenter = containerRect.left + (containerRect.width / 2)
+    
+    // Calculate scroll position based on mouse distance from center
+    const scrollAmount = (docMouseX - containerCenter) * 0.3 // Same sensitivity as books
+    
+    // Smoothly animate the scroll
+    const animate = () => {
+      if (!isDocHovering) return
+      container.scrollLeft += scrollAmount * 0.06 // Same animation speed as books
+      requestAnimationFrame(animate)
+    }
+    
+    const animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [docMouseX, isDocHovering])
+  
+  const handleDocMouseMove = (e: React.MouseEvent) => {
+    setDocMouseX(e.clientX)
   }
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -487,38 +518,22 @@ export function EducationSection() {
           </p>
         </div>
 
-        <Tabs defaultValue="history" className="w-full" orientation="horizontal" style={{ willChange: 'auto' }}>
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg" style={{ contain: 'layout style', willChange: 'auto' }}>
-            <TabsTrigger 
-              value="history" 
-              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
-              style={{ contain: 'layout', transform: 'translateZ(0)' }}
-            >
-              <History className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+        <Tabs defaultValue="history" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-transparent">
+            <TabsTrigger value="history" className="flex items-center gap-2">
+              <History className="w-4 h-4" />
               History
             </TabsTrigger>
-            <TabsTrigger 
-              value="allyship" 
-              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
-              style={{ contain: 'layout', transform: 'translateZ(0)' }}
-            >
-              <Users className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+            <TabsTrigger value="allyship" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
               Allyship Guides
             </TabsTrigger>
-            <TabsTrigger 
-              value="media" 
-              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
-              style={{ contain: 'layout', transform: 'translateZ(0)' }}
-            >
-              <BookOpen className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+            <TabsTrigger value="media" className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
               Media
             </TabsTrigger>
-            <TabsTrigger 
-              value="glossary" 
-              className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-md transition-colors duration-150 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-white"
-              style={{ contain: 'layout', transform: 'translateZ(0)' }}
-            >
-              <Search className="w-4 h-4 flex-shrink-0" style={{ pointerEvents: 'none' }} />
+            <TabsTrigger value="glossary" className="flex items-center gap-2">
+              <Search className="w-4 h-4" />
               Glossary
             </TabsTrigger>
           </TabsList>
@@ -646,7 +661,19 @@ export function EducationSection() {
                 Featured Documentaries
               </h3>
               <div className="relative">
-                <div className="flex space-x-6 pb-4 overflow-x-auto snap-x snap-mandatory hide-scrollbar">
+                <div 
+                  ref={documentariesRef}
+                  onMouseMove={handleDocMouseMove}
+                  onMouseEnter={() => setIsDocHovering(true)}
+                  onMouseLeave={() => setIsDocHovering(false)}
+                  className="flex space-x-6 pb-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                  style={{
+                    scrollBehavior: 'smooth',
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                  }}
+                >
                   {mediaRecommendations.map((item, index) => (
                     <div key={index} className="w-[300px] flex-shrink-0 snap-center">
                       <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-transform hover:scale-[1.02] h-full flex flex-col">
