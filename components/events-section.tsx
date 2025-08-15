@@ -146,7 +146,7 @@ export function EventsSection() {
             <span className="text-gray-800 dark:text-gray-100">and create change together.</span>
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Find LGBTQ+ events and meetups in your area
+
           </p>
         </div>
 
@@ -154,7 +154,7 @@ export function EventsSection() {
           <div className="text-center mb-8">
 
             <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Check out these great places to find LGBTQ+ events, meetups, and community gatherings near you.
+        
             </p>
           </div>
           

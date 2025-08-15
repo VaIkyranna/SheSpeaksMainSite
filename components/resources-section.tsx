@@ -256,7 +256,7 @@ export function ResourcesSection() {
             Find Resources & Community
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-200 max-w-2xl mx-auto leading-relaxed">
-            Access comprehensive resources and connect with supportive communities tailored for your journey
+          Discover local LGBTQ+ organizations and support groups
           </p>
         </div>
 

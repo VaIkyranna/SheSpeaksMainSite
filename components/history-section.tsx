@@ -237,7 +237,6 @@ export function HistorySection() {
             <span className="text-gray-800 dark:text-gray-200">This Month</span>
           </h2>
           <p className="apple-subheadline max-w-2xl mx-auto">
-            Important moments in LGBTQ+ history that happened this month throughout the years.
           </p>
         </div>
 
@@ -296,15 +295,12 @@ export function HistorySection() {
                           <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-pink-600 dark:group-hover:text-pink-400 apple-transition" />
                         )}
                       </div>
-                      <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-200 group-hover:text-pink-700 dark:group-hover:text-pink-400 apple-transition leading-tight">
-                        {cleanText.split('.')[0].split(',')[0]}
+                      <CardTitle className="text-lg font-bold text-gray-800 dark:text-gray-200 group-hover:text-pink-700 dark:group-hover:text-pink-400 apple-transition leading-tight">
+                        {cleanText}
                       </CardTitle>
                     </CardHeader>
 
                     <CardContent className="flex flex-col flex-grow">
-                      <CardDescription className="text-gray-600 dark:text-gray-400 leading-relaxed flex-grow mb-4">
-                        {cleanText.length > 120 ? `${cleanText.substring(0, 120)}...` : cleanText}
-                      </CardDescription>
 
                       <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
                         {wikipediaLink ? (
@@ -315,11 +311,7 @@ export function HistorySection() {
                             Learn More
                             <ExternalLink className="w-4 h-4" />
                           </button>
-                        ) : (
-                          <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                            Historical record
-                          </span>
-                        )}
+                        ) : null}
                         <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
                           {formatDate()}
                         </span>
