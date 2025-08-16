@@ -49,12 +49,12 @@ export default function Home() {
         </ErrorBoundary>
       </section>
 
-      <section id="resources" className="apple-section bg-white dark:bg-gray-900">
-        <ResourcesSection />
-      </section>
-
       <section id="education" className="bg-white dark:bg-gray-900">
         <EducationSection />
+      </section>
+
+      <section id="resources" className="apple-section bg-white dark:bg-gray-900">
+        <ResourcesSection />
       </section>
 
       <section id="events" className="apple-section bg-gray-50 dark:bg-gray-800">
