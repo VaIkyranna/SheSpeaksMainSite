@@ -177,14 +177,14 @@ function NewsCarousel({ articles }: { articles: NewsArticle[] }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
             <div className="mb-2">
-              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm" style={{ fontFamily: 'SFUIDisplay-Regular' }}>
+              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm">
                 {article.source.name}
               </span>
             </div>
-            <h3 className="text-xl mb-2 leading-tight" style={{ fontFamily: 'SFUIDisplay-Regular' }}>
+            <h3 className="text-xl mb-2 leading-tight">
               {article.title}
             </h3>
-            <p className="text-white/90 text-sm line-clamp-2" style={{ fontFamily: 'SFUIDisplay-Regular' }}>
+            <p className="text-white/90 text-sm line-clamp-2">
               {article.description}
             </p>
           </div>
@@ -926,7 +926,6 @@ export function NewsSection() {
                     ? 'bg-purple-600 dark:bg-purple-500 text-white shadow-sm'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
-                style={{ fontFamily: 'SFUIDisplay-Medium' }}
               >
                 {category.label}
               </button>
@@ -959,7 +958,7 @@ export function NewsSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 {article.category && (
                   <div className="absolute bottom-3 right-3">
-                    <div className="text-xs bg-purple-600/90 backdrop-blur-sm text-white px-2 py-1 rounded-full" style={{ fontFamily: 'SFUIDisplay-Light' }}>
+                    <div className="text-xs bg-purple-600/90 backdrop-blur-sm text-white px-2 py-1 rounded-full">
                       {article.category}
                     </div>
                   </div>
@@ -968,15 +967,15 @@ export function NewsSection() {
 
               <div className="p-2 flex flex-col flex-1">
                 {/* Author badge first, right under image */}
-                <span className="text-xs text-purple-700 dark:text-purple-300 mb-1 inline-block" style={{ fontFamily: "SFUIDisplay-Medium" }}>
+                <span className="text-xs text-purple-700 dark:text-purple-300 mb-1 inline-block">
                   {article.source.name}
                 </span>
 
-                <h3 className="text-sm leading-tight text-gray-900 dark:text-gray-100 mb-1 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors duration-300 line-clamp-2" style={{ fontFamily: "SFUIDisplay-Medium" }}>
+                <h3 className="text-sm leading-tight text-gray-900 dark:text-gray-100 mb-1 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors duration-300 line-clamp-2">
                   {truncateText(article.title, 85)}
                 </h3>
 
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-2 line-clamp-2 flex-1" style={{ fontFamily: "SFUIDisplay-Medium" }}>
+                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-2 line-clamp-2 flex-1">
                   {truncateText(article.description, 100)}
                 </p>
 
@@ -988,7 +987,7 @@ export function NewsSection() {
                       fontSize: '11px',
                       borderRadius: '8px',
                       gap: '0px',
-                      fontFamily: 'SFUIDisplay-Semibold'
+                      fontFamily: 'Inter, sans-serif'
                     }}
                     onClick={() => {
                       if (article.url) {
@@ -999,7 +998,7 @@ export function NewsSection() {
                     Read More
                   </button>
 
-                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400" style={{ fontFamily: 'SFUIDisplay-Medium' }}>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <span>{article.source.site}</span>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
