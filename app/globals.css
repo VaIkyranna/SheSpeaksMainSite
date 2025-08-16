@@ -1,13 +1,46 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Custom animations */
-@keyframes bounce-horizontal {
-  0%, 100% {
-    transform: translateX(0);
+/* Critical CSS - Above the fold styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-foreground bg-white dark:bg-gray-900;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Critical animations - minimal and optimized */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  50% {
-    transform: translateX(4px);
+}
+
+/* Critical components */
+.apple-headline {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* Load non-critical CSS asynchronously */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes bounce-horizontal {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -303,12 +336,9 @@
     @apply py-12 md:py-16 px-4 bg-white dark:bg-gray-900;
   }
 
-  /* Apple typography */
+  /* Apple typography - moved to critical CSS */
   .apple-headline {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    /* Styles moved to critical section */
   }
 
   .apple-subheadline {
@@ -322,17 +352,19 @@
     color: #9ca3af;
   }
 
-  /* Fade in animation */
+  /* Fade in animation - optimized */
   .fade-in {
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
   }
 
-  @keyframes fadeIn {
-    to {
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in {
+      animation: none;
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
     }
   }
 
