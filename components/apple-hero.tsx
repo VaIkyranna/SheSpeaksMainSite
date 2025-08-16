@@ -12,7 +12,7 @@ export function AppleHero() {
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" });
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const menuRef = useRef<HTMLDivElement>(null);
-  const tabs = ["Home", "News", "Resources", "Events", "Community", "About"];
+  const tabs = ["Home", "Resources", "Info", "Events", "About"];
   
   // Enhanced gradients with better contrast and animation support
   const gradients = [
@@ -87,6 +87,23 @@ export function AppleHero() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleTabClick = (index: number) => {
+    setActiveIndex(index);
+    const sections = [
+      '#news',        // Home
+      '#resources',   // Resources
+      '#education',   // Info
+      '#events',      // Events
+      '#support'      // About (scrolls to support)
+    ];
+    
+    const section = document.querySelector(sections[index]);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -164,10 +181,7 @@ export function AppleHero() {
                       ? 'text-white font-medium' 
                       : 'text-white/80 hover:bg-white/10'
                   }`}
-                  onClick={() => {
-                    setActiveIndex(index);
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => handleTabClick(index)}
                 >
                   {tab}
                 </button>
@@ -182,7 +196,7 @@ export function AppleHero() {
         <div className="relative">
           {/* Hover Highlight */}
           <div
-            className="absolute h-8 transition-all duration-200 ease-out bg-white/10 rounded-md -z-10"
+            className="absolute h-10 transition-all duration-200 ease-out bg-white/10 rounded-md -z-10"
             style={{
               ...hoverStyle,
               opacity: hoveredIndex !== null ? 1 : 0,
@@ -195,7 +209,7 @@ export function AppleHero() {
 
           {/* Active Indicator */}
           <div
-            className="absolute bottom-0 h-[1.5px] bg-white/90 transition-all duration-300 ease-out"
+            className="absolute bottom-0 h-[2px] bg-white/90 transition-all duration-300 ease-out"
             style={{
               ...activeStyle,
               opacity: activeIndex !== null ? 1 : 0,
@@ -213,19 +227,20 @@ export function AppleHero() {
                 ref={(el: HTMLDivElement | null) => {
                   tabRefs.current[index] = el
                 }}
-                className={`px-3 py-1.5 cursor-pointer transition-all duration-200 h-8 text-sm ${
+                className={`px-4 py-2 cursor-pointer transition-all duration-200 h-10 ${
                   index === activeIndex 
                     ? 'text-white font-medium' 
                     : 'text-white/70 hover:text-white/90'
                 }`}
                 style={{ 
                   fontFamily: 'SFUIDisplay-Light',
-                  paddingBottom: '0.35rem',
-                  whiteSpace: 'nowrap'
+                  fontSize: '1rem',
+                  whiteSpace: 'nowrap',
+                  lineHeight: '1.5'
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleTabClick(index)}
               >
                 <span className="relative">
                   {tab}
