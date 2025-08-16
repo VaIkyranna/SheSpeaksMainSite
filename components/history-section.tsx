@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, ExternalLink, Clock, RefreshCw } from "lucide-react"
+import Image from "next/image"
 
 interface HistoricalEvent {
   year: number
@@ -215,7 +216,9 @@ export function HistorySection() {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
+    target.onerror = null; // Prevent infinite loop
     target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/400px-Gay_Pride_Flag.svg.png';
+    target.srcset = ''; // Clear srcset for Next.js Image
   }
 
   if (loading) {
@@ -281,16 +284,15 @@ export function HistorySection() {
   return (
     <section id="history" className="apple-content-section bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="apple-headline mb-4">
+        <header className="text-center mb-12">
+          <h1 className="apple-headline mb-3">
             <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">LGBTQ+ History</span>
-            <br />
-            <span className="text-gray-800 dark:text-gray-200">This Month</span>
-          </h2>
+          </h1>
+          <p className="text-2xl font-medium text-gray-800 dark:text-gray-200">This Month</p>
           <p className="apple-subheadline max-w-2xl mx-auto">
             Explore pivotal moments in LGBTQ+ history from {formatDate()}
           </p>
-        </div>
+        </header>
 
         {events.length === 0 ? (
           <div className="text-center fade-in">
@@ -321,11 +323,17 @@ export function HistorySection() {
               >
                 {event.image && (
                   <div className="relative w-full h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={event.image}
                       alt={event.title}
+                      width={600}
+                      height={400}
                       className="object-cover w-full h-full group-hover:scale-105 apple-transition"
                       onError={handleImageError}
+                      priority={index < 3} // Preload first 3 images
+                      loading={index < 3 ? 'eager' : 'lazy'}
+                      quality={80}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
                 )}
