@@ -1,26 +1,20 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, ExternalLink, Clock, RefreshCw } from "lucide-react"
-import { cache } from "@/lib/cache"
 
 interface HistoricalEvent {
   year: number
-  text: string
-  html: string
-  no_year_html: string
-  links?: Array<{
-    title: string
-    link: string
-  }>
+  title: string
+  description: string
+  category: 'Civil Rights' | 'Entertainment' | 'Politics' | 'Medical' | 'Culture' | 'Legal'
   image?: string
-}
-
-interface WikipediaResponse {
-  selected?: HistoricalEvent[]
-  events?: HistoricalEvent[]
+  wikipediaLink?: string
+  significance: 'High' | 'Medium' | 'Low'
+  location?: string
+  keyFigures?: string[]
 }
 
 export function HistorySection() {
@@ -29,70 +23,144 @@ export function HistorySection() {
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
-  // Static LGBTQ+ historical events by month from curated data
+  // Monthly LGBTQ+ historical events - focused on "This Month in History"
   const monthlyEvents: { [key: number]: HistoricalEvent[] } = {
     1: [ // January
-      { year: 1895, text: "First trial of Oscar Wilde for 'gross indecency' begins in London.", html: "First trial of Oscar Wilde for 'gross indecency' begins in London.", no_year_html: "First trial of Oscar Wilde for 'gross indecency' begins in London." },
-      { year: 1972, text: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy.", html: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy.", no_year_html: "Sweden becomes first country to allow transgender people to legally change gender and access hormone therapy." },
-      { year: 1978, text: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S.", html: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S.", no_year_html: "Harvey Milk sworn in as one of the first openly gay elected officials in the U.S." }
+      { 
+        year: 1895, 
+        title: "Oscar Wilde's Trial Begins", 
+        description: "The first trial of Oscar Wilde for 'gross indecency' begins in London, marking a pivotal moment in LGBTQ+ legal history.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'London, UK',
+        keyFigures: ['Oscar Wilde'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Oscar_Wilde_Sarony.jpg/400px-Oscar_Wilde_Sarony.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Trials_of_Oscar_Wilde'
+      },
+      { 
+        year: 1972, 
+        title: "Sweden Pioneers Trans Rights", 
+        description: "Sweden becomes the first country to allow transgender people to legally change gender and access hormone therapy.",
+        category: 'Medical',
+        significance: 'High',
+        location: 'Sweden',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Sweden.svg/400px-Flag_of_Sweden.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/LGBT_rights_in_Sweden'
+      },
+      { 
+        year: 1978, 
+        title: "Harvey Milk Takes Office", 
+        description: "Harvey Milk is sworn in as one of the first openly gay elected officials in the U.S., becoming a beacon of hope for the community.",
+        category: 'Politics',
+        significance: 'High',
+        location: 'San Francisco, USA',
+        keyFigures: ['Harvey Milk'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg/400px-Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Harvey_Milk'
+      }
     ],
     2: [ // February
-      { year: 1869, text: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny.", html: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny.", no_year_html: "First recorded use of the term 'homosexual' appears in a German-Hungarian pamphlet by Karl-Maria Kertbeny." },
-      { year: 1988, text: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality.", html: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality.", no_year_html: "UK Section 28 legislation introduced to ban 'promotion' of homosexuality." },
-      { year: 2004, text: "San Francisco issues first legal same-sex marriage licenses.", html: "San Francisco issues first legal same-sex marriage licenses.", no_year_html: "San Francisco issues first legal same-sex marriage licenses." }
-    ],
-    3: [ // March
-      { year: 1785, text: "Jeremy Bentham writes defense of same-sex relationships.", html: "Jeremy Bentham writes defense of same-sex relationships.", no_year_html: "Jeremy Bentham writes defense of same-sex relationships." },
-      { year: 1982, text: "Wisconsin bans discrimination based on sexual orientation.", html: "Wisconsin bans discrimination based on sexual orientation.", no_year_html: "Wisconsin bans discrimination based on sexual orientation." },
-      { year: 2014, text: "Same-sex marriage becomes legal in England and Wales.", html: "Same-sex marriage becomes legal in England and Wales.", no_year_html: "Same-sex marriage becomes legal in England and Wales." }
-    ],
-    4: [ // April
-      { year: 1895, text: "Oscar Wilde arrested for gross indecency.", html: "Oscar Wilde arrested for gross indecency.", no_year_html: "Oscar Wilde arrested for gross indecency." },
-      { year: 1997, text: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode.", html: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode.", no_year_html: "Ellen DeGeneres comes out on The Oprah Winfrey Show and in Ellen sitcom episode." },
-      { year: 2001, text: "Netherlands becomes first country to legalize same-sex marriage.", html: "Netherlands becomes first country to legalize same-sex marriage.", no_year_html: "Netherlands becomes first country to legalize same-sex marriage." }
-    ],
-    5: [ // May
-      { year: 1895, text: "Oscar Wilde convicted of gross indecency.", html: "Oscar Wilde convicted of gross indecency.", no_year_html: "Oscar Wilde convicted of gross indecency." },
-      { year: 1990, text: "World Health Organization declassifies homosexuality as mental disorder.", html: "World Health Organization declassifies homosexuality as mental disorder.", no_year_html: "World Health Organization declassifies homosexuality as mental disorder." },
-      { year: 2019, text: "Taiwan legalizes same-sex marriage, first in Asia.", html: "Taiwan legalizes same-sex marriage, first in Asia.", no_year_html: "Taiwan legalizes same-sex marriage, first in Asia." }
+      { 
+        year: 1869, 
+        title: "Term 'Homosexual' First Used", 
+        description: "Karl-Maria Kertbeny coins the term 'homosexual' in a German-Hungarian pamphlet, creating language that would shape LGBTQ+ discourse.",
+        category: 'Culture',
+        significance: 'High',
+        location: 'Germany',
+        keyFigures: ['Karl-Maria Kertbeny'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/400px-Flag_of_Germany.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Karl-Maria_Kertbeny'
+      },
+      { 
+        year: 1988, 
+        title: "UK Section 28 Enacted", 
+        description: "The UK introduces Section 28 legislation banning the 'promotion' of homosexuality, sparking widespread protests and activism.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'United Kingdom',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/400px-Flag_of_the_United_Kingdom.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Section_28'
+      },
+      { 
+        year: 2004, 
+        title: "San Francisco Marriage Licenses", 
+        description: "San Francisco begins issuing the first legal same-sex marriage licenses in the U.S., defying state law and inspiring nationwide activism.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'San Francisco, USA',
+        keyFigures: ['Gavin Newsom'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/2004_same-sex_marriages_in_San_Francisco.jpg/400px-2004_same-sex_marriages_in_San_Francisco.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/2004_same-sex_marriages_in_San_Francisco'
+      }
     ],
     6: [ // June
-      { year: 1969, text: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement.", html: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement.", no_year_html: "Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement." },
-      { year: 1970, text: "First Pride marches held in New York, Los Angeles, and Chicago.", html: "First Pride marches held in New York, Los Angeles, and Chicago.", no_year_html: "First Pride marches held in New York, Los Angeles, and Chicago." },
-      { year: 2015, text: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges.", html: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges.", no_year_html: "U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges." }
+      { 
+        year: 1969, 
+        title: "Stonewall Riots Begin", 
+        description: "The Stonewall riots begin in New York City, sparking the modern LGBTQ+ rights movement and changing history forever.",
+        category: 'Civil Rights',
+        significance: 'High',
+        location: 'New York City, USA',
+        keyFigures: ['Marsha P. Johnson', 'Sylvia Rivera'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Stonewall_Inn_5_pride_weekend_2016.jpg/400px-Stonewall_Inn_5_pride_weekend_2016.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Stonewall_riots'
+      },
+      { 
+        year: 1970, 
+        title: "First Pride Marches", 
+        description: "The first Pride marches are held in New York, Los Angeles, and Chicago, commemorating Stonewall and establishing an annual tradition.",
+        category: 'Culture',
+        significance: 'High',
+        location: 'Multiple US Cities',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/400px-Gay_Pride_Flag.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Pride_parade'
+      },
+      { 
+        year: 2015, 
+        title: "Marriage Equality Nationwide", 
+        description: "The U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges, a landmark victory for equality.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'United States',
+        keyFigures: ['Jim Obergefell'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/US_Supreme_Court_Building.jpg/400px-US_Supreme_Court_Building.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Obergefell_v._Hodges'
+      }
     ],
-    7: [ // July
-      { year: 1965, text: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights.", html: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights.", no_year_html: "First Annual Reminder picket held in Philadelphia for LGBTQ+ rights." },
-      { year: 2005, text: "Spain legalizes same-sex marriage.", html: "Spain legalizes same-sex marriage.", no_year_html: "Spain legalizes same-sex marriage." },
-      { year: 2010, text: "Argentina legalizes same-sex marriage, first in Latin America.", html: "Argentina legalizes same-sex marriage, first in Latin America.", no_year_html: "Argentina legalizes same-sex marriage, first in Latin America." }
-    ],
-    8: [ // August
-      { year: 1961, text: "Illinois becomes first U.S. state to decriminalize homosexuality.", html: "Illinois becomes first U.S. state to decriminalize homosexuality.", no_year_html: "Illinois becomes first U.S. state to decriminalize homosexuality." },
-      { year: 1963, text: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington.", html: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington.", no_year_html: "Bayard Rustin, openly gay civil rights leader, organizes March on Washington." },
-      { year: 2013, text: "New Zealand legalizes same-sex marriage.", html: "New Zealand legalizes same-sex marriage.", no_year_html: "New Zealand legalizes same-sex marriage." }
-    ],
-    9: [ // September
-      { year: 1987, text: "First display of AIDS Memorial Quilt in Washington, D.C.", html: "First display of AIDS Memorial Quilt in Washington, D.C.", no_year_html: "First display of AIDS Memorial Quilt in Washington, D.C." },
-      { year: 2011, text: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military.", html: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military.", no_year_html: "Repeal of 'Don't Ask, Don't Tell' takes effect in U.S. military." },
-      { year: 2018, text: "India's Supreme Court decriminalizes homosexuality.", html: "India's Supreme Court decriminalizes homosexuality.", no_year_html: "India's Supreme Court decriminalizes homosexuality." }
-    ],
-    10: [ // October
-      { year: 1969, text: "Canada decriminalizes homosexuality.", html: "Canada decriminalizes homosexuality.", no_year_html: "Canada decriminalizes homosexuality." },
-      { year: 1988, text: "First National Coming Out Day established.", html: "First National Coming Out Day established.", no_year_html: "First National Coming Out Day established." },
-      { year: 1993, text: "U.S. Congress passes 'Don't Ask, Don't Tell' policy.", html: "U.S. Congress passes 'Don't Ask, Don't Tell' policy.", no_year_html: "U.S. Congress passes 'Don't Ask, Don't Tell' policy." }
-    ],
-    11: [ // November
-      { year: 1973, text: "American Psychiatric Association confirms homosexuality is not a mental disorder.", html: "American Psychiatric Association confirms homosexuality is not a mental disorder.", no_year_html: "American Psychiatric Association confirms homosexuality is not a mental disorder." },
-      { year: 1978, text: "Harvey Milk assassinated in San Francisco.", html: "Harvey Milk assassinated in San Francisco.", no_year_html: "Harvey Milk assassinated in San Francisco." },
-      { year: 1999, text: "First Transgender Day of Remembrance held.", html: "First Transgender Day of Remembrance held.", no_year_html: "First Transgender Day of Remembrance held." }
-    ],
-    12: [ // December
-      { year: 1924, text: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S.", html: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S.", no_year_html: "Henry Gerber founds Society for Human Rights, first gay rights organization in the U.S." },
-      { year: 1988, text: "First World AIDS Day observed.", html: "First World AIDS Day observed.", no_year_html: "First World AIDS Day observed." },
-      { year: 2022, text: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights.", html: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights.", no_year_html: "U.S. enacts Respect for Marriage Act protecting same-sex marriage rights." }
+    8: [ // August - Current month
+      { 
+        year: 1961, 
+        title: "Illinois Decriminalizes Homosexuality", 
+        description: "Illinois becomes the first U.S. state to decriminalize homosexuality, beginning the long journey toward legal acceptance.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'Illinois, USA',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Illinois.svg/400px-Flag_of_Illinois.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/LGBT_rights_in_Illinois'
+      },
+      { 
+        year: 1963, 
+        title: "March on Washington", 
+        description: "Bayard Rustin, an openly gay civil rights leader, organizes the historic March on Washington, demonstrating intersectional activism.",
+        category: 'Civil Rights',
+        significance: 'High',
+        location: 'Washington D.C., USA',
+        keyFigures: ['Bayard Rustin'],
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bayard_Rustin_1963.jpg/400px-Bayard_Rustin_1963.jpg',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Bayard_Rustin'
+      },
+      { 
+        year: 2013, 
+        title: "New Zealand Marriage Equality", 
+        description: "New Zealand legalizes same-sex marriage, becoming the first country in Oceania to achieve marriage equality.",
+        category: 'Legal',
+        significance: 'High',
+        location: 'New Zealand',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_New_Zealand.svg/400px-Flag_of_New_Zealand.svg.png',
+        wikipediaLink: 'https://en.wikipedia.org/wiki/Same-sex_marriage_in_New_Zealand'
+      }
     ]
   }
-
   const fetchHistoricalEvents = async () => {
     try {
       setLoading(true)
@@ -133,38 +201,21 @@ export function HistorySection() {
     })
   }
 
-  const extractWikipediaLink = (event: HistoricalEvent): string | null => {
-    try {
-      // First try to get link from the links array
-      if (event?.links && event.links.length > 0) {
-        return event.links[0].link;
-      }
-
-      // Then try to extract link from HTML if it exists
-      if (event?.html) {
-        const linkMatch = event.html.match(/href=['"]([^'"]*wikipedia[^'"]*)['"]/i);
-        if (linkMatch) {
-          return linkMatch[1].startsWith('http') ? linkMatch[1] : `https://en.wikipedia.org${linkMatch[1]}`;
-        }
-      }
-
-      // Finally, try to find any link in the text
-      if (event?.text) {
-        const linkMatch = event.text.match(/https?:\/\/[^\s]+/i);
-        if (linkMatch) {
-          return linkMatch[0];
-        }
-      }
-
-      return null;
-    } catch (error) {
-      console.error('Error extracting Wikipedia link:', error);
-      return null;
+  const getCategoryColor = (category: string): string => {
+    const categoryColors: { [key: string]: string } = {
+      'Civil Rights': 'from-red-500 to-orange-500',
+      'Legal': 'from-blue-500 to-indigo-500',
+      'Entertainment': 'from-pink-500 to-purple-500',
+      'Medical': 'from-green-500 to-teal-500',
+      'Culture': 'from-yellow-500 to-orange-500',
+      'Politics': 'from-indigo-500 to-purple-500',
     }
+    return categoryColors[category] || 'from-gray-500 to-gray-600'
   }
 
-  const stripHtml = (html: string): string => {
-    return html.replace(/<[^>]*>/g, '')
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/400px-Gay_Pride_Flag.svg.png';
   }
 
   if (loading) {
@@ -237,6 +288,7 @@ export function HistorySection() {
             <span className="text-gray-800 dark:text-gray-200">This Month</span>
           </h2>
           <p className="apple-subheadline max-w-2xl mx-auto">
+            Explore pivotal moments in LGBTQ+ history from {formatDate()}
           </p>
         </div>
 
@@ -260,71 +312,97 @@ export function HistorySection() {
             </div>
           </div>
         ) : (
-          <div className={`grid gap-6 ${events.length === 1 ? 'grid-cols-1 max-w-xl mx-auto' : events.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-            {events.map((event, index) => {
-              const wikipediaLink = extractWikipediaLink(event)
-              const cleanText = stripHtml(event.text)
-
-              return (
-                <Card
-                  key={`${event.year}-${index}`}
-                  className="apple-card group overflow-hidden fade-in bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 flex flex-col h-full"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {event.image && (
-                    <div className="relative w-full h-48 overflow-hidden">
-                      <img
-                        src={event.image}
-                        alt={cleanText.split('.')[0]}
-                        className="object-cover w-full h-full group-hover:scale-105 apple-transition"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                        }}
-                      />
+          <div className={`grid gap-6 ${events.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : events.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+            {events.map((event, index) => (
+              <Card
+                key={`${event.year}-${index}`}
+                className="apple-card group overflow-hidden fade-in bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 flex flex-col h-full"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {event.image && (
+                  <div className="relative w-full h-48 overflow-hidden">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="object-cover w-full h-full group-hover:scale-105 apple-transition"
+                      onError={handleImageError}
+                    />
+                    <div className="absolute top-3 right-3">
+                      <span className={`px-2 py-1 text-xs font-medium text-white bg-gradient-to-r ${getCategoryColor(event.category)} rounded-full`}>
+                        {event.category}
+                      </span>
                     </div>
-                  )}
-
-                  <div className="flex flex-col flex-grow">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="inline-flex items-center gap-2 bg-pink-100 dark:bg-pink-900/30 px-3 py-1.5 rounded-full border border-pink-200 dark:border-pink-800">
-                          <Calendar className="w-3 h-3 text-pink-600 dark:text-pink-400" />
-                          <span className="text-sm font-semibold text-pink-700 dark:text-pink-300">{event.year}</span>
-                        </div>
-                        {wikipediaLink && (
-                          <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-pink-600 dark:group-hover:text-pink-400 apple-transition" />
-                        )}
-                      </div>
-                      <CardTitle className="text-lg font-bold text-gray-800 dark:text-gray-200 group-hover:text-pink-700 dark:group-hover:text-pink-400 apple-transition leading-tight">
-                        {cleanText}
-                      </CardTitle>
-                    </CardHeader>
-
-                    <CardContent className="flex flex-col flex-grow">
-
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
-                        {wikipediaLink ? (
-                          <button
-                            className="custom-button"
-                            onClick={() => window.open(wikipediaLink, "_blank", "noopener,noreferrer")}
-                          >
-                            Learn More
-                            <ExternalLink className="w-4 h-4" />
-                          </button>
-                        ) : null}
-                        <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
-                          {formatDate()}
+                    {event.significance === 'High' && (
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-full">
+                          Milestone
                         </span>
                       </div>
-                    </CardContent>
+                    )}
                   </div>
-                </Card>
-              )
-            })}
+                )}
+
+                <div className="flex flex-col flex-grow">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="inline-flex items-center gap-2 bg-pink-100 dark:bg-pink-900/30 px-3 py-1.5 rounded-full border border-pink-200 dark:border-pink-800">
+                        <Calendar className="w-3 h-3 text-pink-600 dark:text-pink-400" />
+                        <span className="text-sm font-semibold text-pink-700 dark:text-pink-300">{event.year}</span>
+                      </div>
+                      {event.wikipediaLink && (
+                        <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-pink-600 dark:group-hover:text-pink-400 apple-transition" />
+                      )}
+                    </div>
+                    <CardTitle className="text-lg font-bold text-gray-800 dark:text-gray-200 group-hover:text-pink-700 dark:group-hover:text-pink-400 apple-transition leading-tight">
+                      {event.title}
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="flex flex-col flex-grow">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                      {event.description}
+                    </p>
+                    
+                    {event.location && (
+                      <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                        <span>📍</span>
+                        <span>{event.location}</span>
+                      </div>
+                    )}
+
+                    {event.keyFigures && event.keyFigures.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {event.keyFigures.map((figure, figureIndex) => (
+                          <span
+                            key={figureIndex}
+                            className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full"
+                          >
+                            {figure}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
+                      {event.wikipediaLink ? (
+                        <button
+                          className="custom-button"
+                          onClick={() => window.open(event.wikipediaLink, "_blank", "noopener,noreferrer")}
+                        >
+                          Learn More
+                          <ExternalLink className="w-4 h-4" />
+                        </button>
+                      ) : null}
+                      <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                        {formatDate()}
+                      </span>
+                    </div>
+                  </CardContent>
+                </div>
+              </Card>
+            ))}
           </div>
         )}
-
-
       </div>
     </section>
   )

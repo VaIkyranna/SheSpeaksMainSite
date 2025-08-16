@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, History, Users, BookMarked, Search, Youtube, Film, ArrowRight, ChevronDown } from "lucide-react"
+import { BookOpen, History, Users, BookMarked, Search, Youtube, Film, ArrowRight, ChevronDown, ExternalLink } from "lucide-react"
 import { useRef, useState, useEffect } from 'react'
 
 type Resource = {
@@ -22,23 +22,214 @@ type Term = {
 
 export function EducationSection() {
   // Sample data - in a real app, this would come from a CMS or API
-  const historyResources: Resource[] = [
+  // Timeline data for scrolling history interface - comprehensive LGBTQ+ history
+  const historyTimeline = [
     {
-      title: "The Stonewall Riots: A Documentary History",
-      description: "Comprehensive look at the 1969 Stonewall uprising that sparked the modern LGBTQ+ rights movement.",
-      type: 'book',
-      author: "Marc Stein"
+      year: 1785,
+      title: "Jeremy Bentham's Defense",
+      description: "Jeremy Bentham writes one of the first philosophical defenses of same-sex relationships, challenging societal norms centuries ahead of his time.",
+      type: "Philosophy",
+      location: "England",
+      significance: "First philosophical defense of homosexuality",
+      keyFigures: ["Jeremy Bentham"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Jeremy_Bentham_by_Henry_William_Pickersgill_detail.jpg/400px-Jeremy_Bentham_by_Henry_William_Pickersgill_detail.jpg",
+      url: "https://www.ucl.ac.uk/bentham-project/who-was-jeremy-bentham",
+      color: "from-amber-500 to-orange-600"
     },
     {
-      title: "Before Stonewall: The Making of a Gay and Lesbian Community",
-      description: "Explores LGBTQ+ life in America before the Stonewall riots.",
-      type: 'book',
-      author: "John D'Emilio"
+      year: 1869,
+      title: "Term 'Homosexual' Coined",
+      description: "Karl-Maria Kertbeny coins the term 'homosexual' in a German-Hungarian pamphlet, creating language that would shape LGBTQ+ discourse.",
+      type: "Language",
+      location: "Germany",
+      significance: "First use of modern terminology",
+      keyFigures: ["Karl-Maria Kertbeny"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/400px-Flag_of_Germany.svg.png",
+      url: "https://www.britannica.com/topic/homosexuality",
+      color: "from-blue-500 to-indigo-600"
     },
     {
-      title: "The Lavender Scare",
-      description: "Documentary about the persecution of LGBTQ+ individuals during the Cold War era.",
-      type: 'video'
+      year: 1895,
+      title: "Oscar Wilde Trials",
+      description: "The trials of Oscar Wilde for 'gross indecency' become a symbol of persecution and resilience in LGBTQ+ history.",
+      type: "Legal",
+      location: "London, UK",
+      significance: "Symbol of persecution and artistic genius",
+      keyFigures: ["Oscar Wilde"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Oscar_Wilde_Sarony.jpg/400px-Oscar_Wilde_Sarony.jpg",
+      url: "https://www.britannica.com/biography/Oscar-Wilde",
+      color: "from-purple-500 to-pink-600"
+    },
+    {
+      year: 1924,
+      title: "Society for Human Rights Founded",
+      description: "Henry Gerber establishes the first gay rights organization in the United States, marking the beginning of organized LGBTQ+ advocacy.",
+      type: "Organization",
+      location: "Chicago, USA",
+      significance: "First LGBTQ+ rights organization in America",
+      keyFigures: ["Henry Gerber"],
+      imageUrl: "https://www.loc.gov/static/programs/national-recording-preservation-plan/images/Chicago1.jpg",
+      url: "https://www.smithsonianmag.com/history/the-first-gay-rights-organization-in-america-180972102/",
+      color: "from-green-500 to-teal-600"
+    },
+    {
+      year: 1950,
+      title: "The Mattachine Society",
+      description: "Harry Hay founds the Mattachine Society, one of the earliest sustained gay rights groups in the United States.",
+      type: "Organization",
+      location: "Los Angeles, USA",
+      significance: "Early sustained LGBTQ+ advocacy group",
+      keyFigures: ["Harry Hay"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Harry_Hay_1.jpg/400px-Harry_Hay_1.jpg",
+      url: "https://www.history.com/news/mattachine-society-gay-rights-harry-hay",
+      color: "from-cyan-500 to-blue-600"
+    },
+    {
+      year: 1969,
+      title: "Stonewall Riots",
+      description: "The pivotal uprising at the Stonewall Inn sparks the modern LGBTQ+ rights movement and leads to the first Pride marches.",
+      type: "Event",
+      location: "New York City, USA",
+      significance: "Birth of modern LGBTQ+ activism",
+      keyFigures: ["Marsha P. Johnson", "Sylvia Rivera"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Stonewall_Inn_5_pride_weekend_2016.jpg/400px-Stonewall_Inn_5_pride_weekend_2016.jpg",
+      url: "https://www.history.com/topics/gay-rights/the-stonewall-riots",
+      color: "from-red-500 to-pink-600"
+    },
+    {
+      year: 1973,
+      title: "APA Removes Homosexuality from DSM",
+      description: "The American Psychiatric Association removes homosexuality from its list of mental disorders, a crucial step in medical acceptance.",
+      type: "Medical",
+      location: "United States",
+      significance: "Medical recognition and acceptance",
+      keyFigures: ["Dr. John Fryer"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/American_Psychiatric_Association_logo.svg/400px-American_Psychiatric_Association_logo.svg.png",
+      url: "https://www.apa.org/monitor/2017/09/ce-corner-sidebar",
+      color: "from-emerald-500 to-green-600"
+    },
+    {
+      year: 1978,
+      title: "Harvey Milk Elected",
+      description: "Harvey Milk becomes one of the first openly gay elected officials in the United States, inspiring a generation of LGBTQ+ politicians.",
+      type: "Political",
+      location: "San Francisco, USA",
+      significance: "First openly gay elected official",
+      keyFigures: ["Harvey Milk"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg/400px-Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg",
+      url: "https://www.biography.com/political-figure/harvey-milk",
+      color: "from-purple-500 to-violet-600"
+    },
+    {
+      year: 1987,
+      title: "AIDS Memorial Quilt Displayed",
+      description: "The AIDS Memorial Quilt is first displayed in Washington, D.C., becoming the largest community art project honoring those lost to AIDS.",
+      type: "Memorial",
+      location: "Washington D.C., USA",
+      significance: "Symbol of love, loss, and remembrance",
+      keyFigures: ["Cleve Jones"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/AIDS_Memorial_Quilt.jpg/400px-AIDS_Memorial_Quilt.jpg",
+      url: "https://www.aidsquilt.org/about/the-aids-memorial-quilt",
+      color: "from-rose-500 to-red-600"
+    },
+    {
+      year: 2001,
+      title: "Netherlands Legalizes Same-Sex Marriage",
+      description: "The Netherlands becomes the first country in the world to legalize same-sex marriage, opening the door for global marriage equality.",
+      type: "Legal",
+      location: "Netherlands",
+      significance: "First country with marriage equality",
+      keyFigures: ["Job Cohen"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/400px-Flag_of_the_Netherlands.svg.png",
+      url: "https://www.bbc.com/news/world-europe-56344365",
+      color: "from-orange-500 to-amber-600"
+    },
+    {
+      year: 2015,
+      title: "Marriage Equality in the US",
+      description: "The U.S. Supreme Court legalizes same-sex marriage nationwide in Obergefell v. Hodges, a landmark victory for equality.",
+      type: "Legal",
+      location: "United States",
+      significance: "Nationwide marriage equality",
+      keyFigures: ["Jim Obergefell"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/US_Supreme_Court_Building.jpg/400px-US_Supreme_Court_Building.jpg",
+      url: "https://www.aclu.org/news/lgbtq-rights/marriage-equality-and-other-lgbtq-rights-milestones",
+      color: "from-blue-500 to-cyan-600"
+    },
+    {
+      year: 2019,
+      title: "Taiwan Legalizes Same-Sex Marriage",
+      description: "Taiwan becomes the first country in Asia to legalize same-sex marriage, marking a historic moment for LGBTQ+ rights in the region.",
+      type: "Legal",
+      location: "Taiwan",
+      significance: "First Asian country with marriage equality",
+      keyFigures: ["Tsai Ing-wen"],
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/400px-Flag_of_the_Republic_of_China.svg.png",
+      url: "https://www.hrw.org/news/2019/05/17/taiwan-first-asia-legalize-same-sex-marriage",
+      color: "from-indigo-500 to-purple-600"
+    }
+  ]
+
+  const historyResources: (Resource & { imageUrl?: string, year?: number, significance?: string })[] = [
+    {
+      title: "The Stonewall Riots: Birth of Pride",
+      description: "The pivotal 1969 uprising at the Stonewall Inn that sparked the modern LGBTQ+ rights movement and led to the first Pride marches.",
+      type: 'event',
+      author: "Historic Event",
+      year: 1969,
+      significance: "Catalyst for modern LGBTQ+ activism",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Stonewall_Inn_5_pride_weekend_2016.jpg/400px-Stonewall_Inn_5_pride_weekend_2016.jpg",
+      url: "https://en.wikipedia.org/wiki/Stonewall_riots"
+    },
+    {
+      title: "Harvey Milk: First Openly Gay Official",
+      description: "The inspiring story of Harvey Milk, who became one of the first openly gay elected officials in the United States in 1977.",
+      type: 'biography',
+      author: "Political Pioneer",
+      year: 1977,
+      significance: "Broke barriers in political representation",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg/400px-Harvey_Milk_in_1978_at_Gay_Pride_Parade_cropped.jpg",
+      url: "https://en.wikipedia.org/wiki/Harvey_Milk"
+    },
+    {
+      title: "Marriage Equality: Love Wins",
+      description: "The global journey toward marriage equality, from the Netherlands in 2001 to the US Supreme Court's historic 2015 decision.",
+      type: 'movement',
+      author: "Legal Milestone",
+      year: 2015,
+      significance: "Legal recognition of LGBTQ+ relationships",
+      imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center&auto=format&q=80",
+      url: "https://en.wikipedia.org/wiki/Same-sex_marriage"
+    },
+    {
+      title: "The AIDS Memorial Quilt",
+      description: "A powerful memorial honoring those lost to AIDS, becoming the largest community art project in the world since 1987.",
+      type: 'memorial',
+      author: "Community Art Project",
+      year: 1987,
+      significance: "Symbol of love, loss, and remembrance",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/AIDS_Memorial_Quilt.jpg/400px-AIDS_Memorial_Quilt.jpg",
+      url: "https://en.wikipedia.org/wiki/AIDS_Memorial_Quilt"
+    },
+    {
+      title: "Transgender Rights Movement",
+      description: "The ongoing struggle for transgender rights and recognition, from early pioneers to modern advocacy and legal protections.",
+      type: 'movement',
+      author: "Civil Rights Movement",
+      year: 1966,
+      significance: "Recognition and protection of transgender individuals",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Transgender_Pride_flag.svg/400px-Transgender_Pride_flag.svg.png",
+      url: "https://en.wikipedia.org/wiki/Transgender_rights"
+    },
+    {
+      title: "Section 28 & Its Repeal",
+      description: "The controversial UK law that banned 'promotion' of homosexuality and the successful campaign to repeal it in 2003.",
+      type: 'legislation',
+      author: "Legal History",
+      year: 2003,
+      significance: "Victory against discriminatory legislation",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/400px-Flag_of_the_United_Kingdom.svg.png",
+      url: "https://en.wikipedia.org/wiki/Section_28"
     }
   ]
 
@@ -130,113 +321,113 @@ export function EducationSection() {
 
   // Featured LGBTQ+ books with verified information
   const featuredBooks = [
-    { 
-      title: "Our Evenings", 
-      author: "Alan Hollinghurst", 
+    {
+      title: "Our Evenings",
+      author: "Alan Hollinghurst",
       isbn: "9781447208242",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-171/edition/9781447208242.jpg",
       url: "https://www.panmacmillan.com/authors/alan-hollinghurst/our-evenings/9781447208242"
     },
-    { 
-      title: "Sparrow", 
-      author: "James Hynes", 
+    {
+      title: "Sparrow",
+      author: "James Hynes",
       isbn: "9781529092417",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-270/edition/9781529092417.jpg",
       url: "https://www.panmacmillan.com/authors/james-hynes/sparrow/9781529092417"
     },
-    { 
-      title: "Carol", 
-      author: "Patricia Highsmith", 
+    {
+      title: "Carol",
+      author: "Patricia Highsmith",
       isbn: "9780393339046",
       imageUrl: "https://ik.imagekit.io/panmac/tr:w-740,pr-true,f-auto//bcd02f72-b50c-0179-8b4b-5e44f5340bd4/054e8c1a-09a9-4a06-a29c-32a3c99267d7/carol-patricia-highsmith.jpg?w=270&h=414&auto=format&bg=%23efefef&fit=crop",
       url: "https://www.goodreads.com/book/show/27857625-carol"
     },
-    { 
-      title: "What a Girl Wants", 
-      author: "Roxy Bourdillon", 
+    {
+      title: "What a Girl Wants",
+      author: "Roxy Bourdillon",
       isbn: "9781035037155",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-270/edition/9781035037155.jpg",
       url: "https://www.panmacmillan.com/authors/roxy-bourdillon/what-a-girl-wants/9781035037155"
     },
-    { 
-      title: "Call Me By Your Name", 
-      author: "André Aciman", 
+    {
+      title: "Call Me By Your Name",
+      author: "André Aciman",
       isbn: "9781250169440",
       imageUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1519203520i/36336078.jpg",
       url: "https://www.goodreads.com/book/show/36336078-call-me-by-your-name"
     },
-    { 
-      title: "Giovanni's Room", 
-      author: "James Baldwin", 
+    {
+      title: "Giovanni's Room",
+      author: "James Baldwin",
       isbn: "9780141186351",
       imageUrl: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141186351%2F9780141186351-jacket-large.jpg&w=379&q=100",
       url: "https://www.goodreads.com/book/show/406235.Giovanni_s_Room"
     },
-    { 
-      title: "Ophelia After All", 
-      author: "Racquel Marie", 
+    {
+      title: "Ophelia After All",
+      author: "Racquel Marie",
       isbn: "9781035015689",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-171/edition/9781035015689.jpg",
       url: "https://www.panmacmillan.com/authors/racquel-marie/ophelia-after-all/9781035015689"
     },
-    { 
-      title: "Anyone's Ghost", 
-      author: "August Thompson", 
+    {
+      title: "Anyone's Ghost",
+      author: "August Thompson",
       isbn: "9781035034109",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-171/edition/9781035034109.jpg",
       url: "https://www.panmacmillan.com/authors/august-thompson/anyones-ghost/9781035034109"
     },
-    { 
-      title: "Shuggie Bain", 
-      author: "Douglas Stuart", 
+    {
+      title: "Shuggie Bain",
+      author: "Douglas Stuart",
       isbn: "9781529019292",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-270/edition/9781529019292.jpg",
       url: "https://www.panmacmillan.com/authors/douglas-stuart/shuggie-bain/9781529019292"
     },
-    { 
-      title: "Learned by Heart", 
-      author: "Emma Donoghue", 
+    {
+      title: "Learned by Heart",
+      author: "Emma Donoghue",
       isbn: "9781035017799",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-270/edition/9781035017799.jpg",
       url: "https://www.panmacmillan.com/authors/emma-donoghue/learned-by-heart/9781035017799"
     },
-    { 
-      title: "Briefly, A Delicious Life", 
-      author: "Nell Stevens", 
+    {
+      title: "Briefly, A Delicious Life",
+      author: "Nell Stevens",
       isbn: "9781529083446",
       imageUrl: "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_aMjPtD9YZ.jpg,w-171/edition/9781529083446.jpg",
       url: "https://www.panmacmillan.com/authors/nell-stevens/briefly-a-delicious-life/9781529083446"
     },
-    { 
-      title: "The Transgender Issue", 
-      author: "Shon Faye", 
+    {
+      title: "The Transgender Issue",
+      author: "Shon Faye",
       isbn: "9780141991801",
       imageUrl: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141991801%2F9780141991801-jacket-large.jpg&w=379&q=100",
       url: "https://www.penguin.co.uk/books/315349/the-transgender-issue-by-faye-shon/9780141991801"
     },
-    { 
-      title: "What It Feels Like for a Girl", 
-      author: "Paris Lees", 
+    {
+      title: "What It Feels Like for a Girl",
+      author: "Paris Lees",
       isbn: "9780141993089",
       imageUrl: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141993089%2F9780141993089-jacket-large.jpg&w=379&q=100",
       url: "https://www.penguin.co.uk/books/284432/what-it-feels-like-for-a-girl-by-lees-paris/9780141993089"
     },
-    { 
-      title: "The Danish Girl", 
-      author: "David Ebershoff", 
+    {
+      title: "The Danish Girl",
+      author: "David Ebershoff",
       isbn: "9780143108399",
       imageUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1451790312i/27864391.jpg",
       url: "https://www.goodreads.com/book/show/27864391-the-danish-girl"
     },
-    { 
-      title: "The Bluest Eye", 
-      author: "Toni Morrison", 
+    {
+      title: "The Bluest Eye",
+      author: "Toni Morrison",
       isbn: "9780099759911",
       imageUrl: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780099759911%2F9780099759911-jacket-large.jpg&w=379&q=100",
       url: "https://www.penguin.co.uk/books/356286/the-bluest-eye-by-morrison-toni/9780099759911"
     }
   ]
-  
+
   // Function to get cover URL from Open Library with fallback
   const getCoverUrl = (olid: string, isbn?: string, size: 'S' | 'M' | 'L' = 'M') => {
     // Try ISBN first as it's more reliable for covers
@@ -249,37 +440,42 @@ export function EducationSection() {
 
   const marqueeRef = useRef<HTMLDivElement>(null)
   const documentariesRef = useRef<HTMLDivElement>(null)
-  
+  const historyTimelineRef = useRef<HTMLDivElement>(null)
+
   // Track mouse position for smooth scrolling (books)
   const [mouseX, setMouseX] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
-  
+
+  // Track mouse position for history timeline scrolling
+  const [historyMouseX, setHistoryMouseX] = useState(0)
+  const [isHistoryHovering, setIsHistoryHovering] = useState(false)
+
   // Track mouse position for documentaries scrolling
   const [docMouseX, setDocMouseX] = useState(0)
   const [isDocHovering, setIsDocHovering] = useState(false)
-  
+
   // Update scroll based on mouse position
   useEffect(() => {
     if (!marqueeRef.current || !isHovering) return
-    
+
     const container = marqueeRef.current
     const containerRect = container.getBoundingClientRect()
     const containerCenter = containerRect.left + (containerRect.width / 2)
-    
+
     // Calculate scroll position based on mouse distance from center
     const scrollAmount = (mouseX - containerCenter) * 0.3 // Reduced sensitivity from 0.5 to 0.3
-    
+
     // Smoothly animate the scroll
     const animate = () => {
       if (!isHovering) return
       container.scrollLeft += scrollAmount * 0.06 // Reduced animation speed from 0.1 to 0.06
       requestAnimationFrame(animate)
     }
-    
+
     const animationId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animationId)
   }, [mouseX, isHovering])
-  
+
   const handleMouseMove = (e: React.MouseEvent) => {
     setMouseX(e.clientX)
   }
@@ -287,28 +483,62 @@ export function EducationSection() {
   // Update documentaries scroll based on mouse position
   useEffect(() => {
     if (!documentariesRef.current || !isDocHovering) return
-    
+
     const container = documentariesRef.current
     const containerRect = container.getBoundingClientRect()
     const containerCenter = containerRect.left + (containerRect.width / 2)
-    
+
     // Calculate scroll position based on mouse distance from center
     const scrollAmount = (docMouseX - containerCenter) * 0.3 // Same sensitivity as books
-    
+
     // Smoothly animate the scroll
     const animate = () => {
       if (!isDocHovering) return
       container.scrollLeft += scrollAmount * 0.06 // Same animation speed as books
       requestAnimationFrame(animate)
     }
-    
+
     const animationId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animationId)
   }, [docMouseX, isDocHovering])
-  
+
   const handleDocMouseMove = (e: React.MouseEvent) => {
     setDocMouseX(e.clientX)
   }
+
+  // Update history timeline scroll based on mouse position
+  useEffect(() => {
+    if (!historyTimelineRef.current || !isHistoryHovering) return
+
+    const container = historyTimelineRef.current
+    const containerRect = container.getBoundingClientRect()
+    const containerCenter = containerRect.left + (containerRect.width / 2)
+
+    // Calculate scroll amount based on mouse distance from center
+    const scrollAmount = (historyMouseX - containerCenter) * 0.5
+
+    // Smoothly animate the scroll
+    const animate = () => {
+      if (!isHistoryHovering || !historyTimelineRef.current) return
+      container.scrollLeft += scrollAmount * 0.1
+      requestAnimationFrame(animate)
+    }
+
+    const animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [historyMouseX, isHistoryHovering])
+
+  const handleHistoryMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setHistoryMouseX(e.clientX)
+  }
+
+  // Ensure timeline starts at the beginning on page load
+  useEffect(() => {
+    if (historyTimelineRef.current) {
+      historyTimelineRef.current.scrollLeft = 0
+    }
+  }, [])
 
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
@@ -482,23 +712,23 @@ export function EducationSection() {
     if (!marqueeContent) return;
 
     const marqueeContentWidth = marqueeContent.scrollWidth / 2; // Divide by 2 because we duplicated the content
-    
+
     let animationFrame: number;
     let startTime: number | null = null;
     const duration = 30000; // 30 seconds for one complete loop
-    
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = (elapsed % duration) / duration;
-      
+
       marquee.scrollLeft = progress * marqueeContentWidth;
-      
+
       animationFrame = requestAnimationFrame(animate);
     };
-    
+
     animationFrame = requestAnimationFrame(animate);
-    
+
     return () => {
       cancelAnimationFrame(animationFrame);
     };
@@ -510,7 +740,7 @@ export function EducationSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 -mt-3">
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Info Hub
+              Info Hub
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-200">
@@ -538,28 +768,133 @@ export function EducationSection() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="history">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {historyResources.map((resource, index) => (
-                <Card key={index} className="h-full flex flex-col hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {resource.type === 'book' ? 'Book' : resource.type === 'video' ? 'Video' : 'Article'}
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl">{resource.title}</CardTitle>
-                    {resource.author && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400">By {resource.author}</p>
-                    )}
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-gray-600 dark:text-gray-300">{resource.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+          <TabsContent value="history" className="space-y-8">
+            {/* Timeline Header */}
+            <div className="mb-8 text-center">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">A Timeline of Events</h3>
+              <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Journey through pivotal moments, movements, and milestones that shaped LGBTQ+ history and continue to inspire progress today
+              </p>
             </div>
+
+            {/* Scrolling Timeline */}
+            <div className="relative">
+              <div
+                ref={historyTimelineRef}
+                onMouseMove={handleHistoryMouseMove}
+                onMouseEnter={() => setIsHistoryHovering(true)}
+                onMouseLeave={() => setIsHistoryHovering(false)}
+                className="flex space-x-6 pb-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                style={{
+                  scrollBehavior: 'smooth',
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
+                {historyTimeline.map((item, index) => (
+                  <div key={index} className="w-[320px] flex-shrink-0 snap-center">
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full group"
+                    >
+                      <div className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 rounded-xl">
+                        {/* Image */}
+                        <div className="relative aspect-video overflow-hidden rounded-t-xl">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            loading="eager"
+                            decoding="async"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/400px-Gay_Pride_Flag.svg.png';
+                            }}
+                          />
+
+                          {/* Gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                          {/* Title overlay */}
+                          <div className="absolute bottom-0 left-0 right-0 p-4">
+                            <div className="mb-1">
+                              <span className="text-white/80 text-sm font-medium">{item.year}</span>
+                            </div>
+                            <h4 className="text-white font-bold text-lg leading-tight drop-shadow-lg">
+                              {item.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex flex-col flex-grow p-4">
+                          <div className="mb-3">
+                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3">
+                              {item.description}
+                            </p>
+                          </div>
+
+                          {/* Location */}
+                          {item.location && (
+                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                              <span>📍</span>
+                              <span>{item.location}</span>
+                            </div>
+                          )}
+
+                          {/* Significance badge */}
+                          <div className="mb-3">
+                            <span className="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded-full">
+                              {item.significance}
+                            </span>
+                          </div>
+
+                          {/* Key Figures */}
+                          {item.keyFigures && item.keyFigures.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {item.keyFigures.slice(0, 2).map((figure, figureIndex) => (
+                                <span
+                                  key={figureIndex}
+                                  className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full"
+                                >
+                                  {figure}
+                                </span>
+                              ))}
+                              {item.keyFigures.length > 2 && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1">
+                                  +{item.keyFigures.length - 2} more
+                                </span>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Learn more indicator */}
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
+                            <span className="text-sm font-medium text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
+                              Explore
+                            </span>
+                            <ExternalLink className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors" />
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              {/* Gradient overlays for scroll indication */}
+              <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white dark:from-gray-900 to-transparent pointer-events-none"></div>
+              <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white dark:from-gray-900 to-transparent pointer-events-none"></div>
+            </div>
+
+            {/* Scroll instruction */}
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center">
+              Move your cursor to scroll through the timeline
+              <span className="ml-2 inline-block animate-bounce-horizontal">→</span>
+            </p>
           </TabsContent>
 
           <TabsContent value="allyship">
@@ -583,17 +918,17 @@ export function EducationSection() {
             </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
               {allyshipGuides.map((guide, index) => (
-                <a 
-                  key={index} 
-                  href={guide.url} 
-                  target="_blank" 
+                <a
+                  key={index}
+                  href={guide.url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="block h-full group"
                 >
                   <div className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-white dark:bg-gray-800/50 backdrop-blur-sm dark:backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 rounded-lg">
                     <div className="relative aspect-video overflow-hidden rounded-t-lg" style={{ border: 'none', boxShadow: 'none' }}>
-                      <img 
-                        src={guide.imageUrl} 
+                      <img
+                        src={guide.imageUrl}
                         alt={guide.title}
                         className="w-full h-full object-cover"
                         style={{
@@ -641,9 +976,9 @@ export function EducationSection() {
             </div>
             <div className="mt-10 text-center">
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Looking for more resources?</p>
-              <a 
-                href="https://www.glaad.org/resources" 
-                target="_blank" 
+              <a
+                href="https://www.glaad.org/resources"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
               >
@@ -661,7 +996,7 @@ export function EducationSection() {
                 Featured Documentaries
               </h3>
               <div className="relative">
-                <div 
+                <div
                   ref={documentariesRef}
                   onMouseMove={handleDocMouseMove}
                   onMouseEnter={() => setIsDocHovering(true)}
@@ -710,7 +1045,7 @@ export function EducationSection() {
                 Recommended Reading
               </h3>
               <div className="w-full relative">
-                <div 
+                <div
                   ref={marqueeRef}
                   onMouseMove={handleMouseMove}
                   onMouseEnter={() => setIsHovering(true)}
@@ -725,8 +1060,8 @@ export function EducationSection() {
                 >
                   <div className="inline-flex space-x-8">
                     {[...featuredBooks, ...featuredBooks].map((book, index) => (
-                      <a 
-                        key={`book-${index}`} 
+                      <a
+                        key={`book-${index}`}
                         href={book.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -736,15 +1071,15 @@ export function EducationSection() {
                           <div className="relative overflow-hidden rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-1 bg-white dark:bg-gray-800">
                             <div className="w-full" style={{ paddingBottom: '150%', position: 'relative' }}>
                               {book.imageUrl ? (
-                                <img 
-                                  src={book.imageUrl} 
+                                <img
+                                  src={book.imageUrl}
                                   alt={`${book.title} cover`}
                                   className="absolute inset-0 w-full h-full object-cover bg-gray-100 dark:bg-gray-700"
                                   loading="lazy"
                                 />
                               ) : (
-                                <img 
-                                  src={getCoverUrl(book.olid, book.isbn, 'L')} 
+                                <img
+                                  src={getCoverUrl(book.olid, book.isbn, 'L')}
                                   alt={`${book.title} cover`}
                                   className="absolute inset-0 w-full h-full object-contain bg-gray-100 dark:bg-gray-700"
                                   loading="lazy"
@@ -821,20 +1156,20 @@ export function EducationSection() {
                 </span>
               </div>
             </div>
-            
+
             {searchTerm ? (
               // Search results view
               <div className="space-y-3">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {glossaryTerms.filter(term => 
+                  {glossaryTerms.filter(term =>
                     term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     term.definition.toLowerCase().includes(searchTerm.toLowerCase())
                   ).length} results
                 </div>
-                
+
                 <div className="space-y-2">
                   {glossaryTerms
-                    .filter(term => 
+                    .filter(term =>
                       term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
                       term.definition.toLowerCase().includes(searchTerm.toLowerCase())
                     )
