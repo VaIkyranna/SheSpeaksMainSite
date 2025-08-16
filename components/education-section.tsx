@@ -8,10 +8,15 @@ import { useRef, useState, useEffect } from 'react'
 type Resource = {
   title: string;
   description: string;
-  type?: 'book' | 'article' | 'video' | 'guide';
+  type?: 'book' | 'article' | 'video' | 'guide' | 'event' | 'biography' | 'movement' | 'memorial' | 'legislation' | 'organization' | 'legal' | 'medical' | 'political' | 'philosophy' | 'language';
   url?: string;
   author?: string;
   year?: number;
+  isbn?: string;
+  imageUrl?: string;
+  significance?: string;
+  location?: string;
+  keyFigures?: string[];
 }
 
 type Term = {
@@ -174,7 +179,7 @@ export function EducationSection() {
     {
       title: "The Stonewall Riots: Birth of Pride",
       description: "The pivotal 1969 uprising at the Stonewall Inn that sparked the modern LGBTQ+ rights movement and led to the first Pride marches.",
-      type: 'event',
+      type: 'event' as const,
       author: "Historic Event",
       year: 1969,
       significance: "Catalyst for modern LGBTQ+ activism",
@@ -184,7 +189,7 @@ export function EducationSection() {
     {
       title: "Harvey Milk: First Openly Gay Official",
       description: "The inspiring story of Harvey Milk, who became one of the first openly gay elected officials in the United States in 1977.",
-      type: 'biography',
+      type: 'biography' as const,
       author: "Political Pioneer",
       year: 1977,
       significance: "Broke barriers in political representation",
@@ -194,7 +199,7 @@ export function EducationSection() {
     {
       title: "Marriage Equality: Love Wins",
       description: "The global journey toward marriage equality, from the Netherlands in 2001 to the US Supreme Court's historic 2015 decision.",
-      type: 'movement',
+      type: 'movement' as const,
       author: "Legal Milestone",
       year: 2015,
       significance: "Legal recognition of LGBTQ+ relationships",
@@ -204,7 +209,7 @@ export function EducationSection() {
     {
       title: "The AIDS Memorial Quilt",
       description: "A powerful memorial honoring those lost to AIDS, becoming the largest community art project in the world since 1987.",
-      type: 'memorial',
+      type: 'memorial' as const,
       author: "Community Art Project",
       year: 1987,
       significance: "Symbol of love, loss, and remembrance",
@@ -214,7 +219,7 @@ export function EducationSection() {
     {
       title: "Transgender Rights Movement",
       description: "The ongoing struggle for transgender rights and recognition, from early pioneers to modern advocacy and legal protections.",
-      type: 'movement',
+      type: 'movement' as const,
       author: "Civil Rights Movement",
       year: 1966,
       significance: "Recognition and protection of transgender individuals",
@@ -224,7 +229,7 @@ export function EducationSection() {
     {
       title: "Section 28 & Its Repeal",
       description: "The controversial UK law that banned 'promotion' of homosexuality and the successful campaign to repeal it in 2003.",
-      type: 'legislation',
+      type: 'legislation' as const,
       author: "Legal History",
       year: 2003,
       significance: "Victory against discriminatory legislation",
@@ -237,7 +242,7 @@ export function EducationSection() {
     {
       title: "The Guide to Allyship",
       description: "A comprehensive guide to becoming a better ally to the LGBTQ+ community.",
-      type: 'guide',
+      type: 'guide' as const,
       url: 'https://www.akt.org.uk/resources/a-guide-to-lgbtq-allyship-2/?gad_campaignid=22627939428',
       author: 'AKT',
       imageUrl: 'https://images.pexels.com/photos/9587945/pexels-photo-9587945.jpeg'
@@ -245,7 +250,7 @@ export function EducationSection() {
     {
       title: "Supporting Trans & Non-Binary People",
       description: "Understanding what it means to be non-binary and how to support trans and non-binary individuals.",
-      type: 'guide',
+      type: 'guide' as const,
       url: "https://lgbt.foundation/help/what-it-means-to-be-non-binary/?gad_campaignid=22473964018",
       author: "LGBT Foundation",
       imageUrl: "https://images.unsplash.com/photo-1669801243647-f84c62901b45?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -253,7 +258,7 @@ export function EducationSection() {
     {
       title: "Workplace Inclusion",
       description: "Resources for creating an LGBTQ+ inclusive workplace environment.",
-      type: 'guide',
+      type: 'guide' as const,
       url: 'https://www.stonewall.org.uk/inclusive-workplaces/resources-creating-lgbtq-inclusive-workplace',
       author: 'Stonewall',
       imageUrl: 'https://images.pexels.com/photos/10503437/pexels-photo-10503437.jpeg'
@@ -261,7 +266,7 @@ export function EducationSection() {
     {
       title: "Supporting LGBTQ+ Youth",
       description: "A guide to being an ally to transgender and non-binary youth.",
-      type: 'guide',
+      type: 'guide' as const,
       url: 'https://www.thetrevorproject.org/resources/guide/a-guide-to-being-an-ally-to-transgender-and-nonbinary-youth/',
       author: 'The Trevor Project',
       imageUrl: 'https://images.pexels.com/photos/5705887/pexels-photo-5705887.jpeg'
@@ -269,7 +274,7 @@ export function EducationSection() {
     {
       title: "Allyship & You",
       description: "A guide from HRC on being an effective ally to the LGBTQ+ community.",
-      type: 'guide',
+      type: 'guide' as const,
       url: 'https://www.hrc.org/resources/being-an-lgbtq-ally',
       author: 'Human Rights Campaign',
       imageUrl: 'https://images.pexels.com/photos/12289186/pexels-photo-12289186.jpeg'
@@ -278,7 +283,7 @@ export function EducationSection() {
       title: "Healthcare Inclusion Guide",
       author: "LGBT Foundation",
       description: "A comprehensive resource for healthcare professionals to provide inclusive and affirming care to LGBTQ+ patients.",
-      type: 'guide',
+      type: 'guide' as const,
       url: "https://lgbt.foundation/healthcare",
       imageUrl: "https://images.pexels.com/photos/4046930/pexels-photo-4046930.jpeg"
     }
@@ -428,14 +433,10 @@ export function EducationSection() {
     }
   ]
 
-  // Function to get cover URL from Open Library with fallback
-  const getCoverUrl = (olid: string, isbn?: string, size: 'S' | 'M' | 'L' = 'M') => {
-    // Try ISBN first as it's more reliable for covers
-    if (isbn) {
-      return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg?default=false`;
-    }
-    // Fallback to OLID if no ISBN
-    return `https://covers.openlibrary.org/b/olid/${olid}-${size}.jpg?default=false`;
+  // Function to get cover URL with fallback
+  const getCoverUrl = (isbn: string, size: 'S' | 'M' | 'L' = 'M') => {
+    // Use direct image URL if available, otherwise use ISBN
+    return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg?default=false`;
   }
 
   const marqueeRef = useRef<HTMLDivElement>(null)
@@ -1079,7 +1080,7 @@ export function EducationSection() {
                                 />
                               ) : (
                                 <img
-                                  src={getCoverUrl(book.olid, book.isbn, 'L')}
+                                  src={book.imageUrl || (book.isbn ? getCoverUrl(book.isbn, 'L') : '')}
                                   alt={`${book.title} cover`}
                                   className="absolute inset-0 w-full h-full object-contain bg-gray-100 dark:bg-gray-700"
                                   loading="lazy"
