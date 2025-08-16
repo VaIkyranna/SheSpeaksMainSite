@@ -106,9 +106,11 @@ export function AppleHero() {
     <section 
       className="relative min-h-[100px] md:min-h-[120px] flex flex-col items-center overflow-visible z-10"
       style={{
-        background: gradients[currentGradientIndex],
+        backgroundImage: gradients[currentGradientIndex],
         backgroundSize: '200% 200%',
-        transition: 'background 1.5s ease-in-out',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        transition: 'background-image 1.5s ease-in-out',
         position: 'relative',
         overflow: 'hidden'
       }}
