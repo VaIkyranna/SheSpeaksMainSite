@@ -327,18 +327,6 @@ export function HistorySection() {
                       className="object-cover w-full h-full group-hover:scale-105 apple-transition"
                       onError={handleImageError}
                     />
-                    <div className="absolute top-3 right-3">
-                      <span className={`px-2 py-1 text-xs font-medium text-white bg-gradient-to-r ${getCategoryColor(event.category)} rounded-full`}>
-                        {event.category}
-                      </span>
-                    </div>
-                    {event.significance === 'High' && (
-                      <div className="absolute top-3 left-3">
-                        <span className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-full">
-                          Milestone
-                        </span>
-                      </div>
-                    )}
                   </div>
                 )}
 
