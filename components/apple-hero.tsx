@@ -12,7 +12,7 @@ export function AppleHero() {
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" });
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const menuRef = useRef<HTMLDivElement>(null);
-  const tabs = ["Home", "Resources", "Info", "Events", "About"];
+  const tabs = ["Home", "Resources", "InfoHub", "Events", "About"];
   
   // Enhanced gradients with better contrast and animation support
   const gradients = [
@@ -233,10 +233,11 @@ export function AppleHero() {
                     : 'text-white/70 hover:text-white/90'
                 }`}
                 style={{ 
-                  fontFamily: 'SFUIDisplay-Light',
+                  fontFamily: 'Inter, system-ui, sans-serif',
                   fontSize: '1rem',
                   whiteSpace: 'nowrap',
-                  lineHeight: '1.5'
+                  lineHeight: '1.5',
+                  fontWeight: 400
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
