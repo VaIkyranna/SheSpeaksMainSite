@@ -762,12 +762,12 @@ export function EducationSection() {
               <Users className="w-4 h-4" />
               Trans Health
             </TabsTrigger>
-            <TabsTrigger value="allyship" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Allyship
+            <TabsTrigger value="transition-resources" className="flex items-center gap-2">
+              <BookMarked className="w-4 h-4" />
+              Transition Tips
             </TabsTrigger>
             <TabsTrigger value="media" className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
+              <Film className="w-4 h-4" />
               Media
             </TabsTrigger>
             <TabsTrigger value="glossary" className="flex items-center gap-2">
@@ -1162,7 +1162,7 @@ export function EducationSection() {
               <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
                 <button
                   onClick={() => setShowMTF(true)}
-                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${showMTF ? 'border-b-4 border-blue-500 text-blue-700 dark:text-blue-300' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
+                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${showMTF ? 'border-b-4 border-pink-300 text-pink-700 dark:text-pink-200' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
                 >
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl">♂→♀</span>
@@ -1171,7 +1171,7 @@ export function EducationSection() {
                 </button>
                 <button
                   onClick={() => setShowMTF(false)}
-                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${!showMTF ? 'border-b-4 border-pink-500 text-pink-700 dark:text-pink-300' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
+                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${!showMTF ? 'border-b-4 border-blue-500 text-blue-700 dark:text-blue-300' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
                 >
                   <div className="flex flex-col items-center space-y-1">
                     <span className="text-2xl">♀→♂</span>
@@ -1187,7 +1187,7 @@ export function EducationSection() {
                 <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow transition-shadow">
                   <CardHeader className="pb-2 px-4 pt-3">
                     <CardTitle className="text-base flex items-center gap-2">
-                      <span className={showMTF ? "text-blue-600 text-sm" : "text-pink-600 text-sm"}>
+                      <span className={showMTF ? "text-pink-400 text-sm" : "text-blue-600 text-sm"}>
                         {showMTF ? '♂→♀' : '♀→♂'}
                       </span>
                       <span className="text-sm">Hormone Therapy</span>
@@ -1413,6 +1413,161 @@ export function EducationSection() {
                         </>
                       )}
                     </ul>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="transition-resources" className="space-y-4">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-3">
+                Transition Tips & Resources
+              </h2>
+              <p className="text-base text-center text-gray-700 dark:text-gray-300 mb-8">
+                Essential resources and guidance for your transition journey
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Voice Training */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-blue-500">🎤</span>
+                      Voice Training
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4">
+                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                      <li>• <a href="https://www.reddit.com/r/transvoice/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/transvoice Community</a></li>
+                      <li>• <a href="https://transvoicelessons.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">TransVoiceLessons</a> <span className="text-gray-500">(YouTube)</span></li>
+                      <li>• <a href="https://christella.voiceupcorps.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Christella VoiceUp</a> <span className="text-gray-500">(App)</span></li>
+                      <li>• <a href="https://www.evaapp.space/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Eva MTF</a> <span className="text-gray-500">(Voice Training App)</span></li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Wig & Hair Care */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-amber-500">💇‍♀️</span>
+                      Wig & Hair Care
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4 space-y-4">
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Wig Retailers</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.wigoutlet.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Wig Outlet</a> <span className="text-gray-500">(Affordable options)</span></li>
+                        <li>• <a href="https://www.wigsis.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Wigs.com</a> <span className="text-gray-500">(Premium selection)</span></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Hair Care</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.naturallycurly.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Naturally Curly</a> <span className="text-gray-500">(Curly hair care)</span></li>
+                        <li>• <a href="https://www.reddit.com/r/curlyhair/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Curly Hair Method</a> <span className="text-gray-500">(Reddit)</span></li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Skincare */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-pink-400">✨</span>
+                      Skincare
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4 space-y-4">
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Skincare Resources</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.reddit.com/r/SkincareAddiction/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/SkincareAddiction</a> <span className="text-gray-500">(Skincare community)</span></li>
+                        <li>• <a href="https://www.paulaschoice.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Paula's Choice</a> <span className="text-gray-500">(Gentle products)</span></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Laser & Electrolysis</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.hairtell.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">HairTell Forums</a></li>
+                        <li>• <a href="https://www.reddit.com/r/transgender_surgeries/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/transgender_surgeries</a></li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Community Support */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-green-500">🤝</span>
+                      Community Support
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4">
+                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                      <li>• <a href="https://www.reddit.com/r/asktransgender/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/asktransgender</a> <span className="text-gray-500">(Q&A)</span></li>
+                      <li>• <a href="https://www.transgenderpulse.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Transgender Pulse</a> <span className="text-gray-500">(Forums)</span></li>
+                      <li>• <a href="https://www.translifeline.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Trans Lifeline</a>: <span className="font-medium text-gray-900 dark:text-white">877-565-8860</span></li>
+                      <li>• <a href="https://www.thetrevorproject.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">The Trevor Project</a>: <span className="font-medium text-gray-900 dark:text-white">866-488-7386</span></li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Legal Resources */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-purple-500">⚖️</span>
+                      Legal Resources
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4 space-y-4">
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Name/Gender Changes</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://transequality.org/documents" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">NCTE Resource Center</a></li>
+                        <li>• <a href="https://www.lambdalegal.org/know-your-rights/article/trans-changing-birth-certificate-sex-designations" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Lambda Legal Guide</a></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Legal Aid</h4>
+                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.transgenderlegal.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Transgender Legal</a></li>
+                        <li>• <a href="https://www.nclrights.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">NCLR</a></li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Fashion & Beauty */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-pink-400">👗</span>
+                      Fashion & Beauty
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-gray-900 dark:text-white">MTF Fashion</h4>
+                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.torrid.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Torrid</a> (Plus Size)</li>
+                        <li>• <a href="https://www.longtallsally.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Long Tall Sally</a> (Tall Sizes)</li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-gray-900 dark:text-white">FTM Resources</h4>
+                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <a href="https://www.gc2b.co/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">gc2b Binders</a></li>
+                        <li>• <a href="https://www.transtape.life/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">TransTape</a></li>
+                        <li>• <a href="https://www.underworks.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Underworks</a></li>
+                        <li>• <a href="https://www.peecockproducts.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Peecock Products</a></li>
+                      </ul>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
