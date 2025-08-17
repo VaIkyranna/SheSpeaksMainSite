@@ -704,6 +704,9 @@ export function EducationSection() {
     }
   ]
 
+  // Toggle between MTF and FTM content
+  const [showMTF, setShowMTF] = useState(true);
+
   // Animate the marquee
   useEffect(() => {
     const marquee = marqueeRef.current;
@@ -750,14 +753,18 @@ export function EducationSection() {
         </div>
 
         <Tabs defaultValue="history" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-transparent">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 bg-transparent">
             <TabsTrigger value="history" className="flex items-center gap-2">
               <History className="w-4 h-4" />
               History
             </TabsTrigger>
+            <TabsTrigger value="trans-health" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Trans Health
+            </TabsTrigger>
             <TabsTrigger value="allyship" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Allyship Guides
+              Allyship
             </TabsTrigger>
             <TabsTrigger value="media" className="flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
@@ -1138,6 +1145,276 @@ export function EducationSection() {
                   <span>LGBTQ+ Movies</span>
                   <ArrowRight className="w-4 h-4 ml-auto text-gray-400" />
                 </a>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="trans-health" className="space-y-4">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">
+                Transgender Healthcare Guide
+              </h2>
+              <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-6">
+                Select a transition path for detailed information
+              </p>
+              
+              {/* Tab Navigation */}
+              <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+                <button
+                  onClick={() => setShowMTF(false)}
+                  className={`flex-1 py-3 px-4 text-center font-medium text-sm border-b-2 transition-colors ${!showMTF ? 'border-pink-500 text-pink-600 dark:text-pink-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="text-lg">♀→♂</span>
+                    <span>Female to Male (FTM)</span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setShowMTF(true)}
+                  className={`flex-1 py-3 px-4 text-center font-medium text-sm border-b-2 transition-colors ${showMTF ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="text-lg">♂→♀</span>
+                    <span>Male to Female (MTF)</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {/* Hormone Therapy */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow transition-shadow">
+                  <CardHeader className="pb-2 px-4 pt-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <span className={showMTF ? "text-blue-600 text-sm" : "text-pink-600 text-sm"}>
+                        {showMTF ? '♂→♀' : '♀→♂'}
+                      </span>
+                      <span className="text-sm">Hormone Therapy</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-3 pt-0">
+                    <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                      {showMTF ? (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Estrogen Therapy: </span>
+                              <span>17β-estradiol (pills, patches, injections) to promote feminization</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Anti-Androgens: </span>
+                              <span>Spironolactone or GnRH agonists to suppress testosterone</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Physical Changes: </span>
+                              <span>Breast development, softer skin, fat redistribution, reduced body hair</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Fertility: </span>
+                              <span>Consider fertility preservation before starting HRT</span>
+                            </div>
+                          </li>
+                        </>
+                      ) : (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Testosterone Therapy: </span>
+                              <span>Injectable, gel, or patch formulations for masculinization</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Physical Changes: </span>
+                              <span>Deepened voice, facial/body hair growth, muscle development, fat redistribution</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Menstrual Cessation: </span>
+                              <span>Typically occurs within 2-6 months of starting T</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Fertility: </span>
+                              <span>Consider fertility preservation before starting T</span>
+                            </div>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Voice Training */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow transition-shadow">
+                  <CardHeader className="pb-2 px-4 pt-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <span className="text-purple-600 text-sm">🎤</span>
+                      <span className="text-sm">Voice</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-3 pt-0">
+                    <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                      {showMTF ? (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Vocal Training: </span>
+                              <span>Work with a speech therapist to develop a feminine voice through pitch, resonance, and intonation</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Pitch: </span>
+                              <span>Increase pitch to 180-220Hz range through vocal exercises</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Resonance: </span>
+                              <span>Focus on oral resonance and brighter speech quality</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Speech Patterns: </span>
+                              <span>Practice feminine speech patterns and intonation</span>
+                            </div>
+                          </li>
+                        </>
+                      ) : (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Testosterone Effects: </span>
+                              <span>Voice deepens by 4-5 semitones within 3-6 months</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Voice Stabilization: </span>
+                              <span>Voice may take 1-2 years to fully stabilize after starting T</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Vocal Health: </span>
+                              <span>Stay hydrated and practice good vocal hygiene</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Speech Therapy: </span>
+                              <span>Optional for refining masculine speech patterns if desired</span>
+                            </div>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Surgical Options */}
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow transition-shadow">
+                  <CardHeader className="pb-2 px-4 pt-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <span className="text-green-600 text-sm">⚕️</span>
+                      <span className="text-sm">Surgeries</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-3 pt-0">
+                    <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                      {showMTF ? (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Facial Feminization: </span>
+                              <span>Forehead contouring, rhinoplasty, jaw/chin reduction</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Breast Augmentation: </span>
+                              <span>Implants after 1-2 years of HRT for optimal results</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Vaginoplasty: </span>
+                              <span>Penile inversion or peritoneal techniques for vaginal construction</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Body Contouring: </span>
+                              <span>Liposuction and fat grafting for feminine silhouette</span>
+                            </div>
+                          </li>
+                        </>
+                      ) : (
+                        <>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Top Surgery: </span>
+                              <span>Double incision or periareolar techniques for chest masculinization</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Hysterectomy: </span>
+                              <span>Removal of uterus and possibly ovaries</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Phalloplasty/Metoidioplasty: </span>
+                              <span>Genital reconstruction options with various graft sources</span>
+                            </div>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="mr-1.5 mt-0.5">•</span>
+                            <div>
+                              <span className="font-medium">Body Contouring: </span>
+                              <span>Liposuction for a more masculine silhouette</span>
+                            </div>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </TabsContent>
