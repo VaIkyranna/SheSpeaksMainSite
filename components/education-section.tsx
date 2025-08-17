@@ -1150,32 +1150,32 @@ export function EducationSection() {
           </TabsContent>
 
           <TabsContent value="trans-health" className="space-y-4">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-3">
                 Transgender Healthcare Guide
               </h2>
-              <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-6">
+              <p className="text-base text-center text-gray-700 dark:text-gray-300 mb-8">
                 Select a transition path for detailed information
               </p>
               
               {/* Tab Navigation */}
               <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
                 <button
-                  onClick={() => setShowMTF(false)}
-                  className={`flex-1 py-3 px-4 text-center font-medium text-sm border-b-2 transition-colors ${!showMTF ? 'border-pink-500 text-pink-600 dark:text-pink-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+                  onClick={() => setShowMTF(true)}
+                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${showMTF ? 'border-b-4 border-blue-500 text-blue-700 dark:text-blue-300' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
                 >
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg">♀→♂</span>
-                    <span>Female to Male (FTM)</span>
+                  <div className="flex flex-col items-center space-y-1">
+                    <span className="text-2xl">♂→♀</span>
+                    <span className="text-gray-900 dark:text-gray-100">Male to Female (MTF)</span>
                   </div>
                 </button>
                 <button
-                  onClick={() => setShowMTF(true)}
-                  className={`flex-1 py-3 px-4 text-center font-medium text-sm border-b-2 transition-colors ${showMTF ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+                  onClick={() => setShowMTF(false)}
+                  className={`flex-1 py-4 px-4 text-center font-semibold text-base transition-all ${!showMTF ? 'border-b-4 border-pink-500 text-pink-700 dark:text-pink-300' : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'}`}
                 >
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg">♂→♀</span>
-                    <span>Male to Female (MTF)</span>
+                  <div className="flex flex-col items-center space-y-1">
+                    <span className="text-2xl">♀→♂</span>
+                    <span className="text-gray-900 dark:text-gray-100">Female to Male (FTM)</span>
                   </div>
                 </button>
               </div>
