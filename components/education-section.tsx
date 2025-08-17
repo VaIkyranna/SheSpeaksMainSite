@@ -1437,12 +1437,34 @@ export function EducationSection() {
                       Voice Training
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="px-4 pb-4">
-                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                      <li>• <a href="https://www.reddit.com/r/transvoice/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/transvoice Community</a></li>
-                      <li>• <a href="https://transvoicelessons.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">TransVoiceLessons</a> <span className="text-gray-500">(YouTube)</span></li>
-                      <li>• <a href="https://christella.voiceupcorps.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Christella VoiceUp</a> <span className="text-gray-500">(App)</span></li>
-                      <li>• <a href="https://www.evaapp.space/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Eva MTF</a> <span className="text-gray-500">(Voice Training App)</span></li>
+                  <CardContent className="card-content">
+                    <ul className="space-y-3 text-gray-700 dark:text-gray-300">
+                      {[
+                        { name: 'r/transvoice Community', url: 'https://www.reddit.com/r/transvoice/', type: 'Community' },
+                        { name: 'TransVoiceLessons', url: 'https://transvoicelessons.com/', type: 'YouTube' },
+                        { name: 'Christella VoiceUp', url: 'https://christella.voiceupcorps.com/', type: 'App' },
+                        { name: 'Eva MTF', url: 'https://www.evaapp.space/', type: 'Voice Training App' }
+                      ].map((item, index) => (
+                        <li key={item.url} className="flex items-start group/item">
+                          <span className="flex-shrink-0 w-1.5 h-1.5 mt-2.5 rounded-full bg-blue-400 dark:bg-blue-500 mr-3" />
+                          <div className="flex-1">
+                            <a 
+                              href={item.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-1 transition-transform"
+                            >
+                              {item.name}
+                              <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                            </a>
+                            {item.type && (
+                              <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                {item.type}
+                              </span>
+                            )}
+                          </div>
+                        </li>
+                      ))}
                     </ul>
                   </CardContent>
                 </Card>
@@ -1455,19 +1477,69 @@ export function EducationSection() {
                       Wig & Hair Care
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="px-4 pb-4 space-y-4">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Wig Retailers</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.wigoutlet.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Wig Outlet</a> <span className="text-gray-500">(Affordable options)</span></li>
-                        <li>• <a href="https://www.wigsis.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Wigs.com</a> <span className="text-gray-500">(Premium selection)</span></li>
+                  <CardContent className="card-content space-y-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2" />
+                        Wig Retailers
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { name: 'Wig Outlet', url: 'https://www.wigoutlet.com/', desc: 'Affordable options' },
+                          { name: 'Wigs.com', url: 'https://www.wigsis.com/', desc: 'Premium selection' }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 w-1.5 h-1.5 mt-2.5 rounded-full bg-amber-400 dark:bg-amber-500 mr-3" />
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-1 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Hair Care</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.naturallycurly.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Naturally Curly</a> <span className="text-gray-500">(Curly hair care)</span></li>
-                        <li>• <a href="https://www.reddit.com/r/curlyhair/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Curly Hair Method</a> <span className="text-gray-500">(Reddit)</span></li>
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500 mr-2" />
+                        Hair Care
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { name: 'Naturally Curly', url: 'https://www.naturallycurly.com/', desc: 'Curly hair care' },
+                          { name: 'Curly Hair Method', url: 'https://www.reddit.com/r/curlyhair/', desc: 'Reddit community' }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 w-1.5 h-1.5 mt-2.5 rounded-full bg-pink-400 dark:bg-pink-500 mr-3" />
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-pink-600 dark:hover:text-pink-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-1 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </CardContent>
@@ -1477,23 +1549,68 @@ export function EducationSection() {
                 <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
                   <CardHeader className="p-4">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <span className="text-pink-400">✨</span>
-                      Skincare
+                      <span className="text-pink-500">💄</span>
+                      Makeup & Beauty
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="px-4 pb-4 space-y-4">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Skincare Resources</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.reddit.com/r/SkincareAddiction/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/SkincareAddiction</a> <span className="text-gray-500">(Skincare community)</span></li>
-                        <li>• <a href="https://www.paulaschoice.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Paula's Choice</a> <span className="text-gray-500">(Gentle products)</span></li>
+                  <CardContent className="card-content space-y-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500 mr-2" />
+                        Skincare Resources
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { name: 'r/SkincareAddiction', url: 'https://www.reddit.com/r/SkincareAddiction/', desc: 'Skincare community' },
+                          { name: 'Paula\'s Choice', url: 'https://www.paulaschoice.com/', desc: 'Gentle products' }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 w-1.5 h-1.5 mt-2.5 rounded-full bg-pink-400 dark:bg-pink-500 mr-3" />
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-pink-600 dark:hover:text-pink-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-1 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Laser & Electrolysis</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.hairtell.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">HairTell Forums</a></li>
-                        <li>• <a href="https://www.reddit.com/r/transgender_surgeries/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/transgender_surgeries</a></li>
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2" />
+                        Laser & Electrolysis
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { name: 'HairTell Forums', url: 'https://www.hairtell.com/' },
+                          { name: 'r/transgender_surgeries', url: 'https://www.reddit.com/r/transgender_surgeries/' }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 w-1.5 h-1.5 mt-2.5 rounded-full bg-rose-400 dark:bg-rose-500 mr-3" />
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-1 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </CardContent>
@@ -1507,12 +1624,68 @@ export function EducationSection() {
                       Community Support
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="px-4 pb-4">
-                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                      <li>• <a href="https://www.reddit.com/r/asktransgender/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">r/asktransgender</a> <span className="text-gray-500">(Q&A)</span></li>
-                      <li>• <a href="https://www.transgenderpulse.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Transgender Pulse</a> <span className="text-gray-500">(Forums)</span></li>
-                      <li>• <a href="https://www.translifeline.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Trans Lifeline</a>: <span className="font-medium text-gray-900 dark:text-white">877-565-8860</span></li>
-                      <li>• <a href="https://www.thetrevorproject.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">The Trevor Project</a>: <span className="font-medium text-gray-900 dark:text-white">866-488-7386</span></li>
+                  <CardContent className="card-content">
+                    <ul className="space-y-3">
+                      {[
+                        { 
+                          name: 'r/asktransgender', 
+                          url: 'https://www.reddit.com/r/asktransgender/', 
+                          desc: 'Q&A community',
+                          icon: '💬'
+                        },
+                        { 
+                          name: 'Transgender Pulse', 
+                          url: 'https://www.transgenderpulse.com/', 
+                          desc: 'Support forums',
+                          icon: '💭'
+                        },
+                        { 
+                          name: 'Trans Lifeline', 
+                          url: 'https://www.translifeline.org/', 
+                          desc: 'Crisis support',
+                          phone: '877-565-8860',
+                          icon: '☎️'
+                        },
+                        { 
+                          name: 'The Trevor Project', 
+                          url: 'https://www.thetrevorproject.org/', 
+                          desc: 'Crisis intervention',
+                          phone: '866-488-7386',
+                          icon: '🌈'
+                        }
+                      ].map((item) => (
+                        <li key={item.url} className="flex items-start group/item">
+                          <span className="flex-shrink-0 mt-1.5 text-green-500 dark:text-green-400 mr-2.5">
+                            {item.icon}
+                          </span>
+                          <div className="flex-1">
+                            <div className="flex items-baseline flex-wrap gap-1.5">
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-0.5 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.phone && (
+                                <a 
+                                  href={`tel:${item.phone.replace(/-/g, '')}`}
+                                  className="text-green-600 dark:text-green-400 hover:underline font-medium"
+                                >
+                                  {item.phone}
+                                </a>
+                              )}
+                            </div>
+                            {item.desc && (
+                              <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                {item.desc}
+                              </span>
+                            )}
+                          </div>
+                        </li>
+                      ))}
                     </ul>
                   </CardContent>
                 </Card>
@@ -1525,19 +1698,86 @@ export function EducationSection() {
                       Legal Resources
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="px-4 pb-4 space-y-4">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Name/Gender Changes</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://transequality.org/documents" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">NCTE Resource Center</a></li>
-                        <li>• <a href="https://www.lambdalegal.org/know-your-rights/article/trans-changing-birth-certificate-sex-designations" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Lambda Legal Guide</a></li>
+                  <CardContent className="card-content space-y-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2" />
+                        Name & Gender Changes
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { 
+                            name: 'National Center for Trans Equality', 
+                            url: 'https://transequality.org/documents',
+                            icon: '📝'
+                          },
+                          { 
+                            name: 'Lambda Legal Guide', 
+                            url: 'https://www.lambdalegal.org/know-your-rights/article/trans-name-change',
+                            icon: '📋'
+                          }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 mt-1.5 text-purple-500 dark:text-purple-400 mr-2.5">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-0.5 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">Legal Aid</h4>
-                      <ul className="mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.transgenderlegal.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Transgender Legal</a></li>
-                        <li>• <a href="https://www.nclrights.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">NCLR</a></li>
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2" />
+                        Legal Organizations
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { 
+                            name: 'Transgender Legal Defense Fund', 
+                            url: 'https://www.transgenderlegal.org/',
+                            icon: '🛡️',
+                            desc: 'Legal advocacy and education'
+                          },
+                          { 
+                            name: 'ACLU LGBTQ+ Rights', 
+                            url: 'https://www.aclu.org/know-your-rights/lgbtq-rights/',
+                            icon: '⚔️',
+                            desc: 'Know your rights resources'
+                          }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 mt-1.5 text-indigo-500 dark:text-indigo-400 mr-2.5">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-0.5 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </CardContent>
@@ -1545,27 +1785,117 @@ export function EducationSection() {
 
                 {/* Fashion & Beauty */}
                 <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                  <CardHeader>
+                  <CardHeader className="p-4">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <span className="text-pink-400">👗</span>
+                      <span className="text-pink-500">👗</span>
                       Fashion & Beauty
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-gray-900 dark:text-white">MTF Fashion</h4>
-                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.torrid.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Torrid</a> (Plus Size)</li>
-                        <li>• <a href="https://www.longtallsally.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Long Tall Sally</a> (Tall Sizes)</li>
+                  <CardContent className="card-content space-y-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500 mr-2" />
+                        MTF Fashion
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { 
+                            name: 'Torrid', 
+                            url: 'https://www.torrid.com/',
+                            desc: 'Plus size fashion',
+                            icon: '👚'
+                          },
+                          { 
+                            name: 'Long Tall Sally', 
+                            url: 'https://www.longtallsally.com/',
+                            desc: 'Clothing for tall women',
+                            icon: '👖'
+                          },
+                          { 
+                            name: 'ASOS Curve', 
+                            url: 'https://www.asos.com/women/curve/',
+                            desc: 'Trendy plus size styles',
+                            icon: '👗'
+                          }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 mt-1.5 text-pink-500 dark:text-pink-400 mr-2.5">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-pink-600 dark:hover:text-pink-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-0.5 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-gray-900 dark:text-white">FTM Resources</h4>
-                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                        <li>• <a href="https://www.gc2b.co/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">gc2b Binders</a></li>
-                        <li>• <a href="https://www.transtape.life/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">TransTape</a></li>
-                        <li>• <a href="https://www.underworks.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Underworks</a></li>
-                        <li>• <a href="https://www.peecockproducts.com/" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-400">Peecock Products</a></li>
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-gray-900 dark:text-white text-base flex items-center">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2" />
+                        FTM Resources
+                      </h4>
+                      <ul className="space-y-2.5 pl-4">
+                        {[
+                          { 
+                            name: 'gc2b Binders', 
+                            url: 'https://www.gc2b.co/',
+                            desc: 'Chest binders',
+                            icon: '👕'
+                          },
+                          { 
+                            name: 'TransTape', 
+                            url: 'https://www.transtape.life/',
+                            desc: 'Alternative to binders',
+                            icon: '🎗️'
+                          },
+                          { 
+                            name: 'Underworks', 
+                            url: 'https://www.underworks.com/',
+                            desc: 'Compression garments',
+                            icon: '👕'
+                          },
+                          { 
+                            name: 'Peecock Products', 
+                            url: 'https://www.peecockproducts.com/',
+                            desc: 'Packing & STP devices',
+                            icon: '🎭'
+                          }
+                        ].map((item) => (
+                          <li key={item.url} className="flex items-start group/item">
+                            <span className="flex-shrink-0 mt-1.5 text-rose-500 dark:text-rose-400 mr-2.5">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <a 
+                                href={item.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-gray-900 dark:text-white hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-200 font-medium flex items-center group-hover/item:translate-x-0.5 transition-transform"
+                              >
+                                {item.name}
+                                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-0 group-hover/item:opacity-70 transition-opacity" />
+                              </a>
+                              {item.desc && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">
+                                  {item.desc}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </CardContent>

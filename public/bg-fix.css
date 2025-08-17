@@ -1,0 +1,24 @@
+/* Force background color with !important */
+html, body, #__next, .bg-override {
+  background-color: #ffebee !important;
+}
+
+/* Ensure no other elements are covering the background */
+* {
+  background-color: transparent !important;
+}
+
+/* Apply background to all direct children of body */
+body > * {
+  background-color: transparent !important;
+}
+
+/* Make sure the main content area is transparent */
+main {
+  background-color: transparent !important;
+}
+
+/* Override any other background colors */
+[class*="bg-"] {
+  background-color: transparent !important;
+}
